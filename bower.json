@@ -12,7 +12,5 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "est": "ecomfe/est#^2.0.4"
-  }
+  "devDependencies": {}
 }
