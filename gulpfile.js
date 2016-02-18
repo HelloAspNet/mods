@@ -11,6 +11,10 @@ var clean = require('gulp-clean');
 var contentIncluder = require('gulp-content-includer');
 var less = require('gulp-less');
 var replace = require('gulp-replace');
+var imagemin = require('gulp-imagemin');
+var imageminPngquant = require('imagemin-pngquant');
+var rev  = require('gulp-rev');
+
 
 // clean
 (function () {
@@ -46,6 +50,15 @@ var replace = require('gulp-replace');
     };
 
     return gulp.src('./dist/*.js', options)
+      .pipe(clean());
+  });
+
+  gulp.task('image-clean', function () {
+    var options = {
+      read: false
+    };
+
+    return gulp.src('./dist/images/*.{png,jpg,gif,ico}', options)
       .pipe(clean());
   });
 })();
@@ -101,6 +114,30 @@ var replace = require('gulp-replace');
       .pipe(uglify(options))
       .pipe(gulp.dest('./dist'));
   });
+
+  gulp.task('image-min', ['image-clean'], function(){
+    var options = {
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [imageminPngquant()]
+    };
+
+    return gulp.src(['./src/images/*.{png,jpg,gif,ico}'])
+      .pipe(imagemin())
+      .pipe(gulp.dest('./dist/images'));
+  });
+  gulp.task('image-rev', ['image-min'], function(){
+    var options = {
+      base: './',
+      merge: true // merge with the existing manifest (if one exists)
+    };
+
+    return gulp.src(['./dist/images/*.{png,jpg,gif,ico}'], {base: './dist'})
+      .pipe(rev())
+      .pipe(gulp.dest('./dist'))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest('./dist'))
+  });
 })();
 
 
@@ -128,6 +165,7 @@ gulp.task('copy', function () {
 });
 
 
+// 替换自定义标记
 gulp.task('include', ['min'], function () {
 
   var options = {
