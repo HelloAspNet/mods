@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="index.css"/>
+</head>
+<body>
+<fieldset>
+    <legend>图库</legend>
+    <div>
+        <input type="search" value="" placeholder="输入名称、标签搜索图片"/>
+        <input type="button" value="搜索"/>
+        <input type="button" value="上传"/>
+    </div>
+    <div id="imageListHtml">
+        <script type="text/html" id="imageListTpl">
+            <ul>
+                {{each list as image}}
+                <li><img src="{{image.src}}" alt="{{image.alt}}"/></li>
+                {{/each}}
+            </ul>
+        </script>
+    </div>
+</fieldset>
+
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/art-template/dist/template.js"></script>
+<script src="index.js"></script>
+</body>
+</html>
