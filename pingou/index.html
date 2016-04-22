@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            border: 0;
+            padding: 0;
+        }
+        
+        html, body, #app{
+            height: 100%;
+        }
+
+        html{
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-size: 100px;
+        }
+
+        body{
+            font-size: .16rem;
+        }
+
+        /*.workspace, .preview{*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*right: 0;*/
+            /*bottom: 0;*/
+            /*left: 0;*/
+        /*}*/
+
+
+        /*.preview {*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*z-index: 10;*/
+        /*}*/
+
+        .tools {
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: .1rem;
+            z-index: 200;
+        }
+
+        .tools input[type=button] {
+            width: 1.2rem;
+            padding: .06rem .1rem;
+            cursor: pointer;
+        }
+        .tools input[type=button]:hover {
+            opacity: .8;
+        }
+
+
+        .tools label{
+            display: block;
+            width: 1.2rem;
+            min-height: .3rem;
+            margin-bottom: .02rem;
+            line-height: .3rem;
+            background-color: #ddd; 
+        }
+        
+        .tools label:hover{
+            background-color: #ccc;
+        }
+
+        .tools label input[type=checkbox]{
+            margin: 0 .075rem;
+            vertical-align: text-bottom;
+        } 
+        .tool-images{
+            width: 1.2rem;
+            min-height: 1.2rem;
+            background-color: #ddd;
+        }
+        
+
+        .kmods{overflow:hidden;position: relative;min-width: 1000px;min-height: 100%;}
+        .kmod{background:center top no-repeat}
+        .kmod-bd, .kmod-links{
+            position: relative;
+            width: 10rem;
+            /*height: 1px;*/
+            margin: 0 auto;
+        }
+
+        .kmod-plinks{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+
+        }
+
+        .kmod-link{
+            position: absolute;
+            display: block;
+            background-color: rgba(0, 0, 0, .2);
+        }
+        
+        .kmod-link.kstate-selected:after{
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: -2px;
+            border: 2px solid #333;
+        }
+
+        .link_temp{
+            position: absolute;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<script src="index.js"></script>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $.ajaxSetup({
+        dataType: 'jsonp'
+    });
+
+    $(document)
+            .delegate('#init', {
+                click: function () {
+                    $.ajax({
+                        url: 'http://localhost:3000/init'
+                    }).done(function (res) {
+                        if (res.status) {
+                            redirectTo('http://yd.vip.com/xws/brand.tpl/src/index.act.html');
+//                            redirectTo('http://localhost:3000/preview/init');
+                        }
+                    });
+                }
+            })
+            .delegate('#built', {
+                click: function () {
+                    $.ajax({
+                        url: 'http://localhost:3000/built'
+                    }).done(function (res) {
+                        if (res.status) {
+//                            redirectTo('http://yd.vip.com/xws/brand.tpl/dist/index.act.html');
+                            redirectTo('http://localhost:3000/preview/built');
+                        }
+                    });
+                }
+            })
+    ;
+
+
+
+    function redirectTo(url) {
+        //location.href = url;
+//        window.open(url);
+        $('#preview').attr({
+            src: url
+        });
+    }
+</script>
+</body>
+</html>
