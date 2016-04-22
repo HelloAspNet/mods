@@ -1,0 +1,131 @@
+<script type="text/less" id="less">
+
+    .kmod-hash { }
+    .kmod-target { display: block; position: relative; visibility: hidden; }
+
+    /* 导航-begin */
+    .kmod-nav-wrap{ height: 0; }
+    .kmod-nav{
+        position: relative;
+        top: 0;
+        width: 100%;
+        //height: @nav-height;
+        margin: 0 auto;
+        padding-top: 80px;
+        background: #ccc;
+        //.opacity(0);
+        //z-index: @nav-z-index;
+        &.kstate-fixed{
+            position: fixed;
+        }
+    }
+
+    .kmod-nav1{
+        width: 160px; height: 380px; margin-left: -170px; background: url('@{IMAGE_URL}@{STATE}-nav-left-bg.png') no-repeat;
+        .kmod-hash{ display: block; width: 100%; height: 60px; }
+        .kmod-hash1{ display: block; width: 100%; height: 60px; }.kmod-hash2{ display: block; width: 100%; height: 60px; }.kmod-hash3{ display: block; width: 100%; height: 60px; }
+    }
+    .kmod-nav1-hd{ height: 160px; }
+    .kmod-nav1-bd{ margin: 0 10px; }
+    .kmod-nav1-ft{ height: 40px; }
+
+    /* 导航-end */
+</script>
+<script>
+    window.location.href = "http://act.vip.com/20137.html";
+</script>
+<script type="text/html" id="html_tpl">
+
+    <!--模块导航-begin-->
+    <div class="kmod kmod-nav-wrap">
+        <div class="kmod-bd">
+            <!--导航1-begin-->
+            <div class="kmod-nav kmod-nav1">
+                <div class="kmod-nav-hd"></div>
+                <div class="kmod-nav-bd">
+                    <a class="kmod-hash kmod-hash1" href="#kmod_hash1" data-id="kmod_hash1" target="_self"></a>
+                    <a class="kmod-hash kmod-hash2" href="#kmod_hash2" data-id="kmod_hash2" target="_self"></a>
+                    <a class="kmod-hash kmod-hash3" href="#kmod_hash3" data-id="kmod_hash3" target="_self"></a>
+                </div>
+                <div class="kmod-nav-ft">
+                    <a class="kmod-hash" href="#" target="_self"></a>
+                </div>
+            </div>
+            <!--导航1-end-->
+        </div>
+    </div>
+    <!--模块导航-end-->
+
+    <!--锚点-begin-->
+    <a class="kmod-target" id="kmod_hash1" name="kmod_hash1"></a>
+    <a class="kmod-target" id="kmod_hash2" name="kmod_hash2"></a>
+    <a class="kmod-target" id="kmod_hash3" name="kmod_hash3"></a>
+    <!--锚点-end-->
+
+</script>
+<script id="js">
+    // 导航2
+    var addNavEffect = function () {
+
+        var $nav = $('.kmod-nav');
+        var offset = $nav.offset();
+
+        var $win = $(window);
+        var $doc = $(document);
+
+        var $navTarget = $('.kmod-target');
+
+        var $navTargetNew = $navTarget.map(function () {
+            var $this = $(this);
+            return {
+                top: $this.offset().top,
+                $el: $this,
+                $ctrl: $('[data-id=' + $this.attr('id') + ']')
+            };
+        });
+
+        $navTargetNew.sort(function (a, b) {
+            return a.top - b.top;
+        });
+        $win.on({
+            'scroll.kmodNav': function () {
+                var scrollTop = $doc.scrollTop();
+
+                // 控制导航悬浮
+                $nav[scrollTop > offset.top ? 'addClass' : 'removeClass']('kstate-fixed');
+
+                // 控制导航focus效果
+                var len = $navTargetNew.length;
+                var index = 0;
+                do {
+                    len -= 1;
+                    index = len;
+                }
+                while (index >= 0 && scrollTop < $navTargetNew[index].top);
+
+                $navTargetNew.each(function (i, v) {
+                    v.$ctrl && v.$ctrl.removeClass('kstate-hover');
+                });
+                index >= 0 && $navTargetNew[index].$ctrl.addClass('kstate-hover');
+
+                // 控制导航focus时底边线左右滑动
+                var lastIndex = $nav.data('index');
+                $nav.addClass('kstate-hover' + (index + 1));
+                if (!isNaN(lastIndex) && index !== lastIndex) {
+                    $nav.removeClass('kstate-hover' + (lastIndex + 1));
+                }
+                $nav.data('index', index);
+
+            }
+        });
+
+        //$doc.delegate('.kmod-nav a', {
+        //  'click.kmodNav': function () {
+        //
+        //    //$('html, body').scrollTop(200);
+        //  }
+        //});
+
+    };
+    addNavEffect();
+</script>

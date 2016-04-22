@@ -1,0 +1,60 @@
+<script id="js">
+    var template = $.Tpl;
+
+    /**
+     * 自动渲染template方法
+     * @param dataTree  所有数据组成的对象
+     * @returns 所有请求完成后的promise对象
+     */
+    var renderAll = (function (template) {
+        return function (dataTree) {
+            var name, el, promises = [];
+            for (name in dataTree) {
+                if (
+                        Object.prototype.hasOwnProperty.call(dataTree, name)
+                        && (el = document.getElementById(name + '_html'))
+                ) {
+                    var data = dataTree[name];
+                    var callback = (function (el, name) {
+                        return function (d) {
+                            el.innerHTML = template(name + '_tpl', d);
+                        }
+                    })(el, name);
+                    promises.push(typeof data !== 'function' ? callback(data) : data(callback));
+                }
+            }
+            return $.when.apply($, promises);
+        };
+    })(template);
+
+    // 渲染模版
+    renderAll({
+        kmod_nav: {
+            list: new Array(3)
+        },
+        // 精选分类
+        kmod_sel: function (callback) {
+            return getSelectionList().pipe(callback);
+        },
+        // 文具图书品牌
+        kmod1_brand: function (callback) {
+            return getBrandList().pipe(callback);
+        },
+        // 儿童玩具品牌
+        kmod2_brand: function (callback) {
+            return getBrandList().pipe(callback);
+        },
+        // TOP
+        kmod31_prod: function (callback) {
+            return getProductList().pipe(callback);
+        },
+        kmod32_prod: function (callback) {
+            return getProductList().pipe(callback);
+        }
+    }).then(function () {
+        // 上面的所有数据渲染好之后调用
+
+//        addNavEffect();
+
+    });
+</script>
