@@ -1,8 +1,0 @@
-{
-  "mods": [
-    { "classId": "header", "url": "header.jpg" },
-    { "classId": "nav", "url": "nav.jpg" },
-    { "classId": "body", "url": "body.jpg" },
-    { "classId": "footer", "url": "footer.jpg" }
-  ]
-}

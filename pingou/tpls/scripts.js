@@ -1,23 +1,26 @@
-(function () {
+export default function (config) {
 
-  
+  const date = new Date;
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const defaults = {
+    productLinks: {},
+    brandLinks: {},
+    saleTime: `${year}/${month}/${day + 1} 10:00:00`,
+    endTime: `${year}/${month}/${day + 2} 10:00:00`
+  };
+
+  config = Object.assign(defaults, config);
+
+  return `
+(function () {
 
   var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
   var whs = wh.toLocaleUpperCase();
-  var plinksData = {
-    "VIP_NH": ["626529-88420745", "626529-88420737", "626529-88420723", "626529-88420754", "626529-88420722", "626529-88420800", "626529-88420789", "626529-88420787", "626529-88420740", "626529-88420752", "626529-88420774", "651416-90659848", "651416-90659857", "651416-90659850", "651416-90659852", "651416-90659861", "651416-90659853", "651416-90659860", "651416-90659859", "651416-90659868", "651416-90659865", "651416-90659866", "665851-89410673", "665851-89410604", "665851-89410617", "665851-89410648", "665851-89410697", "665851-89410643", "665851-89410657", "665851-89410618", "665851-89410626", "665851-89410556", "665851-89410563"],
-    "VIP_SH": ["626529-88420745", "626529-88420737", "626529-88420723", "626529-88420754", "626529-88420722", "626529-88420800", "626529-88420789", "626529-88420787", "626529-88420740", "626529-88420752", "626529-88420774", "651416-90659848", "651416-90659857", "651416-90659850", "651416-90659852", "651416-90659861", "651416-90659853", "651416-90659860", "651416-90659859", "651416-90659868", "651416-90659865", "651416-90659866", "665852-89412622", "665852-89412553", "665852-89412566", "665852-89412597", "665852-89412647", "665852-89412592", "665852-89412606", "665852-89412567", "665852-89412575", "665852-89412505", "665852-89412512"],
-    "VIP_CD": ["626529-88420745", "626529-88420737", "626529-88420723", "626529-88420754", "626529-88420722", "626529-88420800", "626529-88420789", "626529-88420787", "626529-88420740", "626529-88420752", "626529-88420774", "651416-90659848", "651416-90659857", "651416-90659850", "651416-90659852", "651416-90659861", "651416-90659853", "651416-90659860", "651416-90659859", "651416-90659868", "651416-90659865", "651416-90659866", "665853-89412779", "665853-89412710", "665853-89412723", "665853-89412754", "665853-89412804", "665853-89412749", "665853-89412763", "665853-89412724", "665853-89412732", "665853-89412662", "665853-89412669"],
-    "VIP_BJ": ["626529-88420745", "626529-88420737", "626529-88420723", "626529-88420754", "626529-88420722", "626529-88420800", "626529-88420789", "626529-88420787", "626529-88420740", "626529-88420752", "626529-88420774", "651416-90659848", "651416-90659857", "651416-90659850", "651416-90659852", "651416-90659861", "651416-90659853", "651416-90659860", "651416-90659859", "651416-90659868", "651416-90659865", "651416-90659866", "665854-89412936", "665854-89412867", "665854-89412880", "665854-89412911", "665854-89412961", "665854-89412906", "665854-89412920", "665854-89412881", "665854-89412889", "665854-89412819", "665854-89412826"],
-    "VIP_HZ": ["626529-88420745", "626529-88420737", "626529-88420723", "626529-88420754", "626529-88420722", "626529-88420800", "626529-88420789", "626529-88420787", "626529-88420740", "626529-88420752", "626529-88420774", "651416-90659848", "651416-90659857", "651416-90659850", "651416-90659852", "651416-90659861", "651416-90659853", "651416-90659860", "651416-90659859", "651416-90659868", "651416-90659865", "651416-90659866", "665855-89413093", "665855-89413024", "665855-89413037", "665855-89413068", "665855-89413118", "665855-89413063", "665855-89413077", "665855-89413038", "665855-89413046", "665855-89412976", "665855-89412983"]
-  };
-  var blinksData = {
-    "VIP_NH": ["667583", "667588", "667593"],
-    "VIP_SH": ["667584", "667589", "667594"],
-    "VIP_CD": ["667585", "667590", "667595"],
-    "VIP_BJ": ["667586", "667591", "667596"],
-    "VIP_HZ": ["667587", "667592", "667597"]
-  };
+  var plinksData = ${JSON.stringify(config.productLinks)};
+  var blinksData = ${JSON.stringify(config.brandLinks)};
   var plinks = plinksData[whs];
   var blinks = blinksData[whs];
 
@@ -25,7 +28,8 @@
   addSellState(blinks);
   addBrandLinks(blinks);
   addNavigators();
-  
+  addCoupons(blinks);
+  addCountDown();
 
   // 添加商品链接
   function addProductLinks(plinks, exceptPlinks) {
@@ -91,7 +95,6 @@
     //$('.kmod-body .kmod-blink3').attr({href: 'http://list.vip.com/' + blinks[2] + '.html'});
   }
 
-  
   // 导航2
   function addNavigators() {
 
@@ -185,12 +188,121 @@
 
   }
 
-  
+  // 红包
+  function addCoupons(bids) {
+    var map = {};
 
-  
+    //        getCoupons(bids);
+
+    if ($.Cookie.get('VipLID')) {
+      getCoupons(bids);
+    } else {
+      $('.kmods').addClass('kstate-coupon-get');
+    }
+
+    // 领取红包
+    $('.kmods').delegate('.kmod-coupon-btn, .kmod-nav-coupon-btn', {
+      'click.kmodCoupon': function (e) {
+        var $this = $(this);
+        if (!$this.closest('.kstate-coupon-get').length) return;
+
+        if ($.Cookie.get('VipLID')) {
+          bindCoupon();
+        } else {
+          VIPSHOP.login.init({
+            loginEvent: function () {
+              VIPSHOP.member.chk();//登录成功后回调
+              bindCoupon();
+            }
+          });
+        }
+      }
+    });
 
 
-  addCountDown();
+    // 获取档期红包
+    function getCoupons() {
+      var marsCid = $.Cookie.get('mars_cid');
+      var promises = [];
+      $.each(bids, function (i, bid) {
+        promises[i] = $.ajax({
+          url: 'http://act.vip.com/act/index_ajax.php',
+          dataType: 'jsonp',
+          data: {
+            service: 'NewCoupon.getAll',
+            mars_cid: marsCid,
+            bid: bid
+          }
+        });
+      });
+
+      $.when.apply($, promises).then(function (res) {
+        var args = arguments;
+        // 未领取红包数
+        var hasNotGetCount = 0;
+        // 已领取红包数
+        var hasGetCount = 0;
+        // 红包总数
+        var totalCount = 0;
+        // 任意红包有库存
+        var hasLeft = false;
+        $.each(bids, function (i, bid) {
+          try {
+            var obj = map[bid] = bids.length > 1 ? args[i][0] : args[i];
+            var coupon = obj.coupons[0];
+            // 有红包+未领取
+            if (coupon.left && coupon.status === 1) hasNotGetCount += 1;
+            // 有红包+已领取
+            if (coupon.left && coupon.status === 2) hasGetCount += 1;
+            // 任意红包有库存
+            if (!hasLeft && coupon.left) hasLeft = true;
+            totalCount += 1;
+          } catch (e) {
+          }
+        });
+
+
+        // 有红包时设置领取状态
+        if (hasLeft) {
+          $('.kmods').addClass(hasGetCount !== totalCount ? 'kstate-coupon-get' : 'kstate-coupon-success');
+        }
+
+      });
+    }
+
+    // 绑定红包
+    function bindCoupon() {
+      var utype = VIPSHOP.UINFO.isNewUser() ? 1 : 2;
+      var promises = [];
+      $.each(map, function (bid, obj) {
+        var promise = $.ajax({
+          url: 'http://act.vip.com/act/index_ajax.php',
+          dataType: 'jsonp',
+          data: {
+            service: 'NewCoupon.bind',
+            bid: bid,
+            cid: obj.coupons[0].couponId,
+            utype: utype
+          }
+        });
+        promises.push(promise);
+      });
+
+      $.when.apply($, promises).then(function (res) {
+        var args = arguments;
+        var len = args.length;
+        getCoupons();
+        while (len--) {
+          if ((bids.length > 1 ? args[len][0] : args[len]).status === 1) {
+            //console.log('领取成功');
+            return;
+          }
+        }
+        //console.log('领取失败');
+      });
+    }
+  }
+
   function addCountDown(){
 
     var timeSpan = function (timestamp) {
@@ -223,7 +335,7 @@
 
     $(function () {
       var dayBox = $('#day'), hourBox = $('#hour'), minBox = $('#min'), secBox = $('#sec');
-      var  backtime  = function(time) {
+      var backtime  = function(time) {
         kid_countDown(time, function (d) {
           dayBox.text(d.day);
           hourBox.text(d.hour);
@@ -231,12 +343,14 @@
           secBox.text(d.sec);
         });
       };
-      if ($.now() < Date.parse('2016/04/22 20:00:00')) {
-        backtime (Date.parse('2016/04/22 20:00:00'));
+      if ($.now() < new Date('${config.saleTime}')) {
+        backtime (new Date('${config.saleTime}'));
       }
       else {
-        backtime (Date.parse('2016/04/26 10:00:00'));
+        backtime (new Date('${config.endTime}'));
       }
     });
   }
 })();
+  `;
+};

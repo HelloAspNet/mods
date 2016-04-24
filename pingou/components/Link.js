@@ -5,7 +5,7 @@ class Link extends Component {
   constructor(props) {
     super(props);
     this.state = Object.assign({
-      top: 1,
+      top: 0,
       left: 0,
       width: 0,
       height: 0,
@@ -14,18 +14,14 @@ class Link extends Component {
       text: ''
     }, props);
 
+    props.onInit(this);
     linkList.push(this);
-    this.onSelect();
-    this.onInit();
   }
 
-  onInit(){
-    this.props.onInit(this);
-  }
-  onSelect(){
-    this.props.onSelect(this);
-  }
-
+  /**
+   * 更新
+   * @param point
+   */
   update(point){
 
     const props = this.props;
@@ -50,19 +46,19 @@ class Link extends Component {
     this.setState(this.state);
   }
 
-  setSelected(e){
+  onSelect(e){
     e.stopPropagation();
     linkList.forEach(function(v){
-      v.state.selected = false;
+      v.state.isSelected = false;
       v.setState(v.state);
     });
-    this.state.selected = !this.state.selected;
+    this.state.isSelected = !this.state.isSelected;
     this.setState(this.state);
   }
 
   render() {
     return (
-      <span className={'kmod-link ' + (this.state.selected ? 'kstate-selected' : '')}
+      <span className={'kmod-link ' + (this.state.isSelected ? 'kstate-selected' : '')}
             href={this.state.link} target={this.state.target}
             style={{
               top: this.state.top,
@@ -70,7 +66,7 @@ class Link extends Component {
               width: this.state.width,
               height: this.state.height
             }}
-            onMouseDown={this.setSelected.bind(this)}
+            onMouseDown={this.onSelect.bind(this)}
         >{this.state.text}</span>
     );
   }
