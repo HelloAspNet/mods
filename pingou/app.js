@@ -19,6 +19,7 @@ import htmlTpl from './tpls/html';
 import scriptsTpl from './tpls/scripts';
 
 const Temps = {
+  mode: null,
   bgList: [],
   link: null,
   linkList: []
@@ -78,13 +79,16 @@ class App extends Component {
    *
    */
   dragBegin(e) {
+    if(!Temps.mode) return;
+
     const {clientX, clientY} = e;
     const {scrollX, scrollY} = window;
     const {offsetTop, offsetLeft} = this.refs.linkListWrapper;
 
     this.addLink({
       top: clientY - offsetTop + scrollY,
-      left: clientX - offsetLeft + scrollX
+      left: clientX - offsetLeft + scrollX,
+      type: Temps.mode
     });
   }
 
@@ -114,12 +118,12 @@ class App extends Component {
 
     const styles = stylesTpl({
       bgList: bgList,
-      productLinkList: linkList
+      linkList: linkList
     });
 
     const html = htmlTpl({
       bgList: bgList,
-      productLinkList: linkList
+      linkList: linkList
     });
 
     const scripts = scriptsTpl({
@@ -137,13 +141,19 @@ class App extends Component {
     ].join('\n'));
   }
 
+  onSwitchLinkMode(mode, value){
+    Temps.mode = value ? mode : null;
+  }
+
   render() {
     return (
       <div className="kmods"
            onMouseDown={this.dragBegin.bind(this)}
            onMouseMove={this.draging.bind(this)}
            onMouseUp={this.dragEnd.bind(this)}>
-        <Tools onBgListInit={this.onBgListInit.bind(this)} printCode={this.printCode.bind(this)}/>
+        <Tools onBgListInit={this.onBgListInit.bind(this)}
+               onSwitchLinkMode={this.onSwitchLinkMode.bind(this)}
+               printCode={this.printCode.bind(this)}/>
 
         <div className="kmod-bgs">{this.state.bgList}</div>
         <div className="kmod-plinks">

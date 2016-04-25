@@ -9,13 +9,13 @@ class Tools extends Component {
     }
   }
 
-  dragOver(e){
+  dragOver(e) {
     e.preventDefault();
     e.stopPropagation();
     return false;
   }
 
-  drop(e){
+  drop(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -34,7 +34,7 @@ class Tools extends Component {
       return defer.promise;
     });
 
-    console.log('files: ',files);
+    console.log('files: ', files);
 
     Q.all(promiseList).then(([...imageList]) => {
 
@@ -48,6 +48,23 @@ class Tools extends Component {
   }
 
 
+  switchMode(mode) {
+    const map = {
+      product: 'isProductMode',
+      brand: 'isBrandMode',
+      normal: 'isNormalMode'
+    };
+    const prop = map[mode];
+    const oldValue = this.state[prop];
+    const newValue = !oldValue;
+    this.state.isProductMode = false;
+    this.state.isBrandMode = false;
+    this.state.isNormalMode = false;
+    this.state[prop] = newValue;
+    this.setState(this.state);
+    this.props.onSwitchLinkMode(mode, newValue);
+  }
+
   render() {
     return (
       <fieldset className="tools" onMouseDown={(e) => e.stopPropagation()}>
@@ -56,20 +73,22 @@ class Tools extends Component {
 
         <label><input type="button" onClick={() => this.props.printCode()} value="printCode"/></label>
 
+
+        <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>plink</label>
+        <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>blink</label>
+        <label><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
+
         {/*
-          <label><input type="checkbox"/>n</label>
-          <label><input type="checkbox"/>c</label>
+         <label><input type="checkbox"/>n</label>
+         <label><input type="checkbox"/>c</label>
 
-          <label><input type="checkbox"/>pms</label>
-          <label><input type="checkbox"/>fav</label>
-          <label><input type="checkbox"/>coupon</label>
+         <label><input type="checkbox"/>pms</label>
+         <label><input type="checkbox"/>fav</label>
+         <label><input type="checkbox"/>coupon</label>
 
-          <label><input type="checkbox"/>plink</label>
-          <label><input type="checkbox"/>blink</label>
-          <label><input type="checkbox"/>link</label>
-        <label>.</label>
-        <label><input type="checkbox" ref="test"/>Test</label>
-        */}
+         <label>.</label>
+         <label><input type="checkbox" ref="test"/>Test</label>
+         */}
         <ul>
           {this.state.imageList}
         </ul>

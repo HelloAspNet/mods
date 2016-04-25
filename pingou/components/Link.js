@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 
 const linkList = [];
+const typeMap = {
+  product: 'kmod-plink',
+  brand: 'kmod-blink',
+  //normal: 'kmod-link'
+};
 class Link extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +16,9 @@ class Link extends Component {
       height: 0,
       link: 'javascript:;',
       target: '_self',
-      text: ''
+      text: '',
+      type: 'product',
+      isSelected: false
     }, props);
 
     props.onInit(this);
@@ -58,7 +65,7 @@ class Link extends Component {
 
   render() {
     return (
-      <span className={'kmod-link ' + (this.state.isSelected ? 'kstate-selected' : '')}
+      <span className={'kmod-link ' + typeMap[this.state.type] + ' ' + (this.state.isSelected ? 'kstate-selected' : '')}
             href={this.state.link} target={this.state.target}
             style={{
               top: this.state.top,

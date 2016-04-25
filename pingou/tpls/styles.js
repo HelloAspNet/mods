@@ -3,12 +3,14 @@ export default function (config) {
   const defaults = {
     imagesUrl: 'images/',  // 'http://a.vpimg3.com/upload/actpics/uidesign/2016/2m/0218haohaizi/'
     bgList: [],
-    linkList: [],
-    brandLinkList: [],
-    productLinkList: []
+    linkList: []
   };
 
   config = Object.assign(defaults, config);
+
+  const brandLinkList = config.linkList.filter(a => a.type === 'brand');
+  const productLinkList = config.linkList.filter(a => a.type === 'product');
+  const normalLinkList = config.linkList.filter(a => a.type === 'normal');
 
   const IMAGE_URL = config.imagesUrl;
   const WARM_NAME = 'warm';
@@ -24,16 +26,24 @@ export default function (config) {
     .map((a, i) => `.kmod-bg${i + 1}{height: ${a.height}px; background-image: url('${a.alt}');}`)
     .join('\n');
 
-  const productLinkListCss = config.productLinkList
+  const productLinkListCss = productLinkList
     .map((a, i) => `.kmod-plink${i + 1} {top: ${a.top}px; left: ${a.left}px; width: ${a.width}px; height: ${a.height}px;}`)
     .join('\n');
 
-  const hashListCss = config.brandLinkList
+  const brandLinkListCss = brandLinkList
+    .map((a, i) => `.kmod-blink${i + 1} {top: ${a.top}px; left: ${a.left}px; width: ${a.width}px; height: ${a.height}px;}`)
+    .join('\n');
+
+  const hashListCss = brandLinkList
     .map((a, i) => `.kmod-hash${i + 1}{ display: block; width: 100%; height: 60px; }`);
 
-  const targetListCss = config.brandLinkList
+  const targetListCss = brandLinkList
     .map((a, i) => `<a class="kmod-target" id="kmod_hash${i + 1}" name="kmod_hash${i + 1}"></a>`);
 
+
+  const normalLinkListCss = normalLinkList
+    .map((a, i) => `.kmod-link${i + 1} {top: ${a.top}px; left: ${a.left}px; width: ${a.width}px; height: ${a.height}px;}`)
+    .join('\n');
 
 
 
@@ -48,7 +58,7 @@ export default function (config) {
 .kstate-fixed{position:fixed}
 /* 状态-end */
 
-.kmods{overflow:hidden}
+.kmods{overflow:hidden; position: relative;}
 .kmod{background:center top no-repeat}
 .kmod-bd{position:relative;width:${BODY_WIDTH}px;margin:0 auto}
 .kmod-bd:after,
@@ -56,13 +66,17 @@ export default function (config) {
 .kmod-bd:after{clear:both}
 .kmod-link,
 .kmod-blink,
-.kmod-plink{position:relative;float:left}
+.kmod-plink{position:absolute;float:left}
 .kmod-hash { }
 .kmod-target { display: block; position: relative; visibility: hidden; }
 
+.kmod-bg{background: no-repeat center 0;}
+.kmod-links{position: absolute; top: 0; left: 0; right: 0; width: 100%;}
+
+
 
 /* 售卖状态-begin */
-.kmod-plink .kmod-tips{position:absolute;top:50%;left:50%;display:none}
+.kmod-plink .kmod-tips{position:relative;top:50%;left:50%;display:none}
 .kmod-plink.kstate-sold-onload,
 .kstate-sale .kmod-plink.kstate-sold-onload{cursor:default}
 .kstate-warm .kmod-plink:hover .kmod-tips{display:block;width:86px;height:47px;margin:-23px 0 0 -43px;background:url(http://a.vpimg4.com/upload/actpics/uidesign/2015/10m/1024sport/floor3_btn.png) no-repeat}
@@ -122,8 +136,9 @@ ${hashListCss}
 
 
 ${bgListCss}
-
 ${productLinkListCss}
+${brandLinkListCss}
+${normalLinkListCss}
 
 .kstate-warm{
   .kmod-header{ background: url('${IMAGE_URL}${WARM_NAME}-header.jpg') no-repeat center 0; }
