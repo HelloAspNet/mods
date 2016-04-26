@@ -13,6 +13,7 @@ import Tools from './components/Tools';
 import Preview from './components/Preview';
 import Link from './components/Link';
 import Mod from './components/Mod';
+import Ext from './components/Ext';
 
 import stylesTpl from './tpls/styles';
 import htmlTpl from './tpls/html';
@@ -109,36 +110,37 @@ class App extends Component {
     Temps.link = null;
   }
 
-  printCode(){
+  printCode(CONFIG){
 
     const bgList = Temps.bgList.map(({height, alt}) => {return {height, alt}});
     const linkList = Temps.linkList.map(a => a.state)
       .filter(a => a.width && a.height)
       .sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);
 
-    const styles = stylesTpl({
+    const styles = stylesTpl(Object.assign({
       bgList: bgList,
       linkList: linkList
-    });
+    }, CONFIG));
 
-    const html = htmlTpl({
+    const html = htmlTpl(Object.assign({
       bgList: bgList,
       linkList: linkList
-    });
+    }, CONFIG));
 
-    const scripts = scriptsTpl({
+    const scripts = scriptsTpl(Object.assign({
       productLinks: {},
       brandLinks: {},
       saleTime: `2016/04/24 10:00:00`,
       endTime: `2016/04/25 10:00:00`
-    });
+    }, CONFIG));
 
-
-    console.log([
+    const code = [
       '<style>', styles ,'</style>',
       html,
       '<script>', scripts, '</script>'
-    ].join('\n'));
+    ].join('\n');
+
+    return code;
   }
 
   onSwitchLinkMode(mode, value){
@@ -158,6 +160,17 @@ class App extends Component {
         <div className="kmod-bgs">{this.state.bgList}</div>
         <div className="kmod-plinks">
           <div className="kmod-bd" ref="linkListWrapper">{this.state.linkList}</div>
+        </div>
+        <div className="kmod-exts">
+          <div className="kmod-bd" ref="extListWrapper">
+            <div className="kmod-ext kmod-countdown" style={{top: 20}} onMouseDown={() => {
+
+            }}></div>
+            <div className="kmod-ext kmod-coupon-btn" style={{top: 120}}></div>
+            <div className="kmod-ext kmod-footer-btn" style={{top: 220}}></div>
+            <Ext wrapper={() => this.refs.extListWrapper}></Ext>
+          </div>
+
         </div>
       </div>
     );

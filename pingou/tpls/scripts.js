@@ -1,4 +1,6 @@
-export default function (config) {
+export default function (CONFIG) {
+
+  CONFIG.DATA = {"VIP_NH":[],"VIP_SH":[],"VIP_CD":[],"VIP_BJ":[],"VIP_HZ":[]};
 
   const date = new Date;
   const year = date.getFullYear();
@@ -12,28 +14,88 @@ export default function (config) {
     endTime: `${year}/${month}/${day + 2} 10:00:00`
   };
 
-  config = Object.assign(defaults, config);
+  CONFIG = Object.assign(defaults, CONFIG);
+
+  function getCountdownJs(){
+    if(!CONFIG.IS_COUNTDOWN) return '';
+    return `
+              <!--倒计时-begin-->
+                <div class="kmod-countdown" id="J_top_countdown">
+                    <div class="kmod-countdown-tips">
+                        <hr class="kmod-countdown-tips-line1">
+                        <span class="kmod-countdown-tips-text" id="J_countdown_text"></span>
+                        <hr class="kmod-countdown-tips-line2">
+                    </div>
+                    <div class="kmod-countdown-main">
+                        <div class="kmod-countdown-nums">
+                            <span class="kmod-countdown-num" id="day">00</span>
+                            <span class="kmod-countdown-num" id="hour">00</span>
+                            <span class="kmod-countdown-num" id="min">00</span>
+                            <span class="kmod-countdown-num" id="sec">00</span>
+                        </div>
+                    </div>
+                </div>
+                <!--倒计时-end-->
+    `;
+  }
+
+  function getNavigatorJs(){
+    if(!CONFIG.IS_NAVIGATOR) return '';
+    return `
+                    <!--导航-begin-->
+                    <div class="kmod-bd">
+                        <div class="kmod-nav kmod-nav1">
+                            <div class="kmod-nav-hd">
+                                <div class="kmod-nav-coupon">
+                                    <a href="javascript:;" class="kmod-nav-coupon-btn"></a>
+                                </div>
+                            </div>
+                            <div class="kmod-nav-bd">
+                                ${hashListHtml}
+                            </div>
+                            <div class="kmod-nav-ft">
+                                <a class="kmod-hash" href="#" target="_self"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--导航-end-->
+    `;
+  }
+
+  function getCouponJs(){
+    if(!CONFIG.IS_COUPON) return '';
+    return `
+                <!--红包-begin-->
+                <a href="javascript:;" class="kmod-coupon-btn"></a>
+                <!--红包-end-->
+    `;
+  }
 
   return `
 (function () {
 
   var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
   var whs = wh.toLocaleUpperCase();
-  var plinksData = ${JSON.stringify(config.productLinks)};
-  var blinksData = ${JSON.stringify(config.brandLinks)};
+  var plinksData = ${JSON.stringify(CONFIG.productLinks || CONFIG.DATA)};
+  var blinksData = ${JSON.stringify(CONFIG.brandLinks || CONFIG.DATA)};
   var plinks = plinksData[whs];
   var blinks = blinksData[whs];
 
   addProductLinks(plinks);
   addSellState(blinks);
   addBrandLinks(blinks);
-  addNavigators();
   addCoupons(blinks);
-  addCountDown();
+  addNavigators();
+
+  var steps = [
+    {time: '2016/04/30 20:00:00', tips: '离4月30日早10开售还剩'},
+    {time: '2016/04/31 20:00:00', tips: '离活动结束还剩'}
+  ];
+  addCountdown(steps);
 
   // 添加商品链接
   function addProductLinks(plinks, exceptPlinks) {
-    $('.kmod-body .kmod-plink').each(function (i) {
+    $('.kmods .kmod-plink').each(function (i) {
       $(this).attr({
         target: '_blank',
         href: 'http://www.vip.com/detail-' + plinks[i] + '.html'
@@ -42,7 +104,7 @@ export default function (config) {
 
     if(!exceptPlinks) return;
     var re = new RegExp('(' + exceptLinks.join('|') + ')$');
-    $('.kmod-body .kmod-plink').each(function (i) {
+    $('.kmods .kmod-plink').each(function (i) {
       if (re.test(plinks[i])) {
         $(this).addClass('kstate-sold-onload').attr({
           target: '_self',
@@ -86,13 +148,13 @@ export default function (config) {
   // 添加专场链接
   function addBrandLinks(blinks) {
     // 顺序打乱时这样添加
-    $('.kmod-body .kmod-blink').attr({target: '_blank'});
+    $('.kmods .kmod-blink').attr({target: '_blank'});
     $(blinks).each(function(i, blink){
-      $('.kmod-body .kmod-blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
+      $('.kmods .kmod-blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
     });
-    //$('.kmod-body .kmod-blink1').attr({href: 'http://list.vip.com/' + blinks[0] + '.html'});
-    //$('.kmod-body .kmod-blink2').attr({href: 'http://list.vip.com/' + blinks[1] + '.html'});
-    //$('.kmod-body .kmod-blink3').attr({href: 'http://list.vip.com/' + blinks[2] + '.html'});
+    //$('.kmods .kmod-blink1').attr({href: 'http://list.vip.com/' + blinks[0] + '.html'});
+    //$('.kmods .kmod-blink2').attr({href: 'http://list.vip.com/' + blinks[1] + '.html'});
+    //$('.kmods .kmod-blink3').attr({href: 'http://list.vip.com/' + blinks[2] + '.html'});
   }
 
   // 导航2
@@ -303,7 +365,7 @@ export default function (config) {
     }
   }
 
-  function addCountDown(){
+  function addCountdown(steps){
 
     var timeSpan = function (timestamp) {
       var t = timestamp - (new Date).getTime(),
@@ -343,11 +405,14 @@ export default function (config) {
           secBox.text(d.sec);
         });
       };
-      if ($.now() < new Date('${config.saleTime}')) {
-        backtime (new Date('${config.saleTime}'));
-      }
-      else {
-        backtime (new Date('${config.endTime}'));
+      for(var i = 0, len = steps.length; i < len; i++){
+        var step = steps[i];
+        var time = new Date(step.time);
+        if ($.now() < time) {
+          $('#J_countdown_text').html(step.tips);
+          backtime (time);
+          break;
+        }
       }
     });
   }
