@@ -8,8 +8,8 @@ export default function (CONFIG) {
   const day = date.getDate();
 
   const defaults = {
-    productLinks: {},
-    brandLinks: {},
+    productLinks: CONFIG.DATA,
+    brandLinks: CONFIG.DATA,
     saleTime: `${year}/${month}/${day + 1} 10:00:00`,
     endTime: `${year}/${month}/${day + 2} 10:00:00`
   };
@@ -76,8 +76,8 @@ export default function (CONFIG) {
 
   var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
   var whs = wh.toLocaleUpperCase();
-  var plinksData = ${JSON.stringify(CONFIG.productLinks || CONFIG.DATA)};
-  var blinksData = ${JSON.stringify(CONFIG.brandLinks || CONFIG.DATA)};
+  var plinksData = ${JSON.stringify(CONFIG.productLinks)};
+  var blinksData = ${JSON.stringify(CONFIG.brandLinks)};
   var plinks = plinksData[whs];
   var blinks = blinksData[whs];
 
@@ -149,12 +149,13 @@ export default function (CONFIG) {
   function addBrandLinks(blinks) {
     // 顺序打乱时这样添加
     $('.kmods .kmod-blink').attr({target: '_blank'});
-    $(blinks).each(function(i, blink){
-      $('.kmods .kmod-blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
+    var len = blinks.length;
+    $('.kmods .kmod-blink').each(function (i) {
+      $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});
     });
-    //$('.kmods .kmod-blink1').attr({href: 'http://list.vip.com/' + blinks[0] + '.html'});
-    //$('.kmods .kmod-blink2').attr({href: 'http://list.vip.com/' + blinks[1] + '.html'});
-    //$('.kmods .kmod-blink3').attr({href: 'http://list.vip.com/' + blinks[2] + '.html'});
+    //$(blinks).each(function (i, blink) {
+    //  $('.kmods .kmod-blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
+    //});
   }
 
   // 导航2

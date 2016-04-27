@@ -13,44 +13,38 @@ import Tools from './components/Tools';
 import Preview from './components/Preview';
 import Area from './components/Area';
 import Mod from './components/Mod';
-import Ext from './components/Ext';
 
 import stylesTpl from './tpls/styles';
 import htmlTpl from './tpls/html';
 import scriptsTpl from './tpls/scripts';
 
+const CONFIG = {
+  IS_COUNTDOWN: true,
+  IS_NAVIGATOR: true,
+  IS_COUPON: true
+};
+
+
 const Temps = {
   mode: null,
   bgList: [],
   link: null,
-  linkList: []
+  linkList: [],
+  countdown: null,
+  couponBtn: null,
+  footerBtn: null
 };
 
-//
-//function getBgListCss() {
-//  console.log(Temps.bgList);
-//  return Temps.bgList.map(({height, alt}) => {
-//    return {height, alt}
-//  })
-//    .reduce((a, b, i) => {
-//      return `${a}\n.kmod-bg${i + 1}{height: ${b.height}px; background-image: url('${b.alt}');}`
-//    }, '');
-//}
-//function getLinkListCss() {
-//  console.log(Temps.linkList)
-//  return Temps.linkList.map(a => a.state)
-//    .filter(a => a.width && a.height)
-//    .sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left)
-//    .reduce((a, b, i) => `${a}\n.kmod-link${i + 1}{top: ${b.top}px; left: ${b.left}px; width: ${b.width}px; height: ${b.height}px;}`, '');
-//}
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      CONFIG: CONFIG,
       bgList: [],
-      linkList: []
+      linkList: [],
+      tools: {}
     };
   }
 
@@ -119,7 +113,10 @@ class App extends Component {
 
     const styles = stylesTpl(Object.assign({
       bgList: bgList,
-      linkList: linkList
+      linkList: linkList,
+      countdown: Temps.countdown.state,
+      couponBtn: Temps.couponBtn.state,
+      footerBtn: Temps.footerBtn.state
     }, CONFIG));
 
     const html = htmlTpl(Object.assign({
@@ -128,8 +125,6 @@ class App extends Component {
     }, CONFIG));
 
     const scripts = scriptsTpl(Object.assign({
-      productLinks: {},
-      brandLinks: {},
       saleTime: `2016/04/24 10:00:00`,
       endTime: `2016/04/25 10:00:00`
     }, CONFIG));
@@ -147,15 +142,18 @@ class App extends Component {
     Temps.mode = value ? mode : null;
   }
 
+
   render() {
     return (
       <div className="kmods"
            onMouseDown={this.dragBegin.bind(this)}
            onMouseMove={this.draging.bind(this)}
            onMouseUp={this.dragEnd.bind(this)}>
-        <Tools onBgListInit={this.onBgListInit.bind(this)}
-               onSwitchLinkMode={this.onSwitchLinkMode.bind(this)}
-               printCode={this.printCode.bind(this)}/>
+        <Tools
+          config={CONFIG}
+          onBgListInit={this.onBgListInit.bind(this)}
+          onSwitchLinkMode={this.onSwitchLinkMode.bind(this)}
+          printCode={this.printCode.bind(this)}/>
 
         <div className="kmod-bgs">{this.state.bgList}</div>
         <div className="kmod-plinks">
@@ -163,11 +161,10 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <Area top="20" left="300" text="countdown"></Area>
-            <Area top="120" left="300" text="coupon_btn"></Area>
-            <Area top="220" left="300" text="footer_btn"></Area>
+            <Area text="countdown" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40}}></Area>
+            <Area text="coupon_btn" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40}}></Area>
+            <Area text="footer_btn" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40}}></Area>
           </div>
-
         </div>
       </div>
     );

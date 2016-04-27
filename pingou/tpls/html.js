@@ -104,12 +104,8 @@ export default function (CONFIG) {
                 ${brandLinkListHtml}
                 ${productLinkListHtml}
                 ${normalLinkListHtml}
-                <a class="kmod-link kmod-footer-btn" target="_blank" href="http://kid.vip.com/"></a>
             </div>
             <div class="kmod-exts">
-${getCountdownHtml()}
-
-${getCouponHtml()}
 
                 <!--这些拖到对应背景div里面-begin-->
 ${getNavigatorHtml()}
@@ -118,6 +114,13 @@ ${getNavigatorHtml()}
                     ${targetListHtml}
                     <!--锚点-end-->
                 <!--这些拖到对应背景div里面-end-->
+
+${getCountdownHtml()}
+
+${getCouponHtml()}
+
+                <a class="kmod-link kmod-footer-btn" target="_blank" href="http://kid.vip.com/"></a>
+
             </div>
         </div>
     </div>

@@ -3,7 +3,10 @@ export default function (CONFIG) {
   const defaults = {
     imagesUrl: 'images/',  // 'http://a.vpimg3.com/upload/actpics/uidesign/2016/2m/0218haohaizi/'
     bgList: [],
-    linkList: []
+    linkList: [],
+    countdown: null,
+    couponBtn: null,
+    footerBtn: null
   };
 
   CONFIG = Object.assign(defaults, CONFIG);
@@ -23,7 +26,13 @@ export default function (CONFIG) {
 
 
   const bgListCss = CONFIG.bgList
-    .map((a, i) => `.kmod-bg${i + 1}{height: ${a.height}px; background-image: url('${CONFIG.imagesUrl}${a.alt}');}`)
+    .map((a, i) => `.kmod-bg${i + 1}{height: ${a.height}px;}`)
+    .join('\n');
+  const bgListCssWarm = CONFIG.bgList
+    .map((a, i) => `.kmod-warm .kmod-bg${i + 1}{background-image: url('${CONFIG.imagesUrl}${a.alt}');}`)
+    .join('\n');
+  const bgListCssSale = CONFIG.bgList
+    .map((a, i) => `.kmod-sale .kmod-bg${i + 1}{background-image: url('${CONFIG.imagesUrl}${a.alt.replace('warm', 'sale')}');}`)
     .join('\n');
 
   const productLinkListCss = productLinkList
@@ -50,7 +59,7 @@ export default function (CONFIG) {
     if(!CONFIG.IS_COUNTDOWN) return '';
     return `
 /* 倒计时-begin */
-.kmod-countdown{overflow: hidden; position:absolute;top:575px;left:356px;width:263px;height:104px;text-align: center;}
+.kmod-countdown{overflow: hidden; position:absolute;top:${CONFIG.countdown.top}px;left:${CONFIG.countdown.left}px;width:263px;height:104px;text-align: center;}
 .kmod-countdown-tips{display: inline-block;position:relative;margin:0 auto;height:32px;background:center 0 no-repeat}
 .kmod-countdown-tips-text{color: #fff;font-size: 15px;}
 .kmod-countdown-tips-line1,
@@ -89,7 +98,7 @@ export default function (CONFIG) {
 /* 红包-begin */
 .kmod-coupon{position:relative;width:482px;height:144px}
 .kmod-nav-coupon{position:relative}
-.kmod-coupon-btn{position:absolute;width:436px;display:block;height:98px;top:693px;left:452px;cursor:default;background:url(${IMAGE_URL}coupon-btn.png) no-repeat}
+.kmod-coupon-btn{position:absolute;width:436px;display:block;height:98px;top:${CONFIG.couponBtn.top}px;left:${CONFIG.couponBtn.left}px;cursor:default;background:url(${IMAGE_URL}coupon-btn.png) no-repeat}
 .kmod-nav-coupon-btn{position:absolute;top:137px;left:23px;width:81px;height:25px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
 
 .kstate-coupon-get .kmod-coupon-btn:hover,
@@ -155,6 +164,8 @@ ${getNavigatorCss()}
 ${getCouponCss()}
 
 ${bgListCss}
+${bgListCssWarm}
+${bgListCssSale}
 
 ${productLinkListCss}
 
@@ -162,9 +173,14 @@ ${brandLinkListCss}
 
 ${normalLinkListCss}
 
-.kmod-footer-btn {top: 0; left: 371px; width: 246px; height: 61px; background: url('${IMAGE_URL}footer-btn.png') no-repeat center 0;}
+.kmod-footer-btn {top: ${CONFIG.footerBtn.top}px; left: ${CONFIG.footerBtn.left}px; width: 246px; height: 61px; background: url('${IMAGE_URL}footer-btn.png') no-repeat center 0;}
 .kmod-footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
 
+/* 头部nav切换-begin */
+.main-nav-link li a.current{background:none;cursor:pointer;font-weight:normal}
+.main-nav-link li a.current:hover{background-color:#DB0A76}
+.main-nav-link li a[href='http://kid.vip.com']{background-color:#BD1067;cursor:default;font-weight:700}
+/* 头部nav切换-end */
 
 /*  半品购调整-begin */
 .warmup_bg .pro_bread{display: none;}
