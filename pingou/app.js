@@ -11,7 +11,7 @@ ES6Promise.polyfill();
 
 import Tools from './components/Tools';
 import Preview from './components/Preview';
-import Link from './components/Link';
+import Area from './components/Area';
 import Mod from './components/Mod';
 import Ext from './components/Ext';
 
@@ -67,14 +67,14 @@ class App extends Component {
   }
 
   addLink(options) {
-    const link = <Link key={+new Date} onInit={this.onLinkInit.bind(this)} {...options}/>;
+    const link = <Area key={+new Date} onInit={this.onLinkInit.bind(this)} {...options}/>;
     this.state.linkList.push(link);
     this.setState(this.state);
   }
 
   /**
    *
-   * 1. new and cache Link
+   * 1. new and cache Area
    * 2. trigger cacheLink.update
    * 3. clear cacheLink
    *
@@ -163,12 +163,9 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <div className="kmod-ext kmod-countdown" style={{top: 20}} onMouseDown={() => {
-
-            }}></div>
-            <div className="kmod-ext kmod-coupon-btn" style={{top: 120}}></div>
-            <div className="kmod-ext kmod-footer-btn" style={{top: 220}}></div>
-            <Ext wrapper={() => this.refs.extListWrapper}></Ext>
+            <Area top="20" left="300" text="countdown"></Area>
+            <Area top="120" left="300" text="coupon_btn"></Area>
+            <Area top="220" left="300" text="footer_btn"></Area>
           </div>
 
         </div>
@@ -182,3 +179,5 @@ ReactDOM.render(
   document.getElementById('app')
 );
 
+//
+//import Koa from 'koa';

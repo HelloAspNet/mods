@@ -6,6 +6,8 @@ const typeMap = {
   brand: 'kmod-blink',
   //normal: 'kmod-link'
 };
+
+
 class Link extends Component {
   constructor(props) {
     super(props);
