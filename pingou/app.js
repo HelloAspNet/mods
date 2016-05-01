@@ -19,14 +19,20 @@ import htmlTpl from './tpls/html';
 import scriptsTpl from './tpls/scripts';
 
 const CONFIG = {
+  CSS_PREFIX: 'kmod-',
+
   IS_COUNTDOWN: true,
+  WARM_TIME: '',
+  SALE_TIME: '2016/04/24 10:00:00',
+  END_TIME: '2016/04/25 10:00:00',
+
   IS_NAVIGATOR: true,
-  IS_COUPON: true
+  IS_COUPON: true,
+  LINK_MODE: null
 };
 
 
 const Temps = {
-  mode: null,
   bgList: [],
   link: null,
   linkList: [],
@@ -74,7 +80,7 @@ class App extends Component {
    *
    */
   dragBegin(e) {
-    if(!Temps.mode) return;
+    if(!CONFIG.LINK_MODE) return;
 
     const {clientX, clientY} = e;
     const {scrollX, scrollY} = window;
@@ -83,7 +89,7 @@ class App extends Component {
     this.addLink({
       top: clientY - offsetTop + scrollY,
       left: clientX - offsetLeft + scrollX,
-      type: Temps.mode
+      type: CONFIG.LINK_MODE
     });
   }
 
@@ -104,7 +110,7 @@ class App extends Component {
     Temps.link = null;
   }
 
-  printCode(CONFIG){
+  printCode(){
 
     const bgList = Temps.bgList.map(({height, alt}) => {return {height, alt}});
     const linkList = Temps.linkList.map(a => a.state)
@@ -124,10 +130,7 @@ class App extends Component {
       linkList: linkList
     }, CONFIG));
 
-    const scripts = scriptsTpl(Object.assign({
-      saleTime: `2016/04/24 10:00:00`,
-      endTime: `2016/04/25 10:00:00`
-    }, CONFIG));
+    const scripts = scriptsTpl(CONFIG);
 
     const code = [
       '<style>', styles ,'</style>',
@@ -139,7 +142,7 @@ class App extends Component {
   }
 
   onSwitchLinkMode(mode, value){
-    Temps.mode = value ? mode : null;
+    CONFIG.LINK_MODE = value ? mode : null;
   }
 
 
@@ -150,7 +153,7 @@ class App extends Component {
            onMouseMove={this.draging.bind(this)}
            onMouseUp={this.dragEnd.bind(this)}>
         <Tools
-          config={CONFIG}
+          CONFIG={CONFIG}
           onBgListInit={this.onBgListInit.bind(this)}
           onSwitchLinkMode={this.onSwitchLinkMode.bind(this)}
           printCode={this.printCode.bind(this)}/>

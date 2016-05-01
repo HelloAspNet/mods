@@ -2,36 +2,37 @@ export default function (CONFIG) {
 
   CONFIG.DATA = {"VIP_NH":[],"VIP_SH":[],"VIP_CD":[],"VIP_BJ":[],"VIP_HZ":[]};
 
+  const defaults = {
+    productLinks: CONFIG.DATA,
+    brandLinks: CONFIG.DATA
+  };
+
+  CONFIG = Object.assign(defaults, CONFIG);
+
   const date = new Date;
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  const defaults = {
-    productLinks: CONFIG.DATA,
-    brandLinks: CONFIG.DATA,
-    saleTime: `${year}/${month}/${day + 1} 10:00:00`,
-    endTime: `${year}/${month}/${day + 2} 10:00:00`
-  };
-
-  CONFIG = Object.assign(defaults, CONFIG);
+  CONFIG.SALE_TIME = CONFIG.SALE_TIME || `${year}/${month}/${day + 1} 10:00:00`;
+  CONFIG.END_TIME = CONFIG.END_TIME || `${year}/${month}/${day + 2} 10:00:00`;
 
   function getCountdownJs(){
     if(!CONFIG.IS_COUNTDOWN) return '';
     return `
               <!--倒计时-begin-->
-                <div class="kmod-countdown" id="J_top_countdown">
-                    <div class="kmod-countdown-tips">
-                        <hr class="kmod-countdown-tips-line1">
-                        <span class="kmod-countdown-tips-text" id="J_countdown_text"></span>
-                        <hr class="kmod-countdown-tips-line2">
+                <div class="${CONFIG.CSS_PREFIX}countdown" id="J_top_countdown">
+                    <div class="${CONFIG.CSS_PREFIX}countdown-tips">
+                        <hr class="${CONFIG.CSS_PREFIX}countdown-tips-line1">
+                        <span class="${CONFIG.CSS_PREFIX}countdown-tips-text" id="J_countdown_text"></span>
+                        <hr class="${CONFIG.CSS_PREFIX}countdown-tips-line2">
                     </div>
-                    <div class="kmod-countdown-main">
-                        <div class="kmod-countdown-nums">
-                            <span class="kmod-countdown-num" id="day">00</span>
-                            <span class="kmod-countdown-num" id="hour">00</span>
-                            <span class="kmod-countdown-num" id="min">00</span>
-                            <span class="kmod-countdown-num" id="sec">00</span>
+                    <div class="${CONFIG.CSS_PREFIX}countdown-main">
+                        <div class="${CONFIG.CSS_PREFIX}countdown-nums">
+                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="day">00</span>
+                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="hour">00</span>
+                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="min">00</span>
+                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="sec">00</span>
                         </div>
                     </div>
                 </div>
@@ -43,18 +44,18 @@ export default function (CONFIG) {
     if(!CONFIG.IS_NAVIGATOR) return '';
     return `
                     <!--导航-begin-->
-                    <div class="kmod-bd">
-                        <div class="kmod-nav kmod-nav1">
-                            <div class="kmod-nav-hd">
-                                <div class="kmod-nav-coupon">
-                                    <a href="javascript:;" class="kmod-nav-coupon-btn"></a>
+                    <div class="${CONFIG.CSS_PREFIX}bd">
+                        <div class="${CONFIG.CSS_PREFIX}nav ${CONFIG.CSS_PREFIX}nav1">
+                            <div class="${CONFIG.CSS_PREFIX}nav-hd">
+                                <div class="${CONFIG.CSS_PREFIX}nav-coupon">
+                                    <a href="javascript:;" class="${CONFIG.CSS_PREFIX}nav-coupon-btn"></a>
                                 </div>
                             </div>
-                            <div class="kmod-nav-bd">
+                            <div class="${CONFIG.CSS_PREFIX}nav-bd">
                                 ${hashListHtml}
                             </div>
-                            <div class="kmod-nav-ft">
-                                <a class="kmod-hash" href="#" target="_self"></a>
+                            <div class="${CONFIG.CSS_PREFIX}nav-ft">
+                                <a class="${CONFIG.CSS_PREFIX}hash" href="#" target="_self"></a>
                             </div>
                         </div>
                     </div>
@@ -66,7 +67,7 @@ export default function (CONFIG) {
     if(!CONFIG.IS_COUPON) return '';
     return `
                 <!--红包-begin-->
-                <a href="javascript:;" class="kmod-coupon-btn"></a>
+                <a href="javascript:;" class="${CONFIG.CSS_PREFIX}coupon-btn"></a>
                 <!--红包-end-->
     `;
   }
@@ -88,14 +89,14 @@ export default function (CONFIG) {
   addNavigators();
 
   var steps = [
-    {time: '2016/04/30 20:00:00', tips: '离4月30日早10开售还剩'},
-    {time: '2016/04/31 20:00:00', tips: '离活动结束还剩'}
+    {time: '${CONFIG.SALE_TIME}', tips: '离活动开售还剩'},
+    {time: '${CONFIG.END_TIME}', tips: '离活动结束还剩'}
   ];
   addCountdown(steps);
 
   // 添加商品链接
   function addProductLinks(plinks, exceptPlinks) {
-    $('.kmods .kmod-plink').each(function (i) {
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
       $(this).attr({
         target: '_blank',
         href: 'http://www.vip.com/detail-' + plinks[i] + '.html'
@@ -104,9 +105,9 @@ export default function (CONFIG) {
 
     if(!exceptPlinks) return;
     var re = new RegExp('(' + exceptLinks.join('|') + ')$');
-    $('.kmods .kmod-plink').each(function (i) {
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
       if (re.test(plinks[i])) {
-        $(this).addClass('kstate-sold-onload').attr({
+        $(this).addClass('${CONFIG.CSS_PREFIX}js-sold-onload').attr({
           target: '_self',
           href: 'javascript:;'
         });
@@ -130,16 +131,16 @@ export default function (CONFIG) {
         var reProdChance = new RegExp('^(' + prodChance.replace(/,/g, '|') + ')$');
         var reProdOut = new RegExp('^(' + prodOut.replace(/,/g, '|') + ')$');
 
-        $('.kmod-plink').each(function(){
+        $('.${CONFIG.CSS_PREFIX}plink').each(function(){
           var $this = $(this);
           var pid = $this.data('pid');
 
-          $this.append('<span class="kmod-tips"></span>');
+          $this.append('<span class="${CONFIG.CSS_PREFIX}tips"></span>');
           if(reProdChance.test(pid)){
-            return $this.addClass('kstate-sold-chance');
+            return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-chance');
           }
           if(reProdOut.test(pid)){
-            return $this.addClass('kstate-sold-out');
+            return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-out');
           }
         });
       });
@@ -148,38 +149,38 @@ export default function (CONFIG) {
   // 添加专场链接
   function addBrandLinks(blinks) {
     // 顺序打乱时这样添加
-    $('.kmods .kmod-blink').attr({target: '_blank'});
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').attr({target: '_blank'});
     var len = blinks.length;
-    $('.kmods .kmod-blink').each(function (i) {
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').each(function (i) {
       $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});
     });
     //$(blinks).each(function (i, blink) {
-    //  $('.kmods .kmod-blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
+    //  $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
     //});
   }
 
   // 导航2
   function addNavigators() {
 
-    var $nav = $('.kmod-nav');
+    var $nav = $('.${CONFIG.CSS_PREFIX}nav');
     var beginOffset = $nav.offset();
 
     var $win = $(window);
     var $doc = $(document);
 
-    var $navTarget = $('.kmod-target');
+    var $navTarget = $('.${CONFIG.CSS_PREFIX}target');
 
     var navHeight = $nav.outerHeight();
     var endOffset;
-    var $footer = $('.kmod-footer');
+    var $footer = $('.${CONFIG.CSS_PREFIX}footer');
 
     if ($footer.length || $footer.is(':visible')) {
       endOffset = $footer.offset();
     }
     else {
-      var $kmods = $('.kmods');
-      endOffset = $kmods.offset();
-      endOffset.top += $kmods.outerHeight();
+      var $mods = $('.${CONFIG.CSS_PREFIX}mods');
+      endOffset = $mods.offset();
+      endOffset.top += $mods.outerHeight();
     }
 
 
@@ -196,11 +197,11 @@ export default function (CONFIG) {
       return a.top - b.top;
     });
     $win.on({
-      'scroll.kmodNav': function () {
+      'scroll': function () {
         var scrollTop = $doc.scrollTop();
 
         // 控制导航悬浮
-        $nav[scrollTop > beginOffset.top ? 'addClass' : 'removeClass']('kstate-fixed');
+        $nav[scrollTop > beginOffset.top ? 'addClass' : 'removeClass']('${CONFIG.CSS_PREFIX}js-fixed');
 
         // 控制导航focus效果
         var len = $navTargetNew.length;
@@ -212,15 +213,15 @@ export default function (CONFIG) {
         while (index >= 0 && scrollTop < $navTargetNew[index].top);
 
         $navTargetNew.each(function (i, v) {
-          v.$ctrl && v.$ctrl.removeClass('kstate-hover');
+          v.$ctrl && v.$ctrl.removeClass('${CONFIG.CSS_PREFIX}js-hover');
         });
-        index >= 0 && $navTargetNew[index].$ctrl.addClass('kstate-hover');
+        index >= 0 && $navTargetNew[index].$ctrl.addClass('${CONFIG.CSS_PREFIX}js-hover');
 
         // 控制导航focus时底边线左右滑动
         var lastIndex = $nav.data('index');
-        $nav.addClass('kstate-hover' + (index + 1));
+        $nav.addClass('${CONFIG.CSS_PREFIX}js-hover' + (index + 1));
         if (!isNaN(lastIndex) && index !== lastIndex) {
-          $nav.removeClass('kstate-hover' + (lastIndex + 1));
+          $nav.removeClass('${CONFIG.CSS_PREFIX}js-hover' + (lastIndex + 1));
         }
         $nav.data('index', index);
 
@@ -230,20 +231,20 @@ export default function (CONFIG) {
         if(endTop < 0) return $nav.css({ top: endTop });
         if(scrollTop > beginOffset.top){
           // 控制导航悬浮
-          $nav.addClass('kstate-fixed');
+          $nav.addClass('${CONFIG.CSS_PREFIX}js-fixed');
           $nav.css({top: 0});
         }
         else {
           // 控制导航悬浮
-          $nav.removeClass('kstate-fixed');
+          $nav.removeClass('${CONFIG.CSS_PREFIX}js-fixed');
           $nav.css({top: 0});
         }
 
       }
     });
 
-    //$doc.delegate('.kmod-nav a', {
-    //  'click.kmodNav': function () {
+    //$doc.delegate('.${CONFIG.CSS_PREFIX}nav a', {
+    //  'click': function () {
     //
     //    //$('html, body').scrollTop(200);
     //  }
@@ -255,19 +256,17 @@ export default function (CONFIG) {
   function addCoupons(bids) {
     var map = {};
 
-    //        getCoupons(bids);
-
     if ($.Cookie.get('VipLID')) {
-      getCoupons(bids);
+      getCoupons();
     } else {
-      $('.kmods').addClass('kstate-coupon-get');
+      $('.${CONFIG.CSS_PREFIX}mods').addClass('${CONFIG.CSS_PREFIX}js-coupon-get');
     }
 
     // 领取红包
-    $('.kmods').delegate('.kmod-coupon-btn, .kmod-nav-coupon-btn', {
-      'click.kmodCoupon': function (e) {
+    $('.${CONFIG.CSS_PREFIX}mods').delegate('.${CONFIG.CSS_PREFIX}coupon-btn, .${CONFIG.CSS_PREFIX}nav-coupon-btn', {
+      'click': function (e) {
         var $this = $(this);
-        if (!$this.closest('.kstate-coupon-get').length) return;
+        if (!$this.closest('.${CONFIG.CSS_PREFIX}js-coupon-get').length) return;
 
         if ($.Cookie.get('VipLID')) {
           bindCoupon();
@@ -275,7 +274,7 @@ export default function (CONFIG) {
           VIPSHOP.login.init({
             loginEvent: function () {
               VIPSHOP.member.chk();//登录成功后回调
-              bindCoupon();
+              getCoupons().then(bindCoupon);
             }
           });
         }
@@ -299,7 +298,7 @@ export default function (CONFIG) {
         });
       });
 
-      $.when.apply($, promises).then(function (res) {
+      return $.when.apply($, promises).pipe(function (res) {
         var args = arguments;
         // 未领取红包数
         var hasNotGetCount = 0;
@@ -327,7 +326,7 @@ export default function (CONFIG) {
 
         // 有红包时设置领取状态
         if (hasLeft) {
-          $('.kmods').addClass(hasGetCount !== totalCount ? 'kstate-coupon-get' : 'kstate-coupon-success');
+          $('.${CONFIG.CSS_PREFIX}mods').addClass(hasGetCount !== totalCount ? '${CONFIG.CSS_PREFIX}js-coupon-get' : '${CONFIG.CSS_PREFIX}js-coupon-success');
         }
 
       });

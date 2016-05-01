@@ -1,0 +1,93 @@
+<style>
+    .kmod-mods{overflow:hidden; position: relative;}
+    .kmod-mod{background:center top no-repeat}
+    .kmod-bd{position:relative;width:1000px;margin:0 auto}
+    .kmod-bd:after,
+    .kmod-bd:before{display:table;content:""}
+    .kmod-bd:after{clear:both}
+
+    .kmod-link,
+    .kmod-blink,
+    .kmod-plink{position:absolute;display:block;}
+    .kmod-hash { }
+    .kmod-target { display: block; position: relative; visibility: hidden; }
+
+    .kmod-header{height: 320px;background: url(images/header.jpg) no-repeat center 0;}
+    .kmod-footer{height: 300px;}
+    .kmod-footer-btn {display: block; width: 340px; height: 55px; margin: 120px auto 0; background: url(images/sprites.png) no-repeat 0 -200px;}
+    .kmod-footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
+
+
+    .kmod-hashes{position:absolute;top:0;left:-90px;width: 60px;padding-top: 80px;}
+    .kmod-hash{overflow: hidden; display: block; width: 60px; height: 60px; margin: 0 0 10px; background: url(images/sprites.png) no-repeat 0 -300px;color: #7c7c7c;}
+    .kmod-hash.kstate-js-on,
+    .kmod-hash:hover
+    {display: block; width: 60px; height: 60px; background: url(images/sprites.png) no-repeat -60px -300px;color: #fff;}
+    .kmod-hash-top{background-position: -120px -300px;color: #fff;}
+    .kmod-hash-top:hover{background-position: -180px -300px}
+    .kmod-hash-text{display: block; width: 28px; margin: 12px auto;padding-left: 2px;font-size: 14px;line-height: 1.3}
+
+    .kmod1-tt,
+    .kmod2-tt,
+    .kmod3-tt,
+    .kmod4-tt { display: block; width: 275px; height: 40px; margin: 20px auto; background: url(images/sprites.png) no-repeat; }
+
+    .kmod1-tt{background-position: 0 0}
+    .kmod2-tt{background-position: 0 -50px}
+    .kmod3-tt{background-position: 0 -100px}
+    .kmod4-tt{background-position: 0 -150px}
+
+    .kmod-box{float: left;position:relative;width: 320px; height: 288px;margin: 15px 0 0 12px;}
+    .kmod-box-border{display: none;position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 1px solid #f10582;}
+    .kmod-box:hover .kmod-box-border{display: block;}
+    .kmod-box-img img{display: block;width: 320px;height: 232px;}
+    .kmod-box-logo{position: absolute; top: 175px; left: 0; right: 0;width: 160px; height: 70px;margin: auto;border-radius: 3px;background: #fff;}
+    .kmod-box-logo img{display: block;margin: 5px auto;}
+    .kmod-box-info {margin-top: 16px;font-size: 16px;text-align: center}
+    .kmod-box-sign{position: relative;top:-2px;margin: 0 3px;font-size: 10px;}
+    .kmod-box-tips{margin-left:2px;border-radius: 3px;padding: 1px 3px 2px 5px;background-color: #e3493d;font-size: 12px;color: #fff;vertical-align: super;}
+</style>
+<div class="kmod-header">
+    <div class="kmod-bd"></div>
+</div>
+<div class="kmod-nav">
+    <div class="kmod-bd">
+        <ul class="kmod-hashes">
+           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">奶粉尿裤</span></a></li>
+           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">育儿用品</span></a></li>
+           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">童装童鞋</span></a></li>
+           <li><a class="kmod-hash kmod-hash-top" href="#"><span class="kmod-hash-text">回到顶部</span></a></li>
+        </ul>
+    </div>
+</div>
+<div class="kmod-body" id="J_mod_html">
+<script type="text/html" id="J_mod_tpl">
+    {{each list as item}}
+    <div class="kmod kmod{{$index + 1}}">
+        <div class="kmod-bd">
+            <h2 class="kmod{{$index + 1}}-tt"></h2>
+            <div>
+                {{each [1,2,3,4,5]}}
+                <dl class="kmod-box">
+                    <dd class="kmod-box-img"><img src="images/b1.jpg" alt=""/></dd>
+                    <dt class="kmod-box-border"></dt>
+                    <dt class="kmod-box-logo"><img src="images/logo1.jpg" alt=""/></dt>
+                    <dt class="kmod-box-info"><b>雅培旗舰店</b><i class="kmod-box-sign">●</i><span>健康科学育婴</span><i class="kmod-box-tips">新开业</i></dt>
+                </dl>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+</div>
+<div class="kmod-footer">
+    <div class="kmod-bd">
+        <a class="kmod-footer-btn" href="http://kid.vip.com/" target="_blank"></a>
+    </div>
+</div>
+
+<script>
+    var html = $.Tpl('J_mod_tpl', {list: [1,2,3,4]});
+    $('#J_mod_html').html(html);
+</script>

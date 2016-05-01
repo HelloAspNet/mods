@@ -5,7 +5,7 @@ class Tools extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      CONFIG: props.config,
+      CONFIG: props.CONFIG,
       imageList: [],
 
   };
@@ -101,8 +101,8 @@ class Tools extends Component {
         </fieldset>
 
         <fieldset className="group">
-          <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>plink</label>
-          <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>blink</label>
+          <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>product link</label>
+          <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>brand link</label>
           <label><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
         </fieldset>
 
@@ -122,6 +122,7 @@ class Tools extends Component {
         <fieldset className="group">
           <label><a href="tools/brand_ids.html" target="_blank">生成档期ID</a></label>
           <label><a href="tools/product_ids.html" target="_blank">生成商品ID</a></label>
+          <label><a href="tools/sgs.html" target="_blank">SGS格式转换</a></label>
         </fieldset>
 
         <ul>
