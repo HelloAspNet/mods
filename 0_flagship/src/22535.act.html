@@ -1,85 +1,83 @@
 <style>
-    .kmod-mods{overflow:hidden; position: relative;}
-    .kmod-mod{background:center top no-repeat}
     .kmod-bd{position:relative;width:1000px;margin:0 auto}
     .kmod-bd:after,
     .kmod-bd:before{display:table;content:""}
     .kmod-bd:after{clear:both}
-
-    .kmod-link,
-    .kmod-blink,
-    .kmod-plink{position:absolute;display:block;}
     .kmod-hash { }
     .kmod-target { display: block; position: relative; visibility: hidden; }
 
-    .kmod-header{height: 320px;background: url(images/header.jpg) no-repeat center 0;}
-    .kmod-footer{height: 300px;}
-    .kmod-footer-btn {display: block; width: 340px; height: 55px; margin: 120px auto 0; background: url(images/sprites.png) no-repeat 0 -200px;}
+    .kmod-header{height: 260px;background: url(images/header.jpg) no-repeat center 0;}
+    .kmod-footer{height: 260px;}
+    .kmod-footer-btn {display: block; width: 340px; height: 55px; margin: 60px auto 0; background: url(images/sprites.png) no-repeat 0 -200px;}
     .kmod-footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
 
-
-    .kmod-hashes{position:absolute;top:0;left:-90px;width: 60px;padding-top: 80px;}
+    .kmod-hashes{position:absolute;top:0;margin-left:-90px;width: 60px;padding-top: 120px;}
     .kmod-hash{overflow: hidden; display: block; width: 60px; height: 60px; margin: 0 0 10px; background: url(images/sprites.png) no-repeat 0 -300px;color: #7c7c7c;}
-    .kmod-hash.kstate-js-on,
-    .kmod-hash:hover
-    {display: block; width: 60px; height: 60px; background: url(images/sprites.png) no-repeat -60px -300px;color: #fff;}
+    .kmod-hash.kmod-js-hover,
+    .kmod-hash:hover{display: block; width: 60px; height: 60px; background: url(images/sprites.png) no-repeat -60px -300px;color: #fff;}
     .kmod-hash-top{background-position: -120px -300px;color: #fff;}
     .kmod-hash-top:hover{background-position: -180px -300px}
     .kmod-hash-text{display: block; width: 28px; margin: 12px auto;padding-left: 2px;font-size: 14px;line-height: 1.3}
+    .kmod-js-fixed{position:fixed}
 
-    .kmod1-tt,
-    .kmod2-tt,
-    .kmod3-tt,
-    .kmod4-tt { display: block; width: 275px; height: 40px; margin: 20px auto; background: url(images/sprites.png) no-repeat; }
-
-    .kmod1-tt{background-position: 0 0}
-    .kmod2-tt{background-position: 0 -50px}
-    .kmod3-tt{background-position: 0 -100px}
-    .kmod4-tt{background-position: 0 -150px}
-
-    .kmod-box{float: left;position:relative;width: 320px; height: 288px;margin: 15px 0 0 12px;}
+    .kmod{overflow: hidden;padding-bottom: 40px;}
+    .kmod-tt { display: block; width: 275px; height: 40px; margin: 40px auto; background: url(images/sprites.png) no-repeat; }
+    .kmod-tt-milk{background-position: 0 0}
+    .kmod-tt-product{background-position: 0 -50px}
+    .kmod-tt-toy{background-position: 0 -100px}
+    .kmod-tt-clothes{background-position: 0 -150px}
+    .kmod-ct{overflow:hidden;width: 1018px;margin: -18px 0 0 -18px; background: url(images/holder.png) no-repeat 357px 100%}
+    .kmod-box{float: left;position:relative;width: 321px; height: 290px;margin: 18px 0 0 18px;background-color: #f6f6f6;}
     .kmod-box-border{display: none;position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 1px solid #f10582;}
     .kmod-box:hover .kmod-box-border{display: block;}
     .kmod-box-img img{display: block;width: 320px;height: 232px;}
-    .kmod-box-logo{position: absolute; top: 175px; left: 0; right: 0;width: 160px; height: 70px;margin: auto;border-radius: 3px;background: #fff;}
+    .kmod-box-logo{position: absolute; top: 175px; left: 0; right: 0;width: 160px; height: 74px;margin: auto;/*border-radius: 3px;*/background: url(images/logo-bg.png) no-repeat;}
     .kmod-box-logo img{display: block;margin: 5px auto;}
-    .kmod-box-info {margin-top: 16px;font-size: 16px;text-align: center}
+    .kmod-box-info {overflow:hidden; height: 1.5rem;padding-top: 16px;background: url(images/info-bg.png) no-repeat;line-height:1.5;font-size: 16px;text-align: center}
     .kmod-box-sign{position: relative;top:-2px;margin: 0 3px;font-size: 10px;}
-    .kmod-box-tips{margin-left:2px;border-radius: 3px;padding: 1px 3px 2px 5px;background-color: #e3493d;font-size: 12px;color: #fff;vertical-align: super;}
+    .kmod-box-tip{position:relative;margin-left:2px;border-radius: 3px 3px 3px 0;padding: 1px 3px 2px 5px;background-color: #ccc;font-size: 12px;color: #fff;vertical-align: super;}
+    .kmod-box-tip:after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:0;border: 2px solid transparent;border-left-color: #ccc;}
+    .kmod-box-tip1{background-color: #e3493d;}
+    .kmod-box-tip1:after{border-left-color: #e3493d;}
+    .kmod-box-tip2{background-color: #4aa7ea;}
+    .kmod-box-tip2:after{border-left-color: #4aa7ea;}
 </style>
 <div class="kmod-header">
     <div class="kmod-bd"></div>
 </div>
 <div class="kmod-nav">
     <div class="kmod-bd">
-        <ul class="kmod-hashes">
-           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">奶粉尿裤</span></a></li>
-           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">育儿用品</span></a></li>
-           <li><a class="kmod-hash" href="javascript:;"><span class="kmod-hash-text">童装童鞋</span></a></li>
-           <li><a class="kmod-hash kmod-hash-top" href="#"><span class="kmod-hash-text">回到顶部</span></a></li>
+        <ul class="kmod-hashes" id="J_hashes_html">
+            <script type="text/html" id="J_hashes_tpl">
+                {{each list as item}}
+                <li><a class="kmod-hash" data-id="kmod-hash-{{item.hash}}" href="#kmod-hash-{{item.hash}}"><span class="kmod-hash-text">{{item.text}}</span></a></li>
+                {{/each}}
+                <li><a class="kmod-hash kmod-hash-top" href="#"><span class="kmod-hash-text">回到顶部</span></a></li>
+            </script>
         </ul>
     </div>
 </div>
-<div class="kmod-body" id="J_mod_html">
-<script type="text/html" id="J_mod_tpl">
-    {{each list as item}}
-    <div class="kmod kmod{{$index + 1}}">
-        <div class="kmod-bd">
-            <h2 class="kmod{{$index + 1}}-tt"></h2>
-            <div>
-                {{each [1,2,3,4,5]}}
-                <dl class="kmod-box">
-                    <dd class="kmod-box-img"><img src="images/b1.jpg" alt=""/></dd>
-                    <dt class="kmod-box-border"></dt>
-                    <dt class="kmod-box-logo"><img src="images/logo1.jpg" alt=""/></dt>
-                    <dt class="kmod-box-info"><b>雅培旗舰店</b><i class="kmod-box-sign">●</i><span>健康科学育婴</span><i class="kmod-box-tips">新开业</i></dt>
-                </dl>
-                {{/each}}
+<div class="kmod-body" id="J_mods_html">
+    <script type="text/html" id="J_mods_tpl">
+        {{each list as item}}
+        <div class="kmod kmod-{{item.hash}}">
+            <a class="kmod-target" id="kmod-hash-{{item.hash}}" name="kmod-hash-{{item.hash}}"></a>
+            <div class="kmod-bd">
+                <h2 class="kmod-tt kmod-tt-{{item.hash}}"></h2>
+                <div class="kmod-ct">
+                    {{each item.brands as brand}}
+                    <dl class="kmod-box">
+                        <dd class="kmod-box-img"><img src="{{brand.img_url}}" alt=""/></dd>
+                        <dt class="kmod-box-border"></dt>
+                        <dt class="kmod-box-logo"><img src="{{brand.logo_url}}" alt=""/></dt>
+                        <dt class="kmod-box-info"><b>{{brand.name}}</b><i class="kmod-box-sign">●</i><span>{{brand.slogan}}</span><i class="kmod-box-tip {{brand.tip | tipToClass}}">{{brand.tip}}</i></dt>
+                    </dl>
+                    {{/each}}
+                </div>
             </div>
         </div>
-    </div>
-    {{/each}}
-</script>
+        {{/each}}
+    </script>
 </div>
 <div class="kmod-footer">
     <div class="kmod-bd">
@@ -88,6 +86,139 @@
 </div>
 
 <script>
-    var html = $.Tpl('J_mod_tpl', {list: [1,2,3,4]});
-    $('#J_mod_html').html(html);
+    (function(){
+
+        $.Tpl.helper('tipToClass', function(tipValue){
+            var className = '';
+            if(tipValue === '新开业') className = 'kmod-box-tip1';
+            if(tipValue === '新货到') className = 'kmod-box-tip2';
+            return className;
+        });
+
+        var data = [
+            {
+                hash: 'milk',
+                text: '奶粉尿裤',
+                brands: [
+                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'},
+                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新货到'}
+                ]
+            },
+            {
+                hash: 'product',
+                text: '育儿用品',
+                brands: [
+                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
+                ]
+            },
+            {
+                hash: 'toy',
+                text: '玩具文具',
+                brands: [
+                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
+                ]
+            },
+            {
+                hash: 'clothes',
+                text: '童装童鞋',
+                brands: [
+                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
+                ]
+            }
+        ];
+
+        var html = $.Tpl('J_hashes_tpl', {list: data});
+        $('#J_hashes_html').html(html);
+
+        var html = $.Tpl('J_mods_tpl', {list: data});
+        $('#J_mods_html').html(html);
+
+
+        addNavigators();
+        function addNavigators() {
+
+            var $nav = $('.kmod-nav .kmod-hashes');
+            var beginOffset = $nav.offset();
+
+            var $win = $(window);
+            var $doc = $(document);
+
+            var $navTarget = $('.kmod-target');
+
+            var navHeight = $nav.outerHeight();
+            var endOffset;
+            var $footer = $('.kmod-footer');
+
+            if ($footer.length || $footer.is(':visible')) {
+                endOffset = $footer.offset();
+            }
+            else {
+                var $mods = $('.kmod-body');
+                endOffset = $mods.offset();
+                endOffset.top += $mods.outerHeight();
+            }
+
+
+            var $navTargetNew = $navTarget.map(function () {
+                var $this = $(this);
+                return {
+                    top: $this.offset().top,
+                    $el: $this,
+                    $ctrl: $('[data-id=' + $this.attr('id') + ']')
+                };
+            });
+
+            $navTargetNew.sort(function (a, b) {
+                return a.top - b.top;
+            });
+            $win.on({
+                'scroll': function () {
+                    var scrollTop = $doc.scrollTop();
+
+                    // 控制导航悬浮
+                    $nav[scrollTop > beginOffset.top ? 'addClass' : 'removeClass']('kmod-js-fixed');
+
+                    // 控制导航focus效果
+                    var len = $navTargetNew.length;
+                    var index = 0;
+                    do {
+                        len -= 1;
+                        index = len;
+                    }
+                    while (index >= 0 && scrollTop < $navTargetNew[index].top);
+
+                    $navTargetNew.each(function (i, v) {
+                        v.$ctrl && v.$ctrl.removeClass('kmod-js-hover');
+                    });
+                    index >= 0 && $navTargetNew[index].$ctrl.addClass('kmod-js-hover');
+
+                    // 控制导航focus时底边线左右滑动
+                    var lastIndex = $nav.data('index');
+                    $nav.addClass('kmod-js-hover' + (index + 1));
+                    if (!isNaN(lastIndex) && index !== lastIndex) {
+                        $nav.removeClass('kmod-js-hover' + (lastIndex + 1));
+                    }
+                    $nav.data('index', index);
+
+
+                    var endTop = endOffset.top - navHeight - scrollTop;
+
+                    if(endTop < 0) return $nav.css({ top: endTop });
+                    if(scrollTop > beginOffset.top){
+                        // 控制导航悬浮
+                        $nav.addClass('kmod-js-fixed');
+                        $nav.css({top: 0});
+                    }
+                    else {
+                        // 控制导航悬浮
+                        $nav.removeClass('$kmod-js-fixed');
+                        $nav.css({top: 0});
+                    }
+
+                }
+            });
+
+        }
+
+    })();
 </script>
