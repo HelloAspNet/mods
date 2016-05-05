@@ -21,24 +21,35 @@ import scriptsTpl from './tpls/scripts';
 const CONFIG = {
   CSS_PREFIX: 'kmod-',
 
+  // 倒计时及其配置
   IS_COUNTDOWN: true,
   WARM_TIME: '',
   SALE_TIME: '2016/04/24 10:00:00',
   END_TIME: '2016/04/25 10:00:00',
 
+  // 导航
   IS_NAVIGATOR: true,
+
+  // 红包
   IS_COUPON: true,
-  LINK_MODE: null
+
+  // 底部按钮
+  IS_FOOTER_BTN: true,
+
+  LINK_MODE: null // LINK_MODE: {product, brand, normal}
 };
 
 
 const Temps = {
   bgList: [],
   link: null,
+  linkId: 0,
+  links: {},
   linkList: [],
   countdown: null,
   couponBtn: null,
-  footerBtn: null
+  footerBtn: null,
+  navigator: null
 };
 
 
@@ -64,11 +75,25 @@ class App extends Component {
   onLinkInit(link) {
     Temps.link = link;
     Temps.linkList.push(link);
+
+    //console.log(link)
+    //Temps.links[Temps.linkId].model = link;
+
   }
 
+
+
   addLink(options) {
-    const link = <Area key={+new Date} onInit={this.onLinkInit.bind(this)} {...options}/>;
+    Temps.linkId += 1;
+    const linkId = Temps.linkId;
+    const link = <Area key={linkId} onInit={this.onLinkInit.bind(this)} {...options}/>;
+    //Temps.links[linkId] = {
+    //  el: link
+    //};
     this.state.linkList.push(link);
+
+    //this.state.linkList = Object.values(Temps.links).map(obj => obj.el);
+    //console.log(222)
     this.setState(this.state);
   }
 
@@ -89,7 +114,8 @@ class App extends Component {
     this.addLink({
       top: clientY - offsetTop + scrollY,
       left: clientX - offsetLeft + scrollX,
-      type: CONFIG.LINK_MODE
+      type: CONFIG.LINK_MODE,
+      isSupportScale: true
     });
   }
 
@@ -114,15 +140,18 @@ class App extends Component {
 
     const bgList = Temps.bgList.map(({height, alt}) => {return {height, alt}});
     const linkList = Temps.linkList.map(a => a.state)
-      .filter(a => a.width && a.height)
-      .sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);
+      .filter(a => a.width && a.height);
+
+    //// 按位置排序，优先级为［top－left, 小－大］
+    //linkList.sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);
 
     const styles = stylesTpl(Object.assign({
       bgList: bgList,
       linkList: linkList,
       countdown: Temps.countdown.state,
       couponBtn: Temps.couponBtn.state,
-      footerBtn: Temps.footerBtn.state
+      footerBtn: Temps.footerBtn.state,
+      navigator: Temps.navigator.state
     }, CONFIG));
 
     const html = htmlTpl(Object.assign({
@@ -164,9 +193,10 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <Area text="countdown" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40}}></Area>
-            <Area text="coupon_btn" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40}}></Area>
-            <Area text="footer_btn" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40}}></Area>
+            <Area text="countdown" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="coupon_btn" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="footer_btn" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="navigator" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isSupportBackground: true, isFixed: true}}></Area>
           </div>
         </div>
       </div>

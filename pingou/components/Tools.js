@@ -1,56 +1,30 @@
 import React, {Component} from 'react';
-import Q from 'q';
+import File from './File';
 
-class Tools extends Component {
+class Tools extends File {
   constructor(props) {
     super(props);
     this.state = {
       CONFIG: props.CONFIG,
-      imageList: [],
-
+      imageList: []
   };
 
   }
 
-  dragOver(e) {
+
+  drop(e){
     e.preventDefault();
     e.stopPropagation();
-    return false;
-  }
-
-  drop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
     const files = e.dataTransfer.files;
-    const fileList = Object.keys(files).map(i => files[i]);
-    const promiseList = fileList.map(file => {
-      const defer = Q.defer();
-      const reader = new FileReader;
-      reader.addEventListener('load', () => {
-        const image = new Image;
-        image.src = reader.result;
-        image.alt = file.name;
-        image.addEventListener('load', e => defer.resolve(image));
-      });
-      reader.readAsDataURL(file);
-      return defer.promise;
-    });
-
-    console.log('files: ', files);
-
-    Q.all(promiseList).then(([...imageList]) => {
-
+    //this.load(files).then(imageList => console.log(imageList));
+    this.loadImages(files).then(imageList => {
       this.props.onBgListInit(imageList);
-
       this.state.imageList = imageList.map((image, i) => <li key={i}>{image.alt}</li>);
       this.setState(this.state);
     });
 
-
     return false;
   }
-
 
   switchMode(mode) {
     const map = {
@@ -85,7 +59,8 @@ class Tools extends Component {
   printCode(){
     const {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON} = this.state.CONFIG;
     const options = {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON};
-    console.log(options)
+    //console.log(options)
+    console.log(CONFIG)
     const code = this.props.printCode(options);
     this.state.CODE = code;
     this.setState(this.state);
@@ -103,18 +78,18 @@ class Tools extends Component {
         <fieldset className="group">
           <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>product link</label>
           <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>brand link</label>
-          <label><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
+          <label style={{display: 'none'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
         </fieldset>
 
-        {/*}
-        <fieldset className="group">
+
+        <fieldset className="group" style={{display: 'none'}}>
           <label><input type="checkbox" checked={this.state.CONFIG.IS_COUNTDOWN} onChange={this.changeIsCountdown.bind(this)}/>countdown</label>
           <label><input type="checkbox" checked={this.state.CONFIG.IS_NAVIGATOR} onChange={this.changeIsNavigator.bind(this)}/>navigator</label>
           <label><input type="checkbox" checked={this.state.CONFIG.IS_COUPON} onChange={this.changeIsCoupon.bind(this)}/>coupon</label>
         </fieldset>
-        {*/}
 
-        <fieldset className="group">
+
+        <fieldset className="group" style={{background: '#fff'}}>
           <label><input type="button" onClick={this.printCode.bind(this)} value="printCode"/></label>
           <textarea value={this.state.CODE}></textarea>
         </fieldset>

@@ -117,6 +117,9 @@ body {
   background-color: rgba(255, 0, 0, 0.2);
   text-align: center;
 }
+.area.fixed {
+  position: fixed;
+}
 .blink {
   background-color: rgba(0, 255, 0, 0.2);
 }
@@ -151,4 +154,3 @@ body {
   right: 0;
   width: 100%;
 }
-/*# sourceMappingURL=index.css.map */

@@ -27,11 +27,13 @@ export default function (CONFIG) {
     .map((a, i) => `<a class="${CONFIG.CSS_PREFIX}link ${CONFIG.CSS_PREFIX}link${i + 1}" href="javascript:;"></a>`)
     .join('\n');
 
-  const hashListHtml = brandLinkList
+
+  var hashList = [1,2];
+  const hashListHtml = hashList
     .map((a, i) => `<a class="${CONFIG.CSS_PREFIX}hash ${CONFIG.CSS_PREFIX}hash${i + 1}" href="#${CONFIG.CSS_PREFIX}hash${i + 1}" data-id="${CONFIG.CSS_PREFIX}hash${i + 1}" target="_self"></a>`)
     .join('\n');
 
-  const targetListHtml = brandLinkList
+  const targetListHtml = hashList
     .map((a, i) => `<a class="${CONFIG.CSS_PREFIX}target" id="${CONFIG.CSS_PREFIX}hash${i + 1}" name="${CONFIG.CSS_PREFIX}hash${i + 1}"></a>`)
     .join('\n');
 
@@ -92,6 +94,13 @@ export default function (CONFIG) {
     `;
   }
 
+  function getFooterBtnHtml(){
+    if(!CONFIG.IS_FOOTER_BTN) return '';
+    return `
+               <a class="${CONFIG.CSS_PREFIX}link ${CONFIG.CSS_PREFIX}footer-btn" target="_blank" href="http://kid.vip.com/"></a>
+    `;
+  }
+
   return `
 <!--模块总容器-begin-->
 <div class="${CONFIG.CSS_PREFIX}mods ${CONFIG.CSS_PREFIX}js-warm ${CONFIG.CSS_PREFIX}js-debug">
@@ -119,7 +128,7 @@ ${getCountdownHtml()}
 
 ${getCouponHtml()}
 
-                <a class="${CONFIG.CSS_PREFIX}link ${CONFIG.CSS_PREFIX}footer-btn" target="_blank" href="http://kid.vip.com/"></a>
+${getFooterBtnHtml()}
 
             </div>
         </div>

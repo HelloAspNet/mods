@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import File from './File';
 
 const _list = [];
 let _selected = null;
@@ -27,7 +28,7 @@ const _last = {
 };
 
 
-class Area extends Component {
+class Area extends File {
 
   constructor(props) {
     super(props);
@@ -35,15 +36,46 @@ class Area extends Component {
     this.state = Object.assign({
       top: 0,
       left: 0,
+      width: 0,
+      height: 0,
+      background: 'rgba(255, 0, 0, .2)',
+
+      alt: '',                // 暂时用来放原图片名
       link: 'javascript:;',
       target: '_self',
-      type: 'normal',
-      isSelected: false
+      type: 'normal',         // 链接类型，分别有{product, brand, normal}
+
+      isSelected: false,            // 是否被选中
+      isFixed: false,               // 是否悬浮定位
+
+      isSupportBackground: false,   // 是否支持背景
+      //isSupportDrag: false,         // 是否支持拖拽
+      isSupportScale: false         // 是否支持缩放
     }, props);
 
 
     props.onInit && props.onInit(this);
     _list.push(this);
+  }
+
+  drop(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if(this.state.isSupportBackground) {
+      const files = e.dataTransfer.files;
+      //this.load(files).then(imageList => console.log(imageList));
+      this.loadImages(files).then(([image]) => {
+        const {width, height, src, alt} = image;
+        Object.assign(this.state, {
+          width: width > 1000 ? 1000 : width < 20 ? 20 : width,
+          height: height > 800 ? 800 : height < 16 ? 16 : height,
+          background: `url(${src})`,
+          alt: alt
+        });
+        this.setState(this.state);
+      });
+    }
+    return false;
   }
 
   /**
@@ -110,7 +142,7 @@ class Area extends Component {
     const {clientX, clientY} = e;
     const offsetTop = clientY - _last.clientY;
     const offsetLeft = clientX - _last.clientX;
-    console.log(clientX, clientY)
+    console.log(clientX, clientY);
 
     const top = _last.top - -offsetTop;
     const left = _last.left - -offsetLeft;
@@ -130,7 +162,8 @@ class Area extends Component {
         className={[
           'area',
           _types[this.state.type].className,
-          this.state.isSelected ? 'selected' : ''
+          this.state.isSelected ? 'selected' : '',
+          this.state.isFixed ? 'fixed' : ''
         ].join(' ')}
         href={this.state.link}
         target={this.state.target}
@@ -138,11 +171,15 @@ class Area extends Component {
           top: this.state.top,
           left: this.state.left,
           width: this.state.width,
-          height: this.state.height
+          height: this.state.height,
+          background: this.state.background
         }}
         onMouseDown={this.mouseDown.bind(this)}
         onMouseMove={this.mouseMove.bind(this)}
         onMouseUp={this.mouseUp.bind(this)}
+
+        onDragOver={this.dragOver.bind(this)}
+        onDrop={this.drop.bind(this)}
         >{this.state.text}</div>
     );
   }
