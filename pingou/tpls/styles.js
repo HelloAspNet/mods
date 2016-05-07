@@ -29,10 +29,10 @@ export default function (CONFIG) {
     .map((a, i) => `.${CONFIG.CSS_PREFIX}bg${i + 1}{height: ${a.height}px;}`)
     .join('\n');
   const bgListCssWarm = CONFIG.bgList
-    .map((a, i) => `.${CONFIG.CSS_PREFIX}js-warm .${CONFIG.CSS_PREFIX}bg${i + 1}{background-image: url('${CONFIG.imagesUrl}${a.alt}');}`)
+    .map((a, i) => `.${CONFIG.CSS_PREFIX}js-warm .${CONFIG.CSS_PREFIX}bg${i + 1}{background-image: url(${CONFIG.imagesUrl}${a.alt});}`)
     .join('\n');
   const bgListCssSale = CONFIG.bgList
-    .map((a, i) => `.${CONFIG.CSS_PREFIX}js-sale .${CONFIG.CSS_PREFIX}bg${i + 1}{background-image: url('${CONFIG.imagesUrl}${a.alt.replace('warm', 'sale')}');}`)
+    .map((a, i) => `.${CONFIG.CSS_PREFIX}js-sale .${CONFIG.CSS_PREFIX}bg${i + 1}{background-image: url(${CONFIG.imagesUrl}${a.alt.replace('warm', 'sale')});}`)
     .join('\n');
 
   const productLinkListCss = productLinkList

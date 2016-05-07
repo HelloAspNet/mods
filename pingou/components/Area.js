@@ -38,7 +38,7 @@ class Area extends File {
       left: 0,
       width: 0,
       height: 0,
-      background: 'rgba(255, 0, 0, .2)',
+      background: '',   //rgba(255, 0, 0, .2)
 
       alt: '',                // 暂时用来放原图片名
       link: 'javascript:;',

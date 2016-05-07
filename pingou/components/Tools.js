@@ -60,7 +60,7 @@ class Tools extends File {
     const {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON} = this.state.CONFIG;
     const options = {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON};
     //console.log(options)
-    console.log(CONFIG)
+    //console.log(CONFIG)
     const code = this.props.printCode(options);
     this.state.CODE = code;
     this.setState(this.state);
