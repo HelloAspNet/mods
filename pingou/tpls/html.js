@@ -110,9 +110,13 @@ export default function (CONFIG) {
     <div class="${CONFIG.CSS_PREFIX}main">
         <div class="${CONFIG.CSS_PREFIX}bd">
             <div class="${CONFIG.CSS_PREFIX}links">
+
                 ${brandLinkListHtml}
+
                 ${productLinkListHtml}
+
                 ${normalLinkListHtml}
+
             </div>
             <div class="${CONFIG.CSS_PREFIX}exts">
 

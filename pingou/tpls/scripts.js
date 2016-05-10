@@ -104,7 +104,7 @@ export default function (CONFIG) {
     });
 
     if(!exceptPlinks) return;
-    var re = new RegExp('(' + exceptLinks.join('|') + ')$');
+    var re = new RegExp('(' + exceptPlinks.join('|') + ')$');
     $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
       if (re.test(plinks[i])) {
         $(this).addClass('${CONFIG.CSS_PREFIX}js-sold-onload').attr({

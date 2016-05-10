@@ -80,27 +80,27 @@
 
 	var _Tools2 = _interopRequireDefault(_Tools);
 
-	var _Preview = __webpack_require__(458);
+	var _Preview = __webpack_require__(459);
 
 	var _Preview2 = _interopRequireDefault(_Preview);
 
-	var _Area = __webpack_require__(459);
+	var _Area = __webpack_require__(460);
 
 	var _Area2 = _interopRequireDefault(_Area);
 
-	var _Mod = __webpack_require__(460);
+	var _Mod = __webpack_require__(461);
 
 	var _Mod2 = _interopRequireDefault(_Mod);
 
-	var _styles = __webpack_require__(461);
+	var _styles = __webpack_require__(462);
 
 	var _styles2 = _interopRequireDefault(_styles);
 
-	var _html = __webpack_require__(462);
+	var _html = __webpack_require__(463);
 
 	var _html2 = _interopRequireDefault(_html);
 
-	var _scripts = __webpack_require__(463);
+	var _scripts = __webpack_require__(464);
 
 	var _scripts2 = _interopRequireDefault(_scripts);
 
@@ -117,23 +117,34 @@
 	var CONFIG = {
 	  CSS_PREFIX: 'kmod-',
 
+	  // 倒计时及其配置
 	  IS_COUNTDOWN: true,
 	  WARM_TIME: '',
 	  SALE_TIME: '2016/04/24 10:00:00',
 	  END_TIME: '2016/04/25 10:00:00',
 
+	  // 导航
 	  IS_NAVIGATOR: true,
+
+	  // 红包
 	  IS_COUPON: true,
-	  LINK_MODE: null
+
+	  // 底部按钮
+	  IS_FOOTER_BTN: true,
+
+	  LINK_MODE: null // LINK_MODE: {product, brand, normal}
 	};
 
 	var Temps = {
 	  bgList: [],
 	  link: null,
+	  linkId: 0,
+	  links: {},
 	  linkList: [],
 	  countdown: null,
 	  couponBtn: null,
-	  footerBtn: null
+	  footerBtn: null,
+	  navigator: null
 	};
 
 	var App = function (_Component) {
@@ -168,12 +179,24 @@
 	    value: function onLinkInit(link) {
 	      Temps.link = link;
 	      Temps.linkList.push(link);
+
+	      //console.log(link)
+	      //Temps.links[Temps.linkId].model = link;
 	    }
 	  }, {
 	    key: 'addLink',
 	    value: function addLink(options) {
-	      var link = _react2.default.createElement(_Area2.default, _extends({ key: +new Date(), onInit: this.onLinkInit.bind(this) }, options));
+	      Temps.linkId += 1;
+	      var linkId = Temps.linkId;
+	      options.isSupportBackground = true;
+	      var link = _react2.default.createElement(_Area2.default, _extends({ key: linkId, onInit: this.onLinkInit.bind(this) }, options));
+	      //Temps.links[linkId] = {
+	      //  el: link
+	      //};
 	      this.state.linkList.push(link);
+
+	      //this.state.linkList = Object.values(Temps.links).map(obj => obj.el);
+	      //console.log(222)
 	      this.setState(this.state);
 	    }
 
@@ -203,7 +226,8 @@
 	      this.addLink({
 	        top: clientY - offsetTop + scrollY,
 	        left: clientX - offsetLeft + scrollX,
-	        type: CONFIG.LINK_MODE
+	        type: CONFIG.LINK_MODE,
+	        isSupportScale: true
 	      });
 	    }
 	  }, {
@@ -244,16 +268,18 @@
 	        return a.state;
 	      }).filter(function (a) {
 	        return a.width && a.height;
-	      }).sort(function (a, b) {
-	        return a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left;
 	      });
+
+	      //// 按位置排序，优先级为［top－left, 小－大］
+	      //linkList.sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);
 
 	      var styles = (0, _styles2.default)(Object.assign({
 	        bgList: bgList,
 	        linkList: linkList,
 	        countdown: Temps.countdown.state,
 	        couponBtn: Temps.couponBtn.state,
-	        footerBtn: Temps.footerBtn.state
+	        footerBtn: Temps.footerBtn.state,
+	        navigator: Temps.navigator.state
 	      }, CONFIG));
 
 	      var html = (0, _html2.default)(Object.assign({
@@ -308,13 +334,16 @@
 	            { className: 'kmod-bd', ref: 'extListWrapper' },
 	            _react2.default.createElement(_Area2.default, _extends({ text: 'countdown', onInit: function onInit(obj) {
 	                return Temps.countdown = obj;
-	              } }, { top: 20, left: 300, width: 120, height: 40 })),
+	              } }, { top: 20, left: 300, width: 120, height: 40, isSupportBackground: true })),
 	            _react2.default.createElement(_Area2.default, _extends({ text: 'coupon_btn', onInit: function onInit(obj) {
 	                return Temps.couponBtn = obj;
-	              } }, { top: 120, left: 300, width: 120, height: 40 })),
+	              } }, { top: 120, left: 300, width: 120, height: 40, isSupportBackground: true })),
 	            _react2.default.createElement(_Area2.default, _extends({ text: 'footer_btn', onInit: function onInit(obj) {
 	                return Temps.footerBtn = obj;
-	              } }, { top: 220, left: 300, width: 120, height: 40 }))
+	              } }, { top: 220, left: 300, width: 120, height: 40, isSupportBackground: true })),
+	            _react2.default.createElement(_Area2.default, _extends({ text: 'navigator', onInit: function onInit(obj) {
+	                return Temps.navigator = obj;
+	              } }, { top: 80, left: 1040, width: 120, height: 360, isSupportBackground: true, isFixed: true }))
 	          )
 	        )
 	      );
@@ -31330,13 +31359,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _q = __webpack_require__(166);
+	var _File2 = __webpack_require__(458);
 
-	var _q2 = _interopRequireDefault(_q);
+	var _File3 = _interopRequireDefault(_File2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31344,8 +31371,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Tools = function (_Component) {
-	  _inherits(Tools, _Component);
+	var Tools = function (_File) {
+	  _inherits(Tools, _File);
 
 	  function Tools(props) {
 	    _classCallCheck(this, Tools);
@@ -31355,56 +31382,22 @@
 	    _this.state = {
 	      CONFIG: props.CONFIG,
 	      imageList: []
-
 	    };
 
 	    return _this;
 	  }
 
 	  _createClass(Tools, [{
-	    key: 'dragOver',
-	    value: function dragOver(e) {
-	      e.preventDefault();
-	      e.stopPropagation();
-	      return false;
-	    }
-	  }, {
 	    key: 'drop',
 	    value: function drop(e) {
 	      var _this2 = this;
 
 	      e.preventDefault();
 	      e.stopPropagation();
-
 	      var files = e.dataTransfer.files;
-	      var fileList = Object.keys(files).map(function (i) {
-	        return files[i];
-	      });
-	      var promiseList = fileList.map(function (file) {
-	        var defer = _q2.default.defer();
-	        var reader = new FileReader();
-	        reader.addEventListener('load', function () {
-	          var image = new Image();
-	          image.src = reader.result;
-	          image.alt = file.name;
-	          image.addEventListener('load', function (e) {
-	            return defer.resolve(image);
-	          });
-	        });
-	        reader.readAsDataURL(file);
-	        return defer.promise;
-	      });
-
-	      console.log('files: ', files);
-
-	      _q2.default.all(promiseList).then(function (_ref) {
-	        var _ref2 = _toArray(_ref);
-
-	        var imageList = _ref2;
-
-
+	      //this.load(files).then(imageList => console.log(imageList));
+	      this.loadImages(files).then(function (imageList) {
 	        _this2.props.onBgListInit(imageList);
-
 	        _this2.state.imageList = imageList.map(function (image, i) {
 	          return _react2.default.createElement(
 	            'li',
@@ -31462,7 +31455,8 @@
 	      var IS_COUPON = _state$CONFIG.IS_COUPON;
 
 	      var options = { IS_COUNTDOWN: IS_COUNTDOWN, IS_NAVIGATOR: IS_NAVIGATOR, IS_COUPON: IS_COUPON };
-	      console.log(options);
+	      //console.log(options)
+	      //console.log(CONFIG)
 	      var code = this.props.printCode(options);
 	      this.state.CODE = code;
 	      this.setState(this.state);
@@ -31502,14 +31496,36 @@
 	          ),
 	          _react2.default.createElement(
 	            'label',
-	            null,
+	            { style: { display: 'none1' } },
 	            _react2.default.createElement('input', { type: 'checkbox', checked: this.state.isNormalMode, onChange: this.switchMode.bind(this, 'normal') }),
 	            'link'
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'fieldset',
-	          { className: 'group' },
+	          { className: 'group', style: { display: 'none' } },
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            _react2.default.createElement('input', { type: 'checkbox', checked: this.state.CONFIG.IS_COUNTDOWN, onChange: this.changeIsCountdown.bind(this) }),
+	            'countdown'
+	          ),
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            _react2.default.createElement('input', { type: 'checkbox', checked: this.state.CONFIG.IS_NAVIGATOR, onChange: this.changeIsNavigator.bind(this) }),
+	            'navigator'
+	          ),
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            _react2.default.createElement('input', { type: 'checkbox', checked: this.state.CONFIG.IS_COUPON, onChange: this.changeIsCoupon.bind(this) }),
+	            'coupon'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'fieldset',
+	          { className: 'group', style: { background: '#fff' } },
 	          _react2.default.createElement(
 	            'label',
 	            null,
@@ -31525,6 +31541,15 @@
 	            null,
 	            _react2.default.createElement(
 	              'a',
+	              { href: 'tools/product_ids.html', target: '_blank' },
+	              '生成商品ID'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'label',
+	            null,
+	            _react2.default.createElement(
+	              'a',
 	              { href: 'tools/brand_ids.html', target: '_blank' },
 	              '生成档期ID'
 	            )
@@ -31534,8 +31559,8 @@
 	            null,
 	            _react2.default.createElement(
 	              'a',
-	              { href: 'tools/product_ids.html', target: '_blank' },
-	              '生成商品ID'
+	              { href: 'tools/sgs.html', target: '_blank' },
+	              'SGS格式转换'
 	            )
 	          )
 	        ),
@@ -31549,12 +31574,110 @@
 	  }]);
 
 	  return Tools;
-	}(_react.Component);
+	}(_File3.default);
 
 	exports.default = Tools;
 
 /***/ },
 /* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _q = __webpack_require__(166);
+
+	var _q2 = _interopRequireDefault(_q);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var File = function (_Component) {
+	  _inherits(File, _Component);
+
+	  function File(props) {
+	    _classCallCheck(this, File);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(File).call(this, props));
+	  }
+
+	  _createClass(File, [{
+	    key: 'dragOver',
+	    value: function dragOver(e) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      return false;
+	    }
+	  }, {
+	    key: 'loadImages',
+	    value: function loadImages(files) {
+	      console.log('files: ', files);
+	      var fileList = Object.keys(files).map(function (i) {
+	        return files[i];
+	      });
+	      var promiseList = fileList.map(function (file) {
+	        var defer = _q2.default.defer();
+	        var reader = new FileReader();
+	        reader.addEventListener('load', function () {
+	          var image = new Image();
+	          image.src = reader.result;
+	          image.alt = file.name;
+	          console.log(reader, file);
+	          image.addEventListener('load', function (e) {
+	            return defer.resolve(image);
+	          });
+	        });
+	        reader.readAsDataURL(file);
+	        return defer.promise;
+	      });
+	      return _q2.default.all(promiseList).then(function (_ref) {
+	        var _ref2 = _toArray(_ref);
+
+	        var imageList = _ref2;
+	        return imageList;
+	      });
+	    }
+	  }, {
+	    key: 'drop',
+	    value: function drop(e) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      var files = e.dataTransfer.files;
+	      this.load(files).then(function (imageList) {
+	        return console.log(imageList);
+	      });
+	      return false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('div', null);
+	    }
+	  }]);
+
+	  return File;
+	}(_react.Component);
+
+	exports.default = File;
+
+/***/ },
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31599,7 +31722,7 @@
 	exports.default = Preview;
 
 /***/ },
-/* 459 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31608,11 +31731,17 @@
 	  value: true
 	});
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _File2 = __webpack_require__(458);
+
+	var _File3 = _interopRequireDefault(_File2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31648,8 +31777,8 @@
 	  clientY: 0
 	};
 
-	var Area = function (_Component) {
-	  _inherits(Area, _Component);
+	var Area = function (_File) {
+	  _inherits(Area, _File);
 
 	  function Area(props) {
 	    _classCallCheck(this, Area);
@@ -31659,10 +31788,21 @@
 	    _this.state = Object.assign({
 	      top: 0,
 	      left: 0,
+	      width: 0,
+	      height: 0,
+	      background: '', //rgba(255, 0, 0, .2)
+
+	      alt: '', // 暂时用来放原图片名
 	      link: 'javascript:;',
 	      target: '_self',
-	      type: 'normal',
-	      isSelected: false
+	      type: 'normal', // 链接类型，分别有{product, brand, normal}
+
+	      isSelected: false, // 是否被选中
+	      isFixed: false, // 是否悬浮定位
+
+	      isSupportBackground: false, // 是否支持背景
+	      //isSupportDrag: false,         // 是否支持拖拽
+	      isSupportScale: false // 是否支持缩放
 	    }, props);
 
 	    props.onInit && props.onInit(_this);
@@ -31670,13 +31810,43 @@
 	    return _this;
 	  }
 
-	  /**
-	   * 更新
-	   * @param point
-	   */
-
-
 	  _createClass(Area, [{
+	    key: 'drop',
+	    value: function drop(e) {
+	      var _this2 = this;
+
+	      e.preventDefault();
+	      e.stopPropagation();
+	      if (this.state.isSupportBackground) {
+	        var files = e.dataTransfer.files;
+	        //this.load(files).then(imageList => console.log(imageList));
+	        this.loadImages(files).then(function (_ref) {
+	          var _ref2 = _slicedToArray(_ref, 1);
+
+	          var image = _ref2[0];
+	          var width = image.width;
+	          var height = image.height;
+	          var src = image.src;
+	          var alt = image.alt;
+
+	          Object.assign(_this2.state, {
+	            width: width > 1000 ? 1000 : width < 20 ? 20 : width,
+	            height: height > 800 ? 800 : height < 16 ? 16 : height,
+	            background: 'url(' + src + ')',
+	            alt: alt
+	          });
+	          _this2.setState(_this2.state);
+	        });
+	      }
+	      return false;
+	    }
+
+	    /**
+	     * 更新
+	     * @param point
+	     */
+
+	  }, {
 	    key: 'update',
 	    value: function update(point) {
 
@@ -31764,18 +31934,22 @@
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          className: ['area', _types[this.state.type].className, this.state.isSelected ? 'selected' : ''].join(' '),
+	          className: ['area', _types[this.state.type].className, this.state.isSelected ? 'selected' : '', this.state.isFixed ? 'fixed' : ''].join(' '),
 	          href: this.state.link,
 	          target: this.state.target,
 	          style: {
 	            top: this.state.top,
 	            left: this.state.left,
 	            width: this.state.width,
-	            height: this.state.height
+	            height: this.state.height,
+	            background: this.state.background
 	          },
 	          onMouseDown: this.mouseDown.bind(this),
 	          onMouseMove: this.mouseMove.bind(this),
-	          onMouseUp: this.mouseUp.bind(this)
+	          onMouseUp: this.mouseUp.bind(this),
+
+	          onDragOver: this.dragOver.bind(this),
+	          onDrop: this.drop.bind(this)
 	        },
 	        this.state.text
 	      );
@@ -31783,12 +31957,12 @@
 	  }]);
 
 	  return Area;
-	}(_react.Component);
+	}(_File3.default);
 
 	exports.default = Area;
 
 /***/ },
-/* 460 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31840,7 +32014,7 @@
 	exports.default = Mod;
 
 /***/ },
-/* 461 */
+/* 462 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31883,10 +32057,10 @@
 	    return '.' + CONFIG.CSS_PREFIX + 'bg' + (i + 1) + '{height: ' + a.height + 'px;}';
 	  }).join('\n');
 	  var bgListCssWarm = CONFIG.bgList.map(function (a, i) {
-	    return '.' + CONFIG.CSS_PREFIX + 'js-warm .' + CONFIG.CSS_PREFIX + 'bg' + (i + 1) + '{background-image: url(\'' + CONFIG.imagesUrl + a.alt + '\');}';
+	    return '.' + CONFIG.CSS_PREFIX + 'js-warm .' + CONFIG.CSS_PREFIX + 'bg' + (i + 1) + '{background-image: url(' + CONFIG.imagesUrl + a.alt + ');}';
 	  }).join('\n');
 	  var bgListCssSale = CONFIG.bgList.map(function (a, i) {
-	    return '.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'bg' + (i + 1) + '{background-image: url(\'' + CONFIG.imagesUrl + a.alt.replace('warm', 'sale') + '\');}';
+	    return '.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'bg' + (i + 1) + '{background-image: url(' + CONFIG.imagesUrl + a.alt.replace('warm', 'sale') + ');}';
 	  }).join('\n');
 
 	  var productLinkListCss = productLinkList.map(function (a, i) {
@@ -31911,26 +32085,30 @@
 
 	  function getCountdownCss() {
 	    if (!CONFIG.IS_COUNTDOWN) return '';
-	    return '\n/* 倒计时-begin */\n.' + CONFIG.CSS_PREFIX + 'countdown{overflow: hidden; position:absolute;top:' + CONFIG.countdown.top + 'px;left:' + CONFIG.countdown.left + 'px;width:263px;height:104px;text-align: center;}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips{display: inline-block;position:relative;margin:0 auto;height:32px;background:center 0 no-repeat}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-text{color: #fff;font-size: 15px;}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line1,\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line2{position:absolute;top:10px;width:500px;margin:0;border:0;border-top:1px solid #ccc;opacity: 0.6;filter:alpha(opacity=60);}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line1{left:-500px;margin-left:-10px}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line2{right:-500px;margin-right:-10px}\n.' + CONFIG.CSS_PREFIX + 'countdown-main{width:263px;height:50px;background:url(' + IMAGE_URL + 'countdown.png) center 0 no-repeat; text-align: left;}\n.' + CONFIG.CSS_PREFIX + 'countdown-nums{position:relative;top:-3px;left:-2px;width:400px;font-size:30px;color:#000}\n.' + CONFIG.CSS_PREFIX + 'countdown-num{float:left;width:62px;margin-left:5px;letter-spacing:6px}\n/* 倒计时-end */\n    ';
+	    return '\n/* 倒计时-begin */\n.' + CONFIG.CSS_PREFIX + 'countdown{overflow: hidden; position:absolute;top:' + CONFIG.countdown.top + 'px;left:' + CONFIG.countdown.left + 'px;width:' + CONFIG.countdown.width + 'px;height:' + (CONFIG.countdown.height + 32) + 'px;text-align: center;}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips{display: inline-block;position:relative;margin:0 auto;height:32px;background:center 0 no-repeat}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-text{color: #fff;font-size: 15px;}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line1,\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line2{position:absolute;top:10px;width:500px;margin:0;border:0;border-top:1px solid #ccc;opacity: 0.6;filter:alpha(opacity=60);}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line1{left:-500px;margin-left:-10px}\n.' + CONFIG.CSS_PREFIX + 'countdown-tips-line2{right:-500px;margin-right:-10px}\n.' + CONFIG.CSS_PREFIX + 'countdown-main{width:263px;height:50px;background:url(' + IMAGE_URL + (CONFIG.countdown.alt || 'countdown.png') + ') center 0 no-repeat; text-align: left;}\n.' + CONFIG.CSS_PREFIX + 'countdown-nums{position:relative;top:-3px;left:-2px;width:400px;font-size:30px;color:#000}\n.' + CONFIG.CSS_PREFIX + 'countdown-num{float:left;width:62px;margin-left:5px;letter-spacing:6px}\n/* 倒计时-end */\n    ';
 	  }
 
 	  function getNavigatorCss() {
 	    if (!CONFIG.IS_NAVIGATOR) return '';
-	    return '\n/* 导航-begin */\n.' + CONFIG.CSS_PREFIX + 'nav-wrap{height:0}\n.' + CONFIG.CSS_PREFIX + 'nav{position:relative;top:0;width:100%;margin:0 auto;z-index:' + NAV_Z_INDEX + '}\n.' + CONFIG.CSS_PREFIX + 'nav.' + CONFIG.CSS_PREFIX + 'js-fixed{position:fixed}\n.' + CONFIG.CSS_PREFIX + 'nav1{width:137px;height:461px;margin-left:1040px;padding-top:80px;background:url(' + IMAGE_URL + 'nav.png) center 80px no-repeat}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-hd{height:168px}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-bd,\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-ft{margin:0 11px 0 0}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-ft .' + CONFIG.CSS_PREFIX + 'hash{height:27px}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'hash{display:block;width:100%;}\n.' + CONFIG.CSS_PREFIX + 'hash1{ height:134px }\n.' + CONFIG.CSS_PREFIX + 'hash2{ height:132px }\n/* 导航-end */\n    ';
+	    return '\n/* 导航-begin */\n.' + CONFIG.CSS_PREFIX + 'nav-wrap{height:0}\n.' + CONFIG.CSS_PREFIX + 'nav{position:relative;top:0;width:100%;margin:0 auto;z-index:' + NAV_Z_INDEX + '}\n.' + CONFIG.CSS_PREFIX + 'nav.' + CONFIG.CSS_PREFIX + 'js-fixed{position:fixed}\n.' + CONFIG.CSS_PREFIX + 'nav1{width:' + CONFIG.navigator.width + 'px;height:' + CONFIG.navigator.height + 'px;margin-left:' + CONFIG.navigator.left + 'px;padding-top:' + CONFIG.navigator.top + 'px;background:url(' + IMAGE_URL + (CONFIG.navigator.alt || 'nav.png') + ') center ' + CONFIG.navigator.top + 'px no-repeat}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-hd{height:168px}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-bd,\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-ft{margin:0 11px 0 0}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'nav-ft .' + CONFIG.CSS_PREFIX + 'hash{height:27px}\n.' + CONFIG.CSS_PREFIX + 'nav1 .' + CONFIG.CSS_PREFIX + 'hash{display:block;width:100%;}\n.' + CONFIG.CSS_PREFIX + 'hash1{ height:134px }\n.' + CONFIG.CSS_PREFIX + 'hash2{ height:132px }\n/* 导航-end */\n    ';
 	  }
 
 	  function getCouponCss() {
-	    if (!CONFIG.IS_COUPON) return '';
-	    return '\n/* 红包-begin */\n.' + CONFIG.CSS_PREFIX + 'coupon{position:relative;width:482px;height:144px}\n.' + CONFIG.CSS_PREFIX + 'nav-coupon{position:relative}\n.' + CONFIG.CSS_PREFIX + 'coupon-btn{position:absolute;width:436px;display:block;height:98px;top:' + CONFIG.couponBtn.top + 'px;left:' + CONFIG.couponBtn.left + 'px;cursor:default;background:url(' + IMAGE_URL + 'coupon-btn.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{position:absolute;top:137px;left:23px;width:81px;height:25px;background:url(' + IMAGE_URL + 'nav-coupon-btn.png) 0 0 no-repeat;cursor:default}\n\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'coupon-btn:hover,\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn:hover{opacity:.9;filter:alpha(opacity=90)}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'coupon-btn{background:url(' + IMAGE_URL + 'coupon-btn.png) 0 -121px no-repeat;cursor:pointer}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{background:url(' + IMAGE_URL + 'nav-coupon-btn.png) 0 -25px no-repeat;cursor:pointer}\n\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'coupon-btn:hover,\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn:hover{opacity:1;filter:alpha(opacity=100)}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'coupon-btn{background:url(' + IMAGE_URL + 'coupon-btn.png) 0 -241px no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{background:url(' + IMAGE_URL + 'nav-coupon-btn.png) 0 -50px no-repeat}\n/* 红包-end */\n    ';
+	    return '\n/* 红包-begin */\n.' + CONFIG.CSS_PREFIX + 'coupon{position:relative}\n.' + CONFIG.CSS_PREFIX + 'nav-coupon{position:relative}\n.' + CONFIG.CSS_PREFIX + 'coupon-btn{position:absolute;width:' + CONFIG.couponBtn.width + 'px;display:block;height:' + Math.floor(CONFIG.couponBtn.height / 3) + 'px;top:' + CONFIG.couponBtn.top + 'px;left:' + CONFIG.couponBtn.left + 'px;cursor:default;background:url(' + IMAGE_URL + (CONFIG.couponBtn.alt || 'coupon-btn.png') + ') no-repeat}\n.' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{position:absolute;top:137px;left:23px;width:81px;height:25px;background:url(' + IMAGE_URL + 'nav-coupon-btn.png) 0 0 no-repeat;cursor:default}\n\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'coupon-btn:hover,\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn:hover{opacity:.9;filter:alpha(opacity=90)}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'coupon-btn{background-position:0 ' + -Math.floor(CONFIG.couponBtn.height / 3) + 'px;cursor:pointer}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-get .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{background-position:0 -25px;cursor:pointer}\n\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'coupon-btn:hover,\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn:hover{opacity:1;filter:alpha(opacity=100)}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'coupon-btn{background-position: 0 ' + -Math.floor(CONFIG.couponBtn.height * 2 / 3) + 'px}\n.' + CONFIG.CSS_PREFIX + 'js-coupon-success .' + CONFIG.CSS_PREFIX + 'nav-coupon-btn{background-position:0 -50px}\n/* 红包-end */\n    ';
 	  }
 
-	  return '\n/* 状态-begin */\n.' + CONFIG.CSS_PREFIX + 'js-debug a{background-color:rgba(0,0,0,.3)}\n.' + CONFIG.CSS_PREFIX + 'js-debug a.' + CONFIG.CSS_PREFIX + 'js-hover,\n.' + CONFIG.CSS_PREFIX + 'js-debug a:hover{background-color:rgba(0,0,0,.4)}\n.' + CONFIG.CSS_PREFIX + 'js-hover{}\n.' + CONFIG.CSS_PREFIX + 'js-fixed{position:fixed}\n/* 状态-end */\n\n.' + CONFIG.CSS_PREFIX + 'mods{overflow:hidden; position: relative;}\n.' + CONFIG.CSS_PREFIX + 'mod{background:center top no-repeat}\n.' + CONFIG.CSS_PREFIX + 'bd{position:relative;width:' + BODY_WIDTH + 'px;margin:0 auto}\n.' + CONFIG.CSS_PREFIX + 'bd:after,\n.' + CONFIG.CSS_PREFIX + 'bd:before{display:table;content:""}\n.' + CONFIG.CSS_PREFIX + 'bd:after{clear:both}\n.' + CONFIG.CSS_PREFIX + 'link,\n.' + CONFIG.CSS_PREFIX + 'blink,\n.' + CONFIG.CSS_PREFIX + 'plink{position:absolute;display:block;}\n.' + CONFIG.CSS_PREFIX + 'hash { }\n.' + CONFIG.CSS_PREFIX + 'target { display: block; position: relative; visibility: hidden; }\n\n.' + CONFIG.CSS_PREFIX + 'bgs{}\n.' + CONFIG.CSS_PREFIX + 'bg{background: no-repeat center 0;}\n.' + CONFIG.CSS_PREFIX + 'main{position: absolute; top: 0; left: 0; right: 0; width: 100%;}\n.' + CONFIG.CSS_PREFIX + 'links, .' + CONFIG.CSS_PREFIX + 'exts{}\n\n\n/* 售卖状态-begin */\n.' + CONFIG.CSS_PREFIX + 'plink .' + CONFIG.CSS_PREFIX + 'tips{position:relative;top:50%;left:50%;display:none}\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload{cursor:default}\n.' + CONFIG.CSS_PREFIX + 'js-warm .' + CONFIG.CSS_PREFIX + 'plink:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:86px;height:47px;margin:-23px 0 0 -43px;background:url(http://a.vpimg4.com/upload/actpics/uidesign/2015/10m/1024sport/floor3_btn.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:82px;height:76px;margin:-38px 0 0 -41px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/buy_ico.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-chance .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-chance:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:75px;height:75px;margin:-37px 0 0 -37px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/chance_yellow.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-out .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-out:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:75px;height:75px;margin:-37px 0 0 -37px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/off_sell_icon_circle.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload:hover .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload:hover .' + CONFIG.CSS_PREFIX + 'tips{width:82px;height:82px;margin:-41px 0 0 -41px;background:url(http://a.vpimg4.com/upload/actpics/uidesign/2016/1m/0122balabala/zailushang.png) no-repeat;display:block}\n/* 售卖状态-end */\n\n' + getCountdownCss() + '\n\n' + getNavigatorCss() + '\n\n' + getCouponCss() + '\n\n' + bgListCss + '\n' + bgListCssWarm + '\n' + bgListCssSale + '\n\n' + productLinkListCss + '\n\n' + brandLinkListCss + '\n\n' + normalLinkListCss + '\n\n.' + CONFIG.CSS_PREFIX + 'footer-btn {top: ' + CONFIG.footerBtn.top + 'px; left: ' + CONFIG.footerBtn.left + 'px; width: 246px; height: 61px; background: url(\'' + IMAGE_URL + 'footer-btn.png\') no-repeat center 0;}\n.' + CONFIG.CSS_PREFIX + 'footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}\n\n/* 头部nav切换-begin */\n.main-nav-link li a.current{background:none;cursor:pointer;font-weight:normal}\n.main-nav-link li a.current:hover{background-color:#DB0A76}\n.main-nav-link li a[href=\'http://kid.vip.com\']{background-color:#BD1067;cursor:default;font-weight:700}\n/* 头部nav切换-end */\n\n/*  半品购调整-begin */\n.warmup_bg .pro_bread{display: none;}\n.warmup_bg, .list-define-w{overflow: hidden;position: relative;}\n.warmup_bg .' + CONFIG.CSS_PREFIX + 'mods{margin: 0 -460px;}\n.list-define-w .' + CONFIG.CSS_PREFIX + 'mods{margin: -380px -460px 0;}\n/*  半品购调整-end */\n  ';
+	  function getFooterBtnCss() {
+	    if (!CONFIG.IS_FOOTER_BTN) return '';
+	    return '\n.' + CONFIG.CSS_PREFIX + 'footer-btn {top: ' + CONFIG.footerBtn.top + 'px; left: ' + CONFIG.footerBtn.left + 'px; width: ' + CONFIG.footerBtn.width + 'px; height: ' + CONFIG.footerBtn.height + 'px; background: url(' + IMAGE_URL + (CONFIG.footerBtn.alt || 'footer-btn.png') + ') no-repeat center 0;}\n.' + CONFIG.CSS_PREFIX + 'footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}\n    ';
+	  }
+
+	  return '\n/* 状态-begin */\n.' + CONFIG.CSS_PREFIX + 'js-debug a{background-color:rgba(0,0,0,.3)}\n.' + CONFIG.CSS_PREFIX + 'js-debug a.' + CONFIG.CSS_PREFIX + 'js-hover,\n.' + CONFIG.CSS_PREFIX + 'js-debug a:hover{background-color:rgba(0,0,0,.4)}\n.' + CONFIG.CSS_PREFIX + 'js-hover{}\n.' + CONFIG.CSS_PREFIX + 'js-fixed{position:fixed}\n/* 状态-end */\n\n.' + CONFIG.CSS_PREFIX + 'mods{overflow:hidden; position: relative;}\n.' + CONFIG.CSS_PREFIX + 'mod{background:center top no-repeat}\n.' + CONFIG.CSS_PREFIX + 'bd{position:relative;width:' + BODY_WIDTH + 'px;margin:0 auto}\n.' + CONFIG.CSS_PREFIX + 'bd:after,\n.' + CONFIG.CSS_PREFIX + 'bd:before{display:table;content:""}\n.' + CONFIG.CSS_PREFIX + 'bd:after{clear:both}\n.' + CONFIG.CSS_PREFIX + 'link,\n.' + CONFIG.CSS_PREFIX + 'blink,\n.' + CONFIG.CSS_PREFIX + 'plink{position:absolute;display:block;}\n.' + CONFIG.CSS_PREFIX + 'hash { }\n.' + CONFIG.CSS_PREFIX + 'target { display: block; position: relative; visibility: hidden; }\n\n.' + CONFIG.CSS_PREFIX + 'bgs{}\n.' + CONFIG.CSS_PREFIX + 'bg{background: no-repeat center 0;}\n.' + CONFIG.CSS_PREFIX + 'main{position: absolute; top: 0; left: 0; right: 0; width: 100%;}\n.' + CONFIG.CSS_PREFIX + 'links, .' + CONFIG.CSS_PREFIX + 'exts{}\n\n\n/* 售卖状态-begin */\n.' + CONFIG.CSS_PREFIX + 'plink .' + CONFIG.CSS_PREFIX + 'tips{position:relative;top:50%;left:50%;display:none}\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload{cursor:default}\n.' + CONFIG.CSS_PREFIX + 'js-warm .' + CONFIG.CSS_PREFIX + 'plink:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:86px;height:47px;margin:-23px 0 0 -43px;background:url(http://a.vpimg4.com/upload/actpics/uidesign/2015/10m/1024sport/floor3_btn.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:82px;height:76px;margin:-38px 0 0 -41px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/buy_ico.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-chance .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-chance:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:75px;height:75px;margin:-37px 0 0 -37px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/chance_yellow.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-out .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-out:hover .' + CONFIG.CSS_PREFIX + 'tips{display:block;width:75px;height:75px;margin:-37px 0 0 -37px;background:url(http://a.vpimg2.com/upload/actpics/pingou/2015/5m/21/andi/off_sell_icon_circle.png) no-repeat}\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload:hover .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload .' + CONFIG.CSS_PREFIX + 'tips,\n.' + CONFIG.CSS_PREFIX + 'js-sale .' + CONFIG.CSS_PREFIX + 'plink.' + CONFIG.CSS_PREFIX + 'js-sold-onload:hover .' + CONFIG.CSS_PREFIX + 'tips{width:82px;height:82px;margin:-41px 0 0 -41px;background:url(http://a.vpimg4.com/upload/actpics/uidesign/2016/1m/0122balabala/zailushang.png) no-repeat;display:block}\n/* 售卖状态-end */\n\n' + getCountdownCss() + '\n\n' + getNavigatorCss() + '\n\n' + getCouponCss() + '\n\n' + bgListCss + '\n' + bgListCssWarm + '\n' + bgListCssSale + '\n\n' + productLinkListCss + '\n\n' + brandLinkListCss + '\n\n' + normalLinkListCss + '\n\n' + getFooterBtnCss() + '\n\n/* 头部nav切换-begin */\n.main-nav-link li a.current{background:none;cursor:pointer;font-weight:normal}\n.main-nav-link li a.current:hover{background-color:#DB0A76}\n.main-nav-link li a[href=\'http://kid.vip.com\']{background-color:#BD1067;cursor:default;font-weight:700}\n/* 头部nav切换-end */\n\n/*  半品购调整-begin */\n.warmup_bg .pro_bread{display: none;}\n.warmup_bg, .list-define-w{overflow: hidden;position: relative;}\n.warmup_bg .' + CONFIG.CSS_PREFIX + 'mods{margin: 0 -460px;}\n.list-define-w .' + CONFIG.CSS_PREFIX + 'mods{margin: -380px -460px 0;}\n/*  半品购调整-end */\n  ';
 	};
 
 	;
 
 /***/ },
-/* 462 */
+/* 463 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31974,11 +32152,12 @@
 	    return '<a class="' + CONFIG.CSS_PREFIX + 'link ' + CONFIG.CSS_PREFIX + 'link' + (i + 1) + '" href="javascript:;"></a>';
 	  }).join('\n');
 
-	  var hashListHtml = brandLinkList.map(function (a, i) {
+	  var hashList = [1, 2];
+	  var hashListHtml = hashList.map(function (a, i) {
 	    return '<a class="' + CONFIG.CSS_PREFIX + 'hash ' + CONFIG.CSS_PREFIX + 'hash' + (i + 1) + '" href="#' + CONFIG.CSS_PREFIX + 'hash' + (i + 1) + '" data-id="' + CONFIG.CSS_PREFIX + 'hash' + (i + 1) + '" target="_self"></a>';
 	  }).join('\n');
 
-	  var targetListHtml = brandLinkList.map(function (a, i) {
+	  var targetListHtml = hashList.map(function (a, i) {
 	    return '<a class="' + CONFIG.CSS_PREFIX + 'target" id="' + CONFIG.CSS_PREFIX + 'hash' + (i + 1) + '" name="' + CONFIG.CSS_PREFIX + 'hash' + (i + 1) + '"></a>';
 	  }).join('\n');
 
@@ -31997,11 +32176,16 @@
 	    return '\n                <!--红包-begin-->\n                <a href="javascript:;" class="' + CONFIG.CSS_PREFIX + 'coupon-btn"></a>\n                <!--红包-end-->\n    ';
 	  }
 
-	  return '\n<!--模块总容器-begin-->\n<div class="' + CONFIG.CSS_PREFIX + 'mods ' + CONFIG.CSS_PREFIX + 'js-warm ' + CONFIG.CSS_PREFIX + 'js-debug">\n    <div class="' + CONFIG.CSS_PREFIX + 'bgs">\n        ' + bgListHtml + '\n    </div>\n    <div class="' + CONFIG.CSS_PREFIX + 'main">\n        <div class="' + CONFIG.CSS_PREFIX + 'bd">\n            <div class="' + CONFIG.CSS_PREFIX + 'links">\n                ' + brandLinkListHtml + '\n                ' + productLinkListHtml + '\n                ' + normalLinkListHtml + '\n            </div>\n            <div class="' + CONFIG.CSS_PREFIX + 'exts">\n\n                <!--这些拖到对应背景div里面-begin-->\n' + getNavigatorHtml() + '\n\n                    <!--锚点-begin-->\n                    ' + targetListHtml + '\n                    <!--锚点-end-->\n                <!--这些拖到对应背景div里面-end-->\n\n' + getCountdownHtml() + '\n\n' + getCouponHtml() + '\n\n                <a class="' + CONFIG.CSS_PREFIX + 'link ' + CONFIG.CSS_PREFIX + 'footer-btn" target="_blank" href="http://kid.vip.com/"></a>\n\n            </div>\n        </div>\n    </div>\n</div>\n<!--模块容器-end-->\n  ';
+	  function getFooterBtnHtml() {
+	    if (!CONFIG.IS_FOOTER_BTN) return '';
+	    return '\n               <a class="' + CONFIG.CSS_PREFIX + 'link ' + CONFIG.CSS_PREFIX + 'footer-btn" target="_blank" href="http://kid.vip.com/"></a>\n    ';
+	  }
+
+	  return '\n<!--模块总容器-begin-->\n<div class="' + CONFIG.CSS_PREFIX + 'mods ' + CONFIG.CSS_PREFIX + 'js-warm ' + CONFIG.CSS_PREFIX + 'js-debug">\n    <div class="' + CONFIG.CSS_PREFIX + 'bgs">\n        ' + bgListHtml + '\n    </div>\n    <div class="' + CONFIG.CSS_PREFIX + 'main">\n        <div class="' + CONFIG.CSS_PREFIX + 'bd">\n            <div class="' + CONFIG.CSS_PREFIX + 'links">\n\n                ' + brandLinkListHtml + '\n\n                ' + productLinkListHtml + '\n\n                ' + normalLinkListHtml + '\n\n            </div>\n            <div class="' + CONFIG.CSS_PREFIX + 'exts">\n\n                <!--这些拖到对应背景div里面-begin-->\n' + getNavigatorHtml() + '\n\n                    <!--锚点-begin-->\n                    ' + targetListHtml + '\n                    <!--锚点-end-->\n                <!--这些拖到对应背景div里面-end-->\n\n' + getCountdownHtml() + '\n\n' + getCouponHtml() + '\n\n' + getFooterBtnHtml() + '\n\n            </div>\n        </div>\n    </div>\n</div>\n<!--模块容器-end-->\n  ';
 	};
 
 /***/ },
-/* 463 */
+/* 464 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -32044,7 +32228,7 @@
 	    return "\n                <!--红包-begin-->\n                <a href=\"javascript:;\" class=\"" + CONFIG.CSS_PREFIX + "coupon-btn\"></a>\n                <!--红包-end-->\n    ";
 	  }
 
-	  return "\n(function () {\n\n  var wh = $.Cookie.get('vip_wh') || 'VIP_NH';\n  var whs = wh.toLocaleUpperCase();\n  var plinksData = " + JSON.stringify(CONFIG.productLinks) + ";\n  var blinksData = " + JSON.stringify(CONFIG.brandLinks) + ";\n  var plinks = plinksData[whs];\n  var blinks = blinksData[whs];\n\n  addProductLinks(plinks);\n  addSellState(blinks);\n  addBrandLinks(blinks);\n  addCoupons(blinks);\n  addNavigators();\n\n  var steps = [\n    {time: '" + CONFIG.SALE_TIME + "', tips: '离活动开售还剩'},\n    {time: '" + CONFIG.END_TIME + "', tips: '离活动结束还剩'}\n  ];\n  addCountdown(steps);\n\n  // 添加商品链接\n  function addProductLinks(plinks, exceptPlinks) {\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "plink').each(function (i) {\n      $(this).attr({\n        target: '_blank',\n        href: 'http://www.vip.com/detail-' + plinks[i] + '.html'\n      }).data('pid', (plinks[i] || '').replace(/^.*-/, ''));\n    });\n\n    if(!exceptPlinks) return;\n    var re = new RegExp('(' + exceptLinks.join('|') + ')$');\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "plink').each(function (i) {\n      if (re.test(plinks[i])) {\n        $(this).addClass('" + CONFIG.CSS_PREFIX + "js-sold-onload').attr({\n          target: '_self',\n          href: 'javascript:;'\n        });\n      }\n    });\n  }\n\n  // 添加售卖状态\n  function addSellState(blinks){\n      $.ajax({\n        url: 'http://stock.vip.com/list/',\n        data: {\n          bids: blinks.join(',')\n        },\n        dataType: 'jsonp'\n      }).done(function(res){\n\n        var prodChance = res.sold_chance;\n        var prodOut = res.sold_out;\n\n        var reProdChance = new RegExp('^(' + prodChance.replace(/,/g, '|') + ')$');\n        var reProdOut = new RegExp('^(' + prodOut.replace(/,/g, '|') + ')$');\n\n        $('." + CONFIG.CSS_PREFIX + "plink').each(function(){\n          var $this = $(this);\n          var pid = $this.data('pid');\n\n          $this.append('<span class=\"" + CONFIG.CSS_PREFIX + "tips\"></span>');\n          if(reProdChance.test(pid)){\n            return $this.addClass('" + CONFIG.CSS_PREFIX + "js-sold-chance');\n          }\n          if(reProdOut.test(pid)){\n            return $this.addClass('" + CONFIG.CSS_PREFIX + "js-sold-out');\n          }\n        });\n      });\n    }\n\n  // 添加专场链接\n  function addBrandLinks(blinks) {\n    // 顺序打乱时这样添加\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink').attr({target: '_blank'});\n    var len = blinks.length;\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink').each(function (i) {\n      $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});\n    });\n    //$(blinks).each(function (i, blink) {\n    //  $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});\n    //});\n  }\n\n  // 导航2\n  function addNavigators() {\n\n    var $nav = $('." + CONFIG.CSS_PREFIX + "nav');\n    var beginOffset = $nav.offset();\n\n    var $win = $(window);\n    var $doc = $(document);\n\n    var $navTarget = $('." + CONFIG.CSS_PREFIX + "target');\n\n    var navHeight = $nav.outerHeight();\n    var endOffset;\n    var $footer = $('." + CONFIG.CSS_PREFIX + "footer');\n\n    if ($footer.length || $footer.is(':visible')) {\n      endOffset = $footer.offset();\n    }\n    else {\n      var $mods = $('." + CONFIG.CSS_PREFIX + "mods');\n      endOffset = $mods.offset();\n      endOffset.top += $mods.outerHeight();\n    }\n\n\n    var $navTargetNew = $navTarget.map(function () {\n      var $this = $(this);\n      return {\n        top: $this.offset().top,\n        $el: $this,\n        $ctrl: $('[data-id=' + $this.attr('id') + ']')\n      };\n    });\n\n    $navTargetNew.sort(function (a, b) {\n      return a.top - b.top;\n    });\n    $win.on({\n      'scroll': function () {\n        var scrollTop = $doc.scrollTop();\n\n        // 控制导航悬浮\n        $nav[scrollTop > beginOffset.top ? 'addClass' : 'removeClass']('" + CONFIG.CSS_PREFIX + "js-fixed');\n\n        // 控制导航focus效果\n        var len = $navTargetNew.length;\n        var index = 0;\n        do {\n          len -= 1;\n          index = len;\n        }\n        while (index >= 0 && scrollTop < $navTargetNew[index].top);\n\n        $navTargetNew.each(function (i, v) {\n          v.$ctrl && v.$ctrl.removeClass('" + CONFIG.CSS_PREFIX + "js-hover');\n        });\n        index >= 0 && $navTargetNew[index].$ctrl.addClass('" + CONFIG.CSS_PREFIX + "js-hover');\n\n        // 控制导航focus时底边线左右滑动\n        var lastIndex = $nav.data('index');\n        $nav.addClass('" + CONFIG.CSS_PREFIX + "js-hover' + (index + 1));\n        if (!isNaN(lastIndex) && index !== lastIndex) {\n          $nav.removeClass('" + CONFIG.CSS_PREFIX + "js-hover' + (lastIndex + 1));\n        }\n        $nav.data('index', index);\n\n\n        var endTop = endOffset.top - navHeight - scrollTop;\n\n        if(endTop < 0) return $nav.css({ top: endTop });\n        if(scrollTop > beginOffset.top){\n          // 控制导航悬浮\n          $nav.addClass('" + CONFIG.CSS_PREFIX + "js-fixed');\n          $nav.css({top: 0});\n        }\n        else {\n          // 控制导航悬浮\n          $nav.removeClass('" + CONFIG.CSS_PREFIX + "js-fixed');\n          $nav.css({top: 0});\n        }\n\n      }\n    });\n\n    //$doc.delegate('." + CONFIG.CSS_PREFIX + "nav a', {\n    //  'click': function () {\n    //\n    //    //$('html, body').scrollTop(200);\n    //  }\n    //});\n\n  }\n\n  // 红包\n  function addCoupons(bids) {\n    var map = {};\n\n    if ($.Cookie.get('VipLID')) {\n      getCoupons();\n    } else {\n      $('." + CONFIG.CSS_PREFIX + "mods').addClass('" + CONFIG.CSS_PREFIX + "js-coupon-get');\n    }\n\n    // 领取红包\n    $('." + CONFIG.CSS_PREFIX + "mods').delegate('." + CONFIG.CSS_PREFIX + "coupon-btn, ." + CONFIG.CSS_PREFIX + "nav-coupon-btn', {\n      'click': function (e) {\n        var $this = $(this);\n        if (!$this.closest('." + CONFIG.CSS_PREFIX + "js-coupon-get').length) return;\n\n        if ($.Cookie.get('VipLID')) {\n          bindCoupon();\n        } else {\n          VIPSHOP.login.init({\n            loginEvent: function () {\n              VIPSHOP.member.chk();//登录成功后回调\n              getCoupons().then(bindCoupon);\n            }\n          });\n        }\n      }\n    });\n\n\n    // 获取档期红包\n    function getCoupons() {\n      var marsCid = $.Cookie.get('mars_cid');\n      var promises = [];\n      $.each(bids, function (i, bid) {\n        promises[i] = $.ajax({\n          url: 'http://act.vip.com/act/index_ajax.php',\n          dataType: 'jsonp',\n          data: {\n            service: 'NewCoupon.getAll',\n            mars_cid: marsCid,\n            bid: bid\n          }\n        });\n      });\n\n      return $.when.apply($, promises).pipe(function (res) {\n        var args = arguments;\n        // 未领取红包数\n        var hasNotGetCount = 0;\n        // 已领取红包数\n        var hasGetCount = 0;\n        // 红包总数\n        var totalCount = 0;\n        // 任意红包有库存\n        var hasLeft = false;\n        $.each(bids, function (i, bid) {\n          try {\n            var obj = map[bid] = bids.length > 1 ? args[i][0] : args[i];\n            var coupon = obj.coupons[0];\n            // 有红包+未领取\n            if (coupon.left && coupon.status === 1) hasNotGetCount += 1;\n            // 有红包+已领取\n            if (coupon.left && coupon.status === 2) hasGetCount += 1;\n            // 任意红包有库存\n            if (!hasLeft && coupon.left) hasLeft = true;\n            totalCount += 1;\n          } catch (e) {\n          }\n        });\n\n\n        // 有红包时设置领取状态\n        if (hasLeft) {\n          $('." + CONFIG.CSS_PREFIX + "mods').addClass(hasGetCount !== totalCount ? '" + CONFIG.CSS_PREFIX + "js-coupon-get' : '" + CONFIG.CSS_PREFIX + "js-coupon-success');\n        }\n\n      });\n    }\n\n    // 绑定红包\n    function bindCoupon() {\n      var utype = VIPSHOP.UINFO.isNewUser() ? 1 : 2;\n      var promises = [];\n      $.each(map, function (bid, obj) {\n        var promise = $.ajax({\n          url: 'http://act.vip.com/act/index_ajax.php',\n          dataType: 'jsonp',\n          data: {\n            service: 'NewCoupon.bind',\n            bid: bid,\n            cid: obj.coupons[0].couponId,\n            utype: utype\n          }\n        });\n        promises.push(promise);\n      });\n\n      $.when.apply($, promises).then(function (res) {\n        var args = arguments;\n        var len = args.length;\n        getCoupons();\n        while (len--) {\n          if ((bids.length > 1 ? args[len][0] : args[len]).status === 1) {\n            //console.log('领取成功');\n            return;\n          }\n        }\n        //console.log('领取失败');\n      });\n    }\n  }\n\n  function addCountdown(steps){\n\n    var timeSpan = function (timestamp) {\n      var t = timestamp - (new Date).getTime(),\n        d = {time: t, day: '00', hour: '00', min: '00', sec: '00'},\n        s = '';\n      if (t > 0) {\n        s = '0' + parseInt(t / 1000 % 60);\n        d.sec = s.substr(s.length - 2); //秒\n        s = '0' + parseInt(t / 1000 / 60 % 60);\n        d.min = s.substr(s.length - 2); //分\n        s = '0' + parseInt(t / 1000 / 60 / 60 % 24);\n        d.hour = s.substr(s.length - 2); //时\n        s = '0' + parseInt(t / 1000 / 60 / 60 / 24 % 30);\n        d.day = s.substr(s.length - 2); //天\n      }\n      return d;\n    };\n\n    var kid_countDown = function (timestamp, callback) {\n      var self = this;\n      var timer = setInterval(function () {\n        var result = timeSpan(timestamp);\n        if (result <= 0 || callback(result) === false) {\n          clearInterval(timer);\n        }\n      }, 1000);\n      callback(timeSpan(timestamp));\n    };\n\n    $(function () {\n      var dayBox = $('#day'), hourBox = $('#hour'), minBox = $('#min'), secBox = $('#sec');\n      var backtime  = function(time) {\n        kid_countDown(time, function (d) {\n          dayBox.text(d.day);\n          hourBox.text(d.hour);\n          minBox.text(d.min);\n          secBox.text(d.sec);\n        });\n      };\n      for(var i = 0, len = steps.length; i < len; i++){\n        var step = steps[i];\n        var time = new Date(step.time);\n        if ($.now() < time) {\n          $('#J_countdown_text').html(step.tips);\n          backtime (time);\n          break;\n        }\n      }\n    });\n  }\n})();\n  ";
+	  return "\n(function () {\n\n  var wh = $.Cookie.get('vip_wh') || 'VIP_NH';\n  var whs = wh.toLocaleUpperCase();\n  var plinksData = " + JSON.stringify(CONFIG.productLinks) + ";\n  var blinksData = " + JSON.stringify(CONFIG.brandLinks) + ";\n  var plinks = plinksData[whs];\n  var blinks = blinksData[whs];\n\n  addProductLinks(plinks);\n  addSellState(blinks);\n  addBrandLinks(blinks);\n  addCoupons(blinks);\n  addNavigators();\n\n  var steps = [\n    {time: '" + CONFIG.SALE_TIME + "', tips: '离活动开售还剩'},\n    {time: '" + CONFIG.END_TIME + "', tips: '离活动结束还剩'}\n  ];\n  addCountdown(steps);\n\n  // 添加商品链接\n  function addProductLinks(plinks, exceptPlinks) {\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "plink').each(function (i) {\n      $(this).attr({\n        target: '_blank',\n        href: 'http://www.vip.com/detail-' + plinks[i] + '.html'\n      }).data('pid', (plinks[i] || '').replace(/^.*-/, ''));\n    });\n\n    if(!exceptPlinks) return;\n    var re = new RegExp('(' + exceptPlinks.join('|') + ')$');\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "plink').each(function (i) {\n      if (re.test(plinks[i])) {\n        $(this).addClass('" + CONFIG.CSS_PREFIX + "js-sold-onload').attr({\n          target: '_self',\n          href: 'javascript:;'\n        });\n      }\n    });\n  }\n\n  // 添加售卖状态\n  function addSellState(blinks){\n      $.ajax({\n        url: 'http://stock.vip.com/list/',\n        data: {\n          bids: blinks.join(',')\n        },\n        dataType: 'jsonp'\n      }).done(function(res){\n\n        var prodChance = res.sold_chance;\n        var prodOut = res.sold_out;\n\n        var reProdChance = new RegExp('^(' + prodChance.replace(/,/g, '|') + ')$');\n        var reProdOut = new RegExp('^(' + prodOut.replace(/,/g, '|') + ')$');\n\n        $('." + CONFIG.CSS_PREFIX + "plink').each(function(){\n          var $this = $(this);\n          var pid = $this.data('pid');\n\n          $this.append('<span class=\"" + CONFIG.CSS_PREFIX + "tips\"></span>');\n          if(reProdChance.test(pid)){\n            return $this.addClass('" + CONFIG.CSS_PREFIX + "js-sold-chance');\n          }\n          if(reProdOut.test(pid)){\n            return $this.addClass('" + CONFIG.CSS_PREFIX + "js-sold-out');\n          }\n        });\n      });\n    }\n\n  // 添加专场链接\n  function addBrandLinks(blinks) {\n    // 顺序打乱时这样添加\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink').attr({target: '_blank'});\n    var len = blinks.length;\n    $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink').each(function (i) {\n      $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});\n    });\n    //$(blinks).each(function (i, blink) {\n    //  $('." + CONFIG.CSS_PREFIX + "mods ." + CONFIG.CSS_PREFIX + "blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});\n    //});\n  }\n\n  // 导航2\n  function addNavigators() {\n\n    var $nav = $('." + CONFIG.CSS_PREFIX + "nav');\n    var beginOffset = $nav.offset();\n\n    var $win = $(window);\n    var $doc = $(document);\n\n    var $navTarget = $('." + CONFIG.CSS_PREFIX + "target');\n\n    var navHeight = $nav.outerHeight();\n    var endOffset;\n    var $footer = $('." + CONFIG.CSS_PREFIX + "footer');\n\n    if ($footer.length || $footer.is(':visible')) {\n      endOffset = $footer.offset();\n    }\n    else {\n      var $mods = $('." + CONFIG.CSS_PREFIX + "mods');\n      endOffset = $mods.offset();\n      endOffset.top += $mods.outerHeight();\n    }\n\n\n    var $navTargetNew = $navTarget.map(function () {\n      var $this = $(this);\n      return {\n        top: $this.offset().top,\n        $el: $this,\n        $ctrl: $('[data-id=' + $this.attr('id') + ']')\n      };\n    });\n\n    $navTargetNew.sort(function (a, b) {\n      return a.top - b.top;\n    });\n    $win.on({\n      'scroll': function () {\n        var scrollTop = $doc.scrollTop();\n\n        // 控制导航悬浮\n        $nav[scrollTop > beginOffset.top ? 'addClass' : 'removeClass']('" + CONFIG.CSS_PREFIX + "js-fixed');\n\n        // 控制导航focus效果\n        var len = $navTargetNew.length;\n        var index = 0;\n        do {\n          len -= 1;\n          index = len;\n        }\n        while (index >= 0 && scrollTop < $navTargetNew[index].top);\n\n        $navTargetNew.each(function (i, v) {\n          v.$ctrl && v.$ctrl.removeClass('" + CONFIG.CSS_PREFIX + "js-hover');\n        });\n        index >= 0 && $navTargetNew[index].$ctrl.addClass('" + CONFIG.CSS_PREFIX + "js-hover');\n\n        // 控制导航focus时底边线左右滑动\n        var lastIndex = $nav.data('index');\n        $nav.addClass('" + CONFIG.CSS_PREFIX + "js-hover' + (index + 1));\n        if (!isNaN(lastIndex) && index !== lastIndex) {\n          $nav.removeClass('" + CONFIG.CSS_PREFIX + "js-hover' + (lastIndex + 1));\n        }\n        $nav.data('index', index);\n\n\n        var endTop = endOffset.top - navHeight - scrollTop;\n\n        if(endTop < 0) return $nav.css({ top: endTop });\n        if(scrollTop > beginOffset.top){\n          // 控制导航悬浮\n          $nav.addClass('" + CONFIG.CSS_PREFIX + "js-fixed');\n          $nav.css({top: 0});\n        }\n        else {\n          // 控制导航悬浮\n          $nav.removeClass('" + CONFIG.CSS_PREFIX + "js-fixed');\n          $nav.css({top: 0});\n        }\n\n      }\n    });\n\n    //$doc.delegate('." + CONFIG.CSS_PREFIX + "nav a', {\n    //  'click': function () {\n    //\n    //    //$('html, body').scrollTop(200);\n    //  }\n    //});\n\n  }\n\n  // 红包\n  function addCoupons(bids) {\n    var map = {};\n\n    if ($.Cookie.get('VipLID')) {\n      getCoupons();\n    } else {\n      $('." + CONFIG.CSS_PREFIX + "mods').addClass('" + CONFIG.CSS_PREFIX + "js-coupon-get');\n    }\n\n    // 领取红包\n    $('." + CONFIG.CSS_PREFIX + "mods').delegate('." + CONFIG.CSS_PREFIX + "coupon-btn, ." + CONFIG.CSS_PREFIX + "nav-coupon-btn', {\n      'click': function (e) {\n        var $this = $(this);\n        if (!$this.closest('." + CONFIG.CSS_PREFIX + "js-coupon-get').length) return;\n\n        if ($.Cookie.get('VipLID')) {\n          bindCoupon();\n        } else {\n          VIPSHOP.login.init({\n            loginEvent: function () {\n              VIPSHOP.member.chk();//登录成功后回调\n              getCoupons().then(bindCoupon);\n            }\n          });\n        }\n      }\n    });\n\n\n    // 获取档期红包\n    function getCoupons() {\n      var marsCid = $.Cookie.get('mars_cid');\n      var promises = [];\n      $.each(bids, function (i, bid) {\n        promises[i] = $.ajax({\n          url: 'http://act.vip.com/act/index_ajax.php',\n          dataType: 'jsonp',\n          data: {\n            service: 'NewCoupon.getAll',\n            mars_cid: marsCid,\n            bid: bid\n          }\n        });\n      });\n\n      return $.when.apply($, promises).pipe(function (res) {\n        var args = arguments;\n        // 未领取红包数\n        var hasNotGetCount = 0;\n        // 已领取红包数\n        var hasGetCount = 0;\n        // 红包总数\n        var totalCount = 0;\n        // 任意红包有库存\n        var hasLeft = false;\n        $.each(bids, function (i, bid) {\n          try {\n            var obj = map[bid] = bids.length > 1 ? args[i][0] : args[i];\n            var coupon = obj.coupons[0];\n            // 有红包+未领取\n            if (coupon.left && coupon.status === 1) hasNotGetCount += 1;\n            // 有红包+已领取\n            if (coupon.left && coupon.status === 2) hasGetCount += 1;\n            // 任意红包有库存\n            if (!hasLeft && coupon.left) hasLeft = true;\n            totalCount += 1;\n          } catch (e) {\n          }\n        });\n\n\n        // 有红包时设置领取状态\n        if (hasLeft) {\n          $('." + CONFIG.CSS_PREFIX + "mods').addClass(hasGetCount !== totalCount ? '" + CONFIG.CSS_PREFIX + "js-coupon-get' : '" + CONFIG.CSS_PREFIX + "js-coupon-success');\n        }\n\n      });\n    }\n\n    // 绑定红包\n    function bindCoupon() {\n      var utype = VIPSHOP.UINFO.isNewUser() ? 1 : 2;\n      var promises = [];\n      $.each(map, function (bid, obj) {\n        var promise = $.ajax({\n          url: 'http://act.vip.com/act/index_ajax.php',\n          dataType: 'jsonp',\n          data: {\n            service: 'NewCoupon.bind',\n            bid: bid,\n            cid: obj.coupons[0].couponId,\n            utype: utype\n          }\n        });\n        promises.push(promise);\n      });\n\n      $.when.apply($, promises).then(function (res) {\n        var args = arguments;\n        var len = args.length;\n        getCoupons();\n        while (len--) {\n          if ((bids.length > 1 ? args[len][0] : args[len]).status === 1) {\n            //console.log('领取成功');\n            return;\n          }\n        }\n        //console.log('领取失败');\n      });\n    }\n  }\n\n  function addCountdown(steps){\n\n    var timeSpan = function (timestamp) {\n      var t = timestamp - (new Date).getTime(),\n        d = {time: t, day: '00', hour: '00', min: '00', sec: '00'},\n        s = '';\n      if (t > 0) {\n        s = '0' + parseInt(t / 1000 % 60);\n        d.sec = s.substr(s.length - 2); //秒\n        s = '0' + parseInt(t / 1000 / 60 % 60);\n        d.min = s.substr(s.length - 2); //分\n        s = '0' + parseInt(t / 1000 / 60 / 60 % 24);\n        d.hour = s.substr(s.length - 2); //时\n        s = '0' + parseInt(t / 1000 / 60 / 60 / 24 % 30);\n        d.day = s.substr(s.length - 2); //天\n      }\n      return d;\n    };\n\n    var kid_countDown = function (timestamp, callback) {\n      var self = this;\n      var timer = setInterval(function () {\n        var result = timeSpan(timestamp);\n        if (result <= 0 || callback(result) === false) {\n          clearInterval(timer);\n        }\n      }, 1000);\n      callback(timeSpan(timestamp));\n    };\n\n    $(function () {\n      var dayBox = $('#day'), hourBox = $('#hour'), minBox = $('#min'), secBox = $('#sec');\n      var backtime  = function(time) {\n        kid_countDown(time, function (d) {\n          dayBox.text(d.day);\n          hourBox.text(d.hour);\n          minBox.text(d.min);\n          secBox.text(d.sec);\n        });\n      };\n      for(var i = 0, len = steps.length; i < len; i++){\n        var step = steps[i];\n        var time = new Date(step.time);\n        if ($.now() < time) {\n          $('#J_countdown_text').html(step.tips);\n          backtime (time);\n          break;\n        }\n      }\n    });\n  }\n})();\n  ";
 	};
 
 	;

@@ -78,7 +78,7 @@ class Tools extends File {
         <fieldset className="group">
           <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>product link</label>
           <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>brand link</label>
-          <label style={{display: 'none'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
+          <label style={{display: 'none1'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
         </fieldset>
 
 
@@ -95,8 +95,8 @@ class Tools extends File {
         </fieldset>
 
         <fieldset className="group">
-          <label><a href="tools/brand_ids.html" target="_blank">生成档期ID</a></label>
           <label><a href="tools/product_ids.html" target="_blank">生成商品ID</a></label>
+          <label><a href="tools/brand_ids.html" target="_blank">生成档期ID</a></label>
           <label><a href="tools/sgs.html" target="_blank">SGS格式转换</a></label>
         </fieldset>
 

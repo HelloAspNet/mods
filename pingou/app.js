@@ -86,6 +86,7 @@ class App extends Component {
   addLink(options) {
     Temps.linkId += 1;
     const linkId = Temps.linkId;
+    options.isSupportBackground = true;
     const link = <Area key={linkId} onInit={this.onLinkInit.bind(this)} {...options}/>;
     //Temps.links[linkId] = {
     //  el: link

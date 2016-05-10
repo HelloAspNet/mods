@@ -6,36 +6,36 @@
     .kmod-hash { }
     .kmod-target { display: block; position: relative; visibility: hidden; }
 
-    .kmod-header{height: 260px;background: url(images/header.jpg) no-repeat center 0;}
+    .kmod-header{height: 260px;background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/header.jpg) no-repeat center 0;}
     .kmod-footer{height: 260px;}
-    .kmod-footer-btn {display: block; width: 340px; height: 55px; margin: 60px auto 0; background: url(images/sprites.png) no-repeat 0 -200px;}
+    .kmod-footer-btn {display: block; width: 340px; height: 55px; margin: 60px auto 0; background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/sprites.png) no-repeat 0 -200px;}
     .kmod-footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
 
     .kmod-hashes{position:absolute;top:0;margin-left:-90px;width: 60px;padding-top: 120px;}
-    .kmod-hash{overflow: hidden; display: block; width: 60px; height: 60px; margin: 0 0 10px; background: url(images/sprites.png) no-repeat 0 -300px;color: #7c7c7c;}
+    .kmod-hash{overflow: hidden; display: block; width: 60px; height: 60px; margin: 0 0 10px; background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/sprites.png) no-repeat 0 -300px;color: #7c7c7c;}
     .kmod-hash.kmod-js-hover,
-    .kmod-hash:hover{display: block; width: 60px; height: 60px; background: url(images/sprites.png) no-repeat -60px -300px;color: #fff;}
+    .kmod-hash:hover{display: block; width: 60px; height: 60px; background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/sprites.png) no-repeat -60px -300px;color: #fff;}
     .kmod-hash-top{background-position: -120px -300px;color: #fff;}
     .kmod-hash-top:hover{background-position: -180px -300px}
     .kmod-hash-text{display: block; width: 28px; margin: 12px auto;padding-left: 2px;font-size: 14px;line-height: 1.3}
     .kmod-js-fixed{position:fixed}
 
     .kmod{overflow: hidden;padding-bottom: 40px;}
-    .kmod-tt { display: block; width: 275px; height: 40px; margin: 40px auto; background: url(images/sprites.png) no-repeat; }
+    .kmod-tt { display: block; width: 275px; height: 40px; margin: 40px auto; background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/sprites.png) no-repeat; }
     .kmod-tt-milk{background-position: 0 0}
     .kmod-tt-product{background-position: 0 -50px}
     .kmod-tt-toy{background-position: 0 -100px}
     .kmod-tt-clothes{background-position: 0 -150px}
-    .kmod-ct{overflow:hidden;width: 1018px;margin: -18px 0 0 -18px; background: url(images/holder.png) no-repeat 357px 100%}
+    .kmod-ct{overflow:hidden;width: 1018px;margin: -18px 0 0 -18px; background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/holder.png) no-repeat 357px 100%}
     .kmod-box{float: left;position:relative;width: 321px; height: 290px;margin: 18px 0 0 18px;background-color: #f6f6f6;}
     .kmod-box-border{display: none;position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 1px solid #f10582;}
     .kmod-box:hover .kmod-box-border{display: block;}
     .kmod-box-img img{display: block;width: 320px;height: 232px;}
-    .kmod-box-logo{position: absolute; top: 175px; left: 0; right: 0;width: 160px; height: 74px;margin: auto;/*border-radius: 3px;*/background: url(images/logo-bg.png) no-repeat;}
+    .kmod-box-logo{position: absolute; top: 175px; left: 50%; width: 160px; height: 74px;margin-left: -80px;/*border-radius: 3px;*/background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/logo-bg.png) no-repeat;}
     .kmod-box-logo img{display: block;margin: 5px auto;}
-    .kmod-box-info {overflow:hidden; height: 1.5rem;padding-top: 16px;background: url(images/info-bg.png) no-repeat;line-height:1.5;font-size: 16px;text-align: center}
+    .kmod-box-info {overflow:hidden; height: 1.5rem;padding-top:27px;background: url(http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/info-bg.png) no-repeat;line-height:1.5;font-size: 16px;text-align: center}
     .kmod-box-sign{position: relative;top:-2px;margin: 0 3px;font-size: 10px;}
-    .kmod-box-tip{position:relative;margin-left:2px;border-radius: 3px 3px 3px 0;padding: 1px 3px 2px 5px;background-color: #ccc;font-size: 12px;color: #fff;vertical-align: super;}
+    .kmod-box-tip{position:relative;margin-left:4px;border-radius: 3px 3px 3px 0;padding: 1px 3px 2px 5px;background-color: #ccc;font-size: 12px;color: #fff;vertical-align: super;}
     .kmod-box-tip:after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:0;border: 2px solid transparent;border-left-color: #ccc;}
     .kmod-box-tip1{background-color: #e3493d;}
     .kmod-box-tip1:after{border-left-color: #e3493d;}
@@ -95,37 +95,46 @@
             return className;
         });
 
-        var data = [
-            {
-                hash: 'milk',
-                text: '奶粉尿裤',
-                brands: [
-                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'},
-                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新货到'}
-                ]
-            },
-            {
-                hash: 'product',
-                text: '育儿用品',
-                brands: [
-                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
-                ]
-            },
-            {
-                hash: 'toy',
-                text: '玩具文具',
-                brands: [
-                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
-                ]
-            },
-            {
-                hash: 'clothes',
-                text: '童装童鞋',
-                brands: [
-                    {img_url: 'images/b1.jpg', logo_url: 'images/logo1.jpg', name: '雅培旗舰店', slogan: '健康科学育婴', tip: '新开业'}
-                ]
+        function wrapperUrl(url){
+            return /^http(s)?:\/\//.test(url) ? url : 'http://a.vpimg4.com/upload/actpics/uidesign/2016/changzhu/flagship/' + url;
+        }
+
+        function Store(type, name, slogan, logoUrl, imgUrl, tip){
+            if(!(this instanceof Store)) {
+                var store = new Store;
+                Store.apply(store, arguments);
+                return store;
             }
+            this.name = name;
+            this.slogan = slogan;
+            this.logo_url = wrapperUrl(logoUrl);
+            this.img_url = wrapperUrl(imgUrl);
+            this.tip = tip || '';
+            this.type = type;
+            Store[type].push(this);
+        }
+
+        Store.milk = [];
+        Store.product = [];
+        Store.toy = [];
+        Store.clothes = [];
+
+        var storeList = [
+            Store('milk', '雅培旗舰店', '健康科学育婴', 'logo/diaper-bangbaoshi.jpg', 'brand/diaper-bangbaoshi.jpg', '新开业'),
+            Store('雅培旗舰店', '健康科学育婴', 'logo/diaper-haoqi.jpg', 'brand/diaper-haoqi.jpg', '新开业'),
+            Store('雅培旗舰店', '健康科学育婴', 'logo/diaper-huawang.jpg', 'brand/diaper-huawang.jpg', '新开业'),
+            Store('雅培旗舰店', '健康科学育婴', 'logo/diaper-libeile.jpg', 'brand/diaper-libeile.jpg', '新开业'),
+            Store('雅培旗舰店', '健康科学育婴', 'logo/diaper-mamibaobei.jpg', 'brand/diaper-mamibaobei.jpg', '新开业'),
+            Store('雅培旗舰店', '健康科学育婴', 'logo/diaper-queshi.jpg', 'brand/diaper-queshi.jpg', '新开业')
         ];
+
+        var data = [
+            {hash: 'milk', text: '奶粉尿裤', brands: Store.milk},
+            {hash: 'product', text: '育儿用品', brands: Store.product},
+            {hash: 'toy', text: '玩具文具', brands: Store.toy},
+            {hash: 'clothes', text: '童装童鞋', brands: Store.clothes}
+        ];
+
 
         var html = $.Tpl('J_hashes_tpl', {list: data});
         $('#J_hashes_html').html(html);

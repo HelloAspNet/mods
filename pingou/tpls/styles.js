@@ -116,7 +116,7 @@ export default function (CONFIG) {
   function getFooterBtnCss(){
     if(!CONFIG.IS_FOOTER_BTN) return '';
     return `
-.${CONFIG.CSS_PREFIX}footer-btn {top: ${CONFIG.footerBtn.top}px; left: ${CONFIG.footerBtn.left}px; width: ${CONFIG.footerBtn.width}px; height: ${CONFIG.footerBtn.height}px; background: url('${IMAGE_URL}${CONFIG.footerBtn.alt || 'footer-btn.png'}') no-repeat center 0;}
+.${CONFIG.CSS_PREFIX}footer-btn {top: ${CONFIG.footerBtn.top}px; left: ${CONFIG.footerBtn.left}px; width: ${CONFIG.footerBtn.width}px; height: ${CONFIG.footerBtn.height}px; background: url(${IMAGE_URL}${CONFIG.footerBtn.alt || 'footer-btn.png'}) no-repeat center 0;}
 .${CONFIG.CSS_PREFIX}footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
     `
   }
