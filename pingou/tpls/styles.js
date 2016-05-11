@@ -80,7 +80,7 @@ export default function (CONFIG) {
 .${CONFIG.CSS_PREFIX}nav-wrap{height:0}
 .${CONFIG.CSS_PREFIX}nav{position:relative;top:0;width:100%;margin:0 auto;z-index:${NAV_Z_INDEX}}
 .${CONFIG.CSS_PREFIX}nav.${CONFIG.CSS_PREFIX}js-fixed{position:fixed}
-.${CONFIG.CSS_PREFIX}nav1{width:${CONFIG.navigator.width}px;height:${CONFIG.navigator.height}px;margin-left:${CONFIG.navigator.left}px;padding-top:${CONFIG.navigator.top}px;background:url(${IMAGE_URL}${CONFIG.navigator.alt || 'nav.png'}) center ${CONFIG.navigator.top}px no-repeat}
+.${CONFIG.CSS_PREFIX}nav1{width:${CONFIG.navigator.width}px;height:${CONFIG.navigator.height}px;margin-left:1040px;padding-top:${CONFIG.navigator.top}px;background:url(${IMAGE_URL}${CONFIG.navigator.alt || 'nav.png'}) center ${CONFIG.navigator.top}px no-repeat}
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-hd{height:168px}
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-bd,
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-ft{margin:0 11px 0 0}

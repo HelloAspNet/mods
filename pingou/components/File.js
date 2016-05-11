@@ -23,7 +23,7 @@ class File extends Component {
         const image = new Image;
         image.src = reader.result;
         image.alt = file.name;
-        console.log(reader,file)
+        console.log(reader,file);
         image.addEventListener('load', e => defer.resolve(image));
       });
       reader.readAsDataURL(file);
@@ -39,6 +39,7 @@ class File extends Component {
     this.load(files).then(imageList => console.log(imageList));
     return false;
   }
+
 
   render() {
     return (

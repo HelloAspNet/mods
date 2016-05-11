@@ -86,6 +86,7 @@ class App extends Component {
   addLink(options) {
     Temps.linkId += 1;
     const linkId = Temps.linkId;
+    options.isSupportRemove = true;
     options.isSupportBackground = true;
     const link = <Area key={linkId} onInit={this.onLinkInit.bind(this)} {...options}/>;
     //Temps.links[linkId] = {
@@ -141,7 +142,7 @@ class App extends Component {
 
     const bgList = Temps.bgList.map(({height, alt}) => {return {height, alt}});
     const linkList = Temps.linkList.map(a => a.state)
-      .filter(a => a.width && a.height);
+      .filter(a => a.display !== 'none' && a.width && a.height);
 
     //// 按位置排序，优先级为［top－left, 小－大］
     //linkList.sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);

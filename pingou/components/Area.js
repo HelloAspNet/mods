@@ -39,6 +39,7 @@ class Area extends File {
       width: 0,
       height: 0,
       background: '',   //rgba(255, 0, 0, .2)
+      display: '',
 
       alt: '',                // 暂时用来放原图片名
       link: 'javascript:;',
@@ -48,6 +49,8 @@ class Area extends File {
       isSelected: false,            // 是否被选中
       isFixed: false,               // 是否悬浮定位
 
+      isSupportRemove: false,   // 是否支持移除
+      isSupportResize: false,   // 是否支持更改大小
       isSupportBackground: false,   // 是否支持背景
       //isSupportDrag: false,         // 是否支持拖拽
       isSupportScale: false         // 是否支持缩放
@@ -156,6 +159,22 @@ class Area extends File {
   }
 
 
+  remove(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.state.display = 'none';
+    this.setState(this.state);
+    return false;
+  }
+
+  resize(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.state.display = 'none';
+    this.setState(this.state);
+    return false;
+  }
+
   render() {
     return (
       <div
@@ -172,7 +191,8 @@ class Area extends File {
           left: this.state.left,
           width: this.state.width,
           height: this.state.height,
-          background: this.state.background
+          background: this.state.background,
+          display: this.state.display
         }}
         onMouseDown={this.mouseDown.bind(this)}
         onMouseMove={this.mouseMove.bind(this)}
@@ -180,7 +200,14 @@ class Area extends File {
 
         onDragOver={this.dragOver.bind(this)}
         onDrop={this.drop.bind(this)}
-        >{this.state.text}</div>
+        >
+        <div className="area-main">
+
+          <i className="area-remove fa fa-times-circle" onClick={this.remove} onMouseDown={e => e.stopPropagation()}></i>
+          <i className="area-resize fa fa-arrows-alt" onClick={this.resize} onMouseDown={e => e.stopPropagation()}></i>
+          {this.state.text}
+        </div>
+      </div>
     );
   }
 }
