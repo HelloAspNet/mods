@@ -1,11 +1,5 @@
-export default function (CONFIG) {
-
-  const defaults = {
-    bgList: [],
-    linkList: []
-  };
-
-  CONFIG = Object.assign(defaults, CONFIG);
+import CONFIG from '../config';
+export default function () {
 
   const brandLinkList = CONFIG.linkList.filter(a => a.type === 'brand');
   const productLinkList = CONFIG.linkList.filter(a => a.type === 'product');
@@ -40,7 +34,7 @@ export default function (CONFIG) {
 
 
   function getCountdownHtml(){
-    if(!CONFIG.IS_COUNTDOWN) return '';
+    if(CONFIG.COUNTDOWN.isHidden) return '';
     return `
               <!--倒计时-begin-->
                 <div class="${CONFIG.CSS_PREFIX}countdown" id="J_top_countdown">
@@ -86,7 +80,7 @@ export default function (CONFIG) {
   }
 
   function getCouponHtml(){
-    if(!CONFIG.IS_COUPON) return '';
+    if(CONFIG.COUPON_BUTTON.isHidden) return '';
     return `
                 <!--红包-begin-->
                 <a href="javascript:;" class="${CONFIG.CSS_PREFIX}coupon-btn"></a>
@@ -95,7 +89,7 @@ export default function (CONFIG) {
   }
 
   function getFooterBtnHtml(){
-    if(!CONFIG.IS_FOOTER_BTN) return '';
+    if(CONFIG.FOOTER_BUTTON.isHidden) return '';
     return `
                <a class="${CONFIG.CSS_PREFIX}link ${CONFIG.CSS_PREFIX}footer-btn" target="_blank" href="http://kid.vip.com/"></a>
     `;

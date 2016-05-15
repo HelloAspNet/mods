@@ -47,16 +47,17 @@ class Area extends File {
       target: '_self',
       type: 'normal',         // 链接类型，分别有{product, brand, normal}
 
+      isHidden: false,              // 是否隐藏
       isSelected: false,            // 是否被选中
       isFixed: false,               // 是否悬浮定位
 
       isSupportRemove: false,   // 是否支持移除
-      isSupportResize: false,   // 是否支持更改大小
       isSupportBackground: false,   // 是否支持背景
       //isSupportDrag: false,         // 是否支持拖拽
       isSupportScale: false         // 是否支持缩放
     }, props);
 
+    console.log(props)
 
     props.onInit && props.onInit(this);
     _list.push(this);
@@ -144,7 +145,7 @@ class Area extends File {
     const {clientX, clientY} = e;
     const offsetTop = clientY - _last.clientY;
     const offsetLeft = clientX - _last.clientX;
-    console.log(clientX, clientY);
+    //console.log(clientX, clientY);
 
     const top = _last.top - -offsetTop;
     const left = _last.left - -offsetLeft;
@@ -159,14 +160,14 @@ class Area extends File {
 
 
   remove(e){
-    console.log('in remove')
-    this.state.display = 'none';
+    console.log('in remove');
+    this.state.isHidden = true;
     this.setState(this.state);
   }
 
   resize(e){
-    this.state.display = 'none';
-    this.setState(this.state);
+    //this.state.isHidden = true;
+    //this.setState(this.state);
   }
 
   render() {
@@ -186,7 +187,7 @@ class Area extends File {
           width: this.state.width,
           height: this.state.height,
           background: this.state.background,
-          display: this.state.display
+          display: this.state.isHidden ? 'none' : ''
         }}
         onMouseDown={this.mouseDown.bind(this)}
         onMouseMove={this.mouseMove.bind(this)}
@@ -199,8 +200,8 @@ class Area extends File {
           <div className="area-border"></div>
           {this.state.text}
 
-          <FontButton name="times-circle" className="area-remove" onClick={this.remove.bind(this)} style={{display: this.isSupportRemove ? '' : 'none'}}/>
-          <FontButton name="arrows-alt" className="area-resize" onClick={this.resize.bind(this)} style={{display: this.isSupportRemove ? '' : 'none'}}/>
+          <FontButton name="times-circle" className="area-remove" onClick={this.remove.bind(this)} style={{display: this.state.isSupportRemove ? '' : 'none'}}/>
+          <FontButton name="arrows-alt" className="area-resize" onClick={this.resize.bind(this)} style={{display: this.state.isSupportScale ? '' : 'none'}}/>
         </div>
       </div>
     );

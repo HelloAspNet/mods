@@ -1,5 +1,5 @@
 {
-  "name": "tuku",
+  "name": "pingou",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,34 +9,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-core": "^6.7.2",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-react": "^6.5.0",
-    "co": "^4.6.0",
-    "debug": "^2.2.0",
-    "font-awesome": "^4.6.1",
-    "jquery": "^2.2.2",
-    "koa": "^2.0.0-alpha.3",
-    "koa-bodyparser": "^2.0.1",
-    "koa-convert": "^1.2.0",
-    "koa-json": "^1.1.1",
-    "koa-jsonp": "^0.2.0",
-    "koa-logger": "^1.3.0",
-    "koa-onerror": "^1.2.1",
-    "koa-router": "^7.0.0",
-    "koa-static": "^1.5.2",
-    "koa-views": "^3.1.0",
-    "mysql": "^2.10.2",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "sequelize": "^3.21.0"
+    "animate.css": "^3.5.1",
+    "font-awesome": "^4.6.1"
   },
   "devDependencies": {
-    "nodemon": "^1.9.1",
-    "babel-core": "^6.0.20",
-    "babel-polyfill": "^6.0.16",
-    "babel-preset-es2015": "^6.0.15",
-    "babel-preset-stage-0": "^6.0.15"
+    "babel-core": "^6.8.0",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.8.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
   }
 }

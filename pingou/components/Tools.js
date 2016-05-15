@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import File from './File';
+import CONFIG from '../config';
 
 class Tools extends File {
   constructor(props) {
     super(props);
     this.state = {
-      CONFIG: props.CONFIG,
-      imageList: []
-  };
+        CONFIG: CONFIG,
+        imageList: []
+    };
 
   }
 
@@ -27,44 +28,32 @@ class Tools extends File {
   }
 
   switchMode(mode) {
-    const map = {
-      product: 'isProductMode',
-      brand: 'isBrandMode',
-      normal: 'isNormalMode'
-    };
-    const prop = map[mode];
-    const oldValue = this.state[prop];
-    const newValue = !oldValue;
-    this.state.isProductMode = false;
-    this.state.isBrandMode = false;
-    this.state.isNormalMode = false;
-    this.state[prop] = newValue;
+    CONFIG.LINK_MODE = CONFIG.LINK_MODE === mode ? null : mode;
     this.setState(this.state);
-    this.props.onSwitchLinkMode(mode, newValue);
   }
 
   changeIsCountdown(){
-    this.state.CONFIG.IS_COUNTDOWN = !this.state.CONFIG.IS_COUNTDOWN;
+    CONFIG.IS_COUNTDOWN = !CONFIG.IS_COUNTDOWN;
+    CONFIG.COUNTDOWN.isHidden = !CONFIG.COUNTDOWN.isHidden;
     this.setState(this.state);
   }
   changeIsNavigator(){
-    this.state.CONFIG.IS_NAVIGATOR = !this.state.CONFIG.IS_NAVIGATOR;
+    CONFIG.IS_NAVIGATOR = !CONFIG.IS_NAVIGATOR;
     this.setState(this.state);
   }
   changeIsCoupon(){
-    this.state.CONFIG.IS_COUPON = !this.state.CONFIG.IS_COUPON;
+    CONFIG.IS_COUPON = !CONFIG.IS_COUPON;
     this.setState(this.state);
   }
 
   printCode(){
-    const {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON} = this.state.CONFIG;
+    const {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON} = CONFIG;
     const options = {IS_COUNTDOWN, IS_NAVIGATOR, IS_COUPON};
     //console.log(options)
     //console.log(CONFIG)
     const code = this.props.printCode(options);
     this.state.CODE = code;
     this.setState(this.state);
-    console.log(code);
   }
 
   render() {
@@ -76,16 +65,16 @@ class Tools extends File {
         </fieldset>
 
         <fieldset className="group">
-          <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>商品链接</label>
-          <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>档期链接</label>
-          <label style={{display: 'none1'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>普通链接</label>
+          <label><input type="checkbox" checked={CONFIG.LINK_MODE === 'product'} onChange={this.switchMode.bind(this, 'product')}/>商品链接</label>
+          <label><input type="checkbox" checked={CONFIG.LINK_MODE === 'brand'} onChange={this.switchMode.bind(this, 'brand')}/>档期链接</label>
+          <label style={{display: 'none1'}}><input type="checkbox" checked={CONFIG.LINK_MODE === 'normal'} onChange={this.switchMode.bind(this, 'normal')}/>普通链接</label>
         </fieldset>
 
 
-        <fieldset className="group" style={{display: 'none'}}>
-          <label><input type="checkbox" checked={this.state.CONFIG.IS_COUNTDOWN} onChange={this.changeIsCountdown.bind(this)}/>countdown</label>
-          <label><input type="checkbox" checked={this.state.CONFIG.IS_NAVIGATOR} onChange={this.changeIsNavigator.bind(this)}/>navigator</label>
-          <label><input type="checkbox" checked={this.state.CONFIG.IS_COUPON} onChange={this.changeIsCoupon.bind(this)}/>coupon</label>
+        <fieldset className="group" style={{display: 'none1'}}>
+          <label><input type="checkbox" checked={CONFIG.IS_COUNTDOWN} onChange={this.changeIsCountdown.bind(this)}/>countdown</label>
+          <label><input type="checkbox" checked={CONFIG.IS_NAVIGATOR} onChange={this.changeIsNavigator.bind(this)}/>navigator</label>
+          <label><input type="checkbox" checked={CONFIG.IS_COUPON} onChange={this.changeIsCoupon.bind(this)}/>coupon</label>
         </fieldset>
 
 

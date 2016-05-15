@@ -1,43 +1,41 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import ES6Promise from 'es6-promise';
-import fetch from 'isomorphic-fetch';
-import co from 'co';
-import Q from 'q';
+// import ES6Promise from 'es6-promise';
+// import fetch from 'isomorphic-fetch'; 
 import 'babel-polyfill';
 
-ES6Promise.polyfill();
+// ES6Promise.polyfill();
 
+import CONFIG from './config';
 
 import Tools from './components/Tools';
-import Preview from './components/Preview';
 import Area from './components/Area';
 import Mod from './components/Mod';
 
 import stylesTpl from './tpls/styles';
 import htmlTpl from './tpls/html';
 import scriptsTpl from './tpls/scripts';
-
-const CONFIG = {
-  CSS_PREFIX: 'kmod-',
-
-  // 倒计时及其配置
-  IS_COUNTDOWN: true,
-  WARM_TIME: '',
-  SALE_TIME: '2016/04/24 10:00:00',
-  END_TIME: '2016/04/25 10:00:00',
-
-  // 导航
-  IS_NAVIGATOR: true,
-
-  // 红包
-  IS_COUPON: true,
-
-  // 底部按钮
-  IS_FOOTER_BTN: true,
-
-  LINK_MODE: null // LINK_MODE: {product, brand, normal}
-};
+//
+//const CONFIG = {
+//  CSS_PREFIX: 'kmod-',
+//
+//  // 倒计时及其配置
+//  IS_COUNTDOWN: true,
+//  WARM_TIME: '',
+//  SALE_TIME: '',
+//  END_TIME: '',
+//
+//  // 导航
+//  IS_NAVIGATOR: true,
+//
+//  // 红包
+//  IS_COUPON: true,
+//
+//  // 底部按钮
+//  IS_FOOTER_BTN: true,
+//
+//  LINK_MODE: null // LINK_MODE: {product, brand, normal}
+//};
 
 
 const Temps = {
@@ -64,6 +62,10 @@ class App extends Component {
       linkList: [],
       tools: {}
     };
+
+    if(CONFIG.bgList.length){
+      //this.onBgListInit(CONFIG.bgList);
+    }
   }
 
   onBgListInit(list) {
@@ -117,8 +119,8 @@ class App extends Component {
     this.addLink({
       top: clientY - offsetTop + scrollY,
       left: clientX - offsetLeft + scrollX,
-      type: CONFIG.LINK_MODE,
-      isSupportScale: true
+      type: CONFIG.LINK_MODE//,
+      //isSupportScale: true
     });
   }
 
@@ -141,29 +143,30 @@ class App extends Component {
 
   printCode(){
 
-    const bgList = Temps.bgList.map(({height, alt}) => {return {height, alt}});
+    const bgList = Temps.bgList.map(({height, alt, src}) => {return {height, alt, src}});
     const linkList = Temps.linkList.map(a => a.state)
-      .filter(a => a.display !== 'none' && a.width && a.height);
+      .filter(a => !a.isHidden && a.width && a.height);
 
     //// 按位置排序，优先级为［top－left, 小－大］
     //linkList.sort((a, b) => a.top < b.top ? -1 : a.top > b.top ? 1 : a.left - b.left);
 
-    const styles = stylesTpl(Object.assign({
+
+
+    Object.assign(CONFIG, {
       bgList: bgList,
       linkList: linkList,
-      countdown: Temps.countdown.state,
-      couponBtn: Temps.couponBtn.state,
-      footerBtn: Temps.footerBtn.state,
+      COUNTDOWN: Temps.countdown.state,
+      COUPON_BUTTON: Temps.couponBtn.state,
+      FOOTER_BUTTON: Temps.footerBtn.state,
       navigator: Temps.navigator.state,
       navCouponBtn: Temps.navCouponBtn.state
-    }, CONFIG));
+    });
 
-    const html = htmlTpl(Object.assign({
-      bgList: bgList,
-      linkList: linkList
-    }, CONFIG));
+    const styles = stylesTpl();
 
-    const scripts = scriptsTpl(CONFIG);
+    const html = htmlTpl();
+
+    const scripts = scriptsTpl();
 
     const code = [
       '<style>', styles ,'</style>',
@@ -174,11 +177,6 @@ class App extends Component {
     return code;
   }
 
-  onSwitchLinkMode(mode, value){
-    CONFIG.LINK_MODE = value ? mode : null;
-  }
-
-
   render() {
     return (
       <div className="kmods"
@@ -188,7 +186,6 @@ class App extends Component {
         <Tools
           CONFIG={CONFIG}
           onBgListInit={this.onBgListInit.bind(this)}
-          onSwitchLinkMode={this.onSwitchLinkMode.bind(this)}
           printCode={this.printCode.bind(this)}/>
 
         <div className="kmod-bgs">{this.state.bgList}</div>
@@ -197,11 +194,11 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <Area text="倒计时" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="红包按钮" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="底部按钮" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="导航" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isSupportBackground: true, isFixed: true}}></Area>
-            <Area text="导航红包" onInit={obj => Temps.navCouponBtn = obj} {...{top: 120, left: 1060, width: 80, height: 40, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="倒计时" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isHidden: CONFIG.countdown.isHidden, isSupportBackground: true}}></Area>
+            <Area text="红包按钮" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isHidden: CONFIG.couponBtn.isHidden, isSupportBackground: true}}></Area>
+            <Area text="底部按钮" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isHidden: CONFIG.footerBtn.isHidden, isSupportBackground: true}}></Area>
+            <Area text="导航" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isHidden: CONFIG.navigator.isHidden, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="导航红包" onInit={obj => Temps.navCouponBtn = obj} {...{top: 120, left: 1060, width: 80, height: 40, isHidden: CONFIG.navigator.isHidden, isSupportBackground: true, isFixed: true}}></Area>
           </div>
         </div>
       </div>

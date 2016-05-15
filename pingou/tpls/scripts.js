@@ -1,13 +1,6 @@
-export default function (CONFIG) {
+import CONFIG from '../config';
 
-  CONFIG.DATA = {"VIP_NH":[],"VIP_SH":[],"VIP_CD":[],"VIP_BJ":[],"VIP_HZ":[]};
-
-  const defaults = {
-    productLinks: CONFIG.DATA,
-    brandLinks: CONFIG.DATA
-  };
-
-  CONFIG = Object.assign(defaults, CONFIG);
+export default function () {
 
   const date = new Date;
   const year = date.getFullYear();
@@ -18,7 +11,7 @@ export default function (CONFIG) {
   CONFIG.END_TIME = CONFIG.END_TIME || `${year}/${month}/${day + 2} 10:00:00`;
 
   function getCountdownJs(){
-    if(!CONFIG.IS_COUNTDOWN) return '';
+    if(CONFIG.COUNTDOWN.isHidden) return '';
     return `
               <!--倒计时-begin-->
                 <div class="${CONFIG.CSS_PREFIX}countdown" id="J_top_countdown">
@@ -64,7 +57,7 @@ export default function (CONFIG) {
   }
 
   function getCouponJs(){
-    if(!CONFIG.IS_COUPON) return '';
+    if(CONFIG.COUPON_BUTTON.isHidden) return '';
     return `
                 <!--红包-begin-->
                 <a href="javascript:;" class="${CONFIG.CSS_PREFIX}coupon-btn"></a>
@@ -77,8 +70,8 @@ export default function (CONFIG) {
 
   var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
   var whs = wh.toLocaleUpperCase();
-  var plinksData = ${JSON.stringify(CONFIG.productLinks)};
-  var blinksData = ${JSON.stringify(CONFIG.brandLinks)};
+  var plinksData = ${JSON.stringify(CONFIG.PRODUCTS_DATA)};
+  var blinksData = ${JSON.stringify(CONFIG.BRANDS_DATA)};
   var plinks = plinksData[whs];
   var blinks = blinksData[whs];
 

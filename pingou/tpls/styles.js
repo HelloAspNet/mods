@@ -1,15 +1,17 @@
-export default function (CONFIG) {
+import CONFIG from '../config';
 
-  const defaults = {
-    imagesUrl: 'images/',  // 'http://a.vpimg3.com/upload/actpics/uidesign/2016/2m/0218haohaizi/'
-    bgList: [],
-    linkList: [],
-    countdown: null,
-    couponBtn: null,
-    footerBtn: null
-  };
+export default function () {
 
-  CONFIG = Object.assign(defaults, CONFIG);
+  //const defaults = {
+  //  imagesUrl: 'images/',  // 'http://a.vpimg3.com/upload/actpics/uidesign/2016/2m/0218haohaizi/'
+  //  bgList: [],
+  //  linkList: [],
+  //  countdown: null,
+  //  couponBtn: null,
+  //  footerBtn: null
+  //};
+  //
+  //CONFIG = Object.assign(defaults, CONFIG);
 
   const brandLinkList = CONFIG.linkList.filter(a => a.type === 'brand');
   const productLinkList = CONFIG.linkList.filter(a => a.type === 'product');
@@ -56,17 +58,17 @@ export default function (CONFIG) {
 
 
   function getCountdownCss(){
-    if(!CONFIG.IS_COUNTDOWN) return '';
+    if(CONFIG.COUNTDOWN.isHidden) return '';
     return `
 /* 倒计时-begin */
-.${CONFIG.CSS_PREFIX}countdown{overflow: hidden; position:absolute;top:${CONFIG.countdown.top}px;left:${CONFIG.countdown.left}px;width:${CONFIG.countdown.width}px;height:${CONFIG.countdown.height + 32}px;text-align: center;}
+.${CONFIG.CSS_PREFIX}countdown{overflow: hidden; position:absolute;top:${CONFIG.COUNTDOWN.top}px;left:${CONFIG.COUNTDOWN.left}px;width:${CONFIG.COUNTDOWN.width}px;height:${CONFIG.COUNTDOWN.height + 32}px;text-align: center;}
 .${CONFIG.CSS_PREFIX}countdown-tips{display: inline-block;position:relative;margin:0 auto;height:32px;background:center 0 no-repeat}
 .${CONFIG.CSS_PREFIX}countdown-tips-text{color: #000;font-size: 15px;}
 .${CONFIG.CSS_PREFIX}countdown-tips-line1,
 .${CONFIG.CSS_PREFIX}countdown-tips-line2{position:absolute;top:10px;width:500px;margin:0;border:0;border-top:1px solid #ccc;opacity: 0.6;filter:alpha(opacity=60);}
 .${CONFIG.CSS_PREFIX}countdown-tips-line1{left:-500px;margin-left:-10px}
 .${CONFIG.CSS_PREFIX}countdown-tips-line2{right:-500px;margin-right:-10px}
-.${CONFIG.CSS_PREFIX}countdown-main{width:263px;height:50px;background:url(${IMAGE_URL}${CONFIG.countdown.alt || 'countdown.png'}) center 0 no-repeat; text-align: left;}
+.${CONFIG.CSS_PREFIX}countdown-main{width:263px;height:50px;background:url(${IMAGE_URL}${CONFIG.COUNTDOWN.alt || 'countdown.png'}) center 0 no-repeat; text-align: left;}
 .${CONFIG.CSS_PREFIX}countdown-nums{position:relative;top:-3px;left:-2px;width:400px;font-size:30px;color:#fff}
 .${CONFIG.CSS_PREFIX}countdown-num{float:left;width:62px;margin-left:5px;letter-spacing:6px}
 /* 倒计时-end */
@@ -93,30 +95,31 @@ export default function (CONFIG) {
   }
 
   function getCouponCss(){
+    if(CONFIG.COUPON_BUTTON.isHidden) return '';
     return `
 /* 红包-begin */
 .${CONFIG.CSS_PREFIX}coupon{position:relative}
 .${CONFIG.CSS_PREFIX}nav-coupon{position:relative}
-.${CONFIG.CSS_PREFIX}coupon-btn{position:absolute;width:${CONFIG.couponBtn.width}px;display:block;height:${Math.floor(CONFIG.couponBtn.height / 3)}px;top:${CONFIG.couponBtn.top}px;left:${CONFIG.couponBtn.left}px;cursor:default;background:url(${IMAGE_URL}${CONFIG.couponBtn.alt || 'coupon-btn.png'}) no-repeat}
+.${CONFIG.CSS_PREFIX}coupon-btn{position:absolute;width:${CONFIG.COUPON_BUTTON.width}px;display:block;height:${Math.floor(CONFIG.COUPON_BUTTON.height / 3)}px;top:${CONFIG.COUPON_BUTTON.top}px;left:${CONFIG.COUPON_BUTTON.left}px;cursor:default;background:url(${IMAGE_URL}${CONFIG.COUPON_BUTTON.alt || 'coupon-btn.png'}) no-repeat}
 .${CONFIG.CSS_PREFIX}nav-coupon-btn{position:absolute;top:${CONFIG.navCouponBtn.top}px;left:23px;width:${CONFIG.navCouponBtn.width}px;height:${Math.floor(CONFIG.navCouponBtn.height / 3)}px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
 
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:.9;filter:alpha(opacity=90)}
-.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn{background-position:0 ${-Math.floor(CONFIG.couponBtn.height / 3)}px;cursor:pointer}
+.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn{background-position:0 ${-Math.floor(CONFIG.COUPON_BUTTON.height / 3)}px;cursor:pointer}
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height / 3)}px;cursor:pointer}
 
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:1;filter:alpha(opacity=100)}
-.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn{background-position: 0 ${-Math.floor(CONFIG.couponBtn.height * 2 / 3)}px}
+.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn{background-position: 0 ${-Math.floor(CONFIG.COUPON_BUTTON.height * 2 / 3)}px}
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height * 2 / 3)}px}
 /* 红包-end */
     `;
   }
 
   function getFooterBtnCss(){
-    if(!CONFIG.IS_FOOTER_BTN) return '';
+    if(CONFIG.FOOTER_BUTTON.isHidden) return '';
     return `
-.${CONFIG.CSS_PREFIX}footer-btn {top: ${CONFIG.footerBtn.top}px; left: ${CONFIG.footerBtn.left}px; width: ${CONFIG.footerBtn.width}px; height: ${CONFIG.footerBtn.height}px; background: url(${IMAGE_URL}${CONFIG.footerBtn.alt || 'footer-btn.png'}) no-repeat center 0;}
+.${CONFIG.CSS_PREFIX}footer-btn {top: ${CONFIG.FOOTER_BUTTON.top}px; left: ${CONFIG.FOOTER_BUTTON.left}px; width: ${CONFIG.FOOTER_BUTTON.width}px; height: ${CONFIG.FOOTER_BUTTON.height}px; background: url(${IMAGE_URL}${CONFIG.FOOTER_BUTTON.alt || 'footer-btn.png'}) no-repeat center 0;}
 .${CONFIG.CSS_PREFIX}footer-btn:hover {opacity:.8;filter:alpha(opacity=80)}
     `
   }
@@ -174,9 +177,9 @@ ${bgListCss}
 ${bgListCssWarm}
 ${bgListCssSale}
 
-${productLinkListCss}
-
 ${brandLinkListCss}
+
+${productLinkListCss}
 
 ${normalLinkListCss}
 
