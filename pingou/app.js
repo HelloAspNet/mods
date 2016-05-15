@@ -49,7 +49,8 @@ const Temps = {
   countdown: null,
   couponBtn: null,
   footerBtn: null,
-  navigator: null
+  navigator: null,
+  navCouponBtn: null
 };
 
 
@@ -153,7 +154,8 @@ class App extends Component {
       countdown: Temps.countdown.state,
       couponBtn: Temps.couponBtn.state,
       footerBtn: Temps.footerBtn.state,
-      navigator: Temps.navigator.state
+      navigator: Temps.navigator.state,
+      navCouponBtn: Temps.navCouponBtn.state
     }, CONFIG));
 
     const html = htmlTpl(Object.assign({
@@ -195,10 +197,11 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <Area text="countdown" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="coupon_btn" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="footer_btn" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
-            <Area text="navigator" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="倒计时" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="红包按钮" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="底部按钮" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isSupportBackground: true}}></Area>
+            <Area text="导航" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="导航红包" onInit={obj => Temps.navCouponBtn = obj} {...{top: 120, left: 1060, width: 80, height: 40, isSupportBackground: true, isFixed: true}}></Area>
           </div>
         </div>
       </div>

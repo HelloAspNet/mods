@@ -76,9 +76,9 @@ class Tools extends File {
         </fieldset>
 
         <fieldset className="group">
-          <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>product link</label>
-          <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>brand link</label>
-          <label style={{display: 'none1'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>link</label>
+          <label><input type="checkbox" checked={this.state.isProductMode} onChange={this.switchMode.bind(this, 'product')}/>商品链接</label>
+          <label><input type="checkbox" checked={this.state.isBrandMode} onChange={this.switchMode.bind(this, 'brand')}/>档期链接</label>
+          <label style={{display: 'none1'}}><input type="checkbox" checked={this.state.isNormalMode} onChange={this.switchMode.bind(this, 'normal')}/>普通链接</label>
         </fieldset>
 
 
@@ -90,7 +90,7 @@ class Tools extends File {
 
 
         <fieldset className="group" style={{background: '#fff'}}>
-          <label><input type="button" onClick={this.printCode.bind(this)} value="printCode"/></label>
+          <label><input type="button" onClick={this.printCode.bind(this)} value="生成代码"/></label>
           <textarea value={this.state.CODE}></textarea>
         </fieldset>
 

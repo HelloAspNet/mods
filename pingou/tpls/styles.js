@@ -61,13 +61,13 @@ export default function (CONFIG) {
 /* 倒计时-begin */
 .${CONFIG.CSS_PREFIX}countdown{overflow: hidden; position:absolute;top:${CONFIG.countdown.top}px;left:${CONFIG.countdown.left}px;width:${CONFIG.countdown.width}px;height:${CONFIG.countdown.height + 32}px;text-align: center;}
 .${CONFIG.CSS_PREFIX}countdown-tips{display: inline-block;position:relative;margin:0 auto;height:32px;background:center 0 no-repeat}
-.${CONFIG.CSS_PREFIX}countdown-tips-text{color: #fff;font-size: 15px;}
+.${CONFIG.CSS_PREFIX}countdown-tips-text{color: #000;font-size: 15px;}
 .${CONFIG.CSS_PREFIX}countdown-tips-line1,
 .${CONFIG.CSS_PREFIX}countdown-tips-line2{position:absolute;top:10px;width:500px;margin:0;border:0;border-top:1px solid #ccc;opacity: 0.6;filter:alpha(opacity=60);}
 .${CONFIG.CSS_PREFIX}countdown-tips-line1{left:-500px;margin-left:-10px}
 .${CONFIG.CSS_PREFIX}countdown-tips-line2{right:-500px;margin-right:-10px}
 .${CONFIG.CSS_PREFIX}countdown-main{width:263px;height:50px;background:url(${IMAGE_URL}${CONFIG.countdown.alt || 'countdown.png'}) center 0 no-repeat; text-align: left;}
-.${CONFIG.CSS_PREFIX}countdown-nums{position:relative;top:-3px;left:-2px;width:400px;font-size:30px;color:#000}
+.${CONFIG.CSS_PREFIX}countdown-nums{position:relative;top:-3px;left:-2px;width:400px;font-size:30px;color:#fff}
 .${CONFIG.CSS_PREFIX}countdown-num{float:left;width:62px;margin-left:5px;letter-spacing:6px}
 /* 倒计时-end */
     `;
@@ -84,10 +84,10 @@ export default function (CONFIG) {
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-hd{height:168px}
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-bd,
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-ft{margin:0 11px 0 0}
-.${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-ft .${CONFIG.CSS_PREFIX}hash{height:27px}
-.${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}hash{display:block;width:100%;}
-.${CONFIG.CSS_PREFIX}hash1{ height:134px }
-.${CONFIG.CSS_PREFIX}hash2{ height:132px }
+.${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-ft .${CONFIG.CSS_PREFIX}hash{height:40px}
+.${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}hash{display:block;width:100%;height: 40px;}
+/*.${CONFIG.CSS_PREFIX}hash1{ height:134px }*/
+/*.${CONFIG.CSS_PREFIX}hash2{ height:132px }*/
 /* 导航-end */
     `;
   }
@@ -98,17 +98,17 @@ export default function (CONFIG) {
 .${CONFIG.CSS_PREFIX}coupon{position:relative}
 .${CONFIG.CSS_PREFIX}nav-coupon{position:relative}
 .${CONFIG.CSS_PREFIX}coupon-btn{position:absolute;width:${CONFIG.couponBtn.width}px;display:block;height:${Math.floor(CONFIG.couponBtn.height / 3)}px;top:${CONFIG.couponBtn.top}px;left:${CONFIG.couponBtn.left}px;cursor:default;background:url(${IMAGE_URL}${CONFIG.couponBtn.alt || 'coupon-btn.png'}) no-repeat}
-.${CONFIG.CSS_PREFIX}nav-coupon-btn{position:absolute;top:137px;left:23px;width:81px;height:25px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
+.${CONFIG.CSS_PREFIX}nav-coupon-btn{position:absolute;top:${CONFIG.navCouponBtn.top}px;left:23px;width:${CONFIG.navCouponBtn.width}px;height:${Math.floor(CONFIG.navCouponBtn.height / 3)}px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
 
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:.9;filter:alpha(opacity=90)}
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn{background-position:0 ${-Math.floor(CONFIG.couponBtn.height / 3)}px;cursor:pointer}
-.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 -25px;cursor:pointer}
+.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height / 3)}px;cursor:pointer}
 
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:1;filter:alpha(opacity=100)}
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn{background-position: 0 ${-Math.floor(CONFIG.couponBtn.height * 2 / 3)}px}
-.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 -50px}
+.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height * 2 / 3)}px}
 /* 红包-end */
     `;
   }

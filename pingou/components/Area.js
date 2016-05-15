@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import File from './File';
+import FontButton from './FontButton';
 
 const _list = [];
 let _selected = null;
@@ -132,8 +133,6 @@ class Area extends File {
     });
     this.state.isSelected = !this.state.isSelected;
 
-
-
     // 更新状态
     this.setState(this.state);
   }
@@ -160,19 +159,14 @@ class Area extends File {
 
 
   remove(e){
-    e.preventDefault();
-    e.stopPropagation();
+    console.log('in remove')
     this.state.display = 'none';
     this.setState(this.state);
-    return false;
   }
 
   resize(e){
-    e.preventDefault();
-    e.stopPropagation();
     this.state.display = 'none';
     this.setState(this.state);
-    return false;
   }
 
   render() {
@@ -202,10 +196,11 @@ class Area extends File {
         onDrop={this.drop.bind(this)}
         >
         <div className="area-main">
-
-          <i className="area-remove fa fa-times-circle" onClick={this.remove} onMouseDown={e => e.stopPropagation()}></i>
-          <i className="area-resize fa fa-arrows-alt" onClick={this.resize} onMouseDown={e => e.stopPropagation()}></i>
+          <div className="area-border"></div>
           {this.state.text}
+
+          <FontButton name="times-circle" className="area-remove" onClick={this.remove.bind(this)} style={{display: this.isSupportRemove ? '' : 'none'}}/>
+          <FontButton name="arrows-alt" className="area-resize" onClick={this.resize.bind(this)} style={{display: this.isSupportRemove ? '' : 'none'}}/>
         </div>
       </div>
     );
