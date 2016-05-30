@@ -10,148 +10,82 @@ export default function () {
   CONFIG.SALE_TIME = CONFIG.SALE_TIME || `${year}/${month}/${day + 1} 10:00:00`;
   CONFIG.END_TIME = CONFIG.END_TIME || `${year}/${month}/${day + 2} 10:00:00`;
 
-  function getCountdownJs(){
+  function getCountdownInvokeJs(){
     if(CONFIG.COUNTDOWN.isHidden) return '';
     return `
-              <!--倒计时-begin-->
-                <div class="${CONFIG.CSS_PREFIX}countdown" id="J_top_countdown">
-                    <div class="${CONFIG.CSS_PREFIX}countdown-tips">
-                        <hr class="${CONFIG.CSS_PREFIX}countdown-tips-line1">
-                        <span class="${CONFIG.CSS_PREFIX}countdown-tips-text" id="J_countdown_text"></span>
-                        <hr class="${CONFIG.CSS_PREFIX}countdown-tips-line2">
-                    </div>
-                    <div class="${CONFIG.CSS_PREFIX}countdown-main">
-                        <div class="${CONFIG.CSS_PREFIX}countdown-nums">
-                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="day">00</span>
-                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="hour">00</span>
-                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="min">00</span>
-                            <span class="${CONFIG.CSS_PREFIX}countdown-num" id="sec">00</span>
-                        </div>
-                    </div>
-                </div>
-                <!--倒计时-end-->
-    `;
-  }
-
-  function getNavigatorJs(){
-    if(!CONFIG.IS_NAVIGATOR) return '';
-    return `
-                    <!--导航-begin-->
-                    <div class="${CONFIG.CSS_PREFIX}bd">
-                        <div class="${CONFIG.CSS_PREFIX}nav ${CONFIG.CSS_PREFIX}nav1">
-                            <div class="${CONFIG.CSS_PREFIX}nav-hd">
-                                <div class="${CONFIG.CSS_PREFIX}nav-coupon">
-                                    <a href="javascript:;" class="${CONFIG.CSS_PREFIX}nav-coupon-btn"></a>
-                                </div>
-                            </div>
-                            <div class="${CONFIG.CSS_PREFIX}nav-bd">
-                                ${hashListHtml}
-                            </div>
-                            <div class="${CONFIG.CSS_PREFIX}nav-ft">
-                                <a class="${CONFIG.CSS_PREFIX}hash" href="#" target="_self"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--导航-end-->
-    `;
-  }
-
-  function getCouponJs(){
-    if(CONFIG.COUPON_BUTTON.isHidden) return '';
-    return `
-                <!--红包-begin-->
-                <a href="javascript:;" class="${CONFIG.CSS_PREFIX}coupon-btn"></a>
-                <!--红包-end-->
-    `;
-  }
-
-  return `
-(function () {
-
-  var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
-  var whs = wh.toLocaleUpperCase();
-  var plinksData = ${JSON.stringify(CONFIG.PRODUCTS_DATA)};
-  var blinksData = ${JSON.stringify(CONFIG.BRANDS_DATA)};
-  var plinks = plinksData[whs];
-  var blinks = blinksData[whs];
-
-  addProductLinks(plinks);
-  addSellState(blinks);
-  addBrandLinks(blinks);
-  addCoupons(blinks);
-  addNavigators();
-
   var steps = [
     {time: '${CONFIG.SALE_TIME}', tips: '离活动开售还剩'},
     {time: '${CONFIG.END_TIME}', tips: '离活动结束还剩'}
   ];
   addCountdown(steps);
+    `;
+  }
+  function getCountdownJs(){
+    if(CONFIG.COUNTDOWN.isHidden) return '';
+    return `
+  function addCountdown(steps){
 
-  // 添加商品链接
-  function addProductLinks(plinks, exceptPlinks) {
-    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
-      $(this).attr({
-        target: '_blank',
-        href: 'http://www.vip.com/detail-' + plinks[i] + '.html'
-      }).data('pid', (plinks[i] || '').replace(/^.*-/, ''));
-    });
+    var timeSpan = function (timestamp) {
+      var t = timestamp - (new Date).getTime(),
+        d = {time: t, day: '00', hour: '00', min: '00', sec: '00'},
+        s = '';
+      if (t > 0) {
+        s = '0' + parseInt(t / 1000 % 60);
+        d.sec = s.substr(s.length - 2); //秒
+        s = '0' + parseInt(t / 1000 / 60 % 60);
+        d.min = s.substr(s.length - 2); //分
+        s = '0' + parseInt(t / 1000 / 60 / 60 % 24);
+        d.hour = s.substr(s.length - 2); //时
+        s = '0' + parseInt(t / 1000 / 60 / 60 / 24 % 30);
+        d.day = s.substr(s.length - 2); //天
+      }
+      return d;
+    };
 
-    if(!exceptPlinks) return;
-    var re = new RegExp('(' + exceptPlinks.join('|') + ')$');
-    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
-      if (re.test(plinks[i])) {
-        $(this).addClass('${CONFIG.CSS_PREFIX}js-sold-onload').attr({
-          target: '_self',
-          href: 'javascript:;'
+    var kid_countDown = function (timestamp, callback) {
+      var self = this;
+      var timer = setInterval(function () {
+        var result = timeSpan(timestamp);
+        if (result <= 0 || callback(result) === false) {
+          clearInterval(timer);
+        }
+      }, 1000);
+      callback(timeSpan(timestamp));
+    };
+
+    $(function () {
+      var dayBox = $('#day'), hourBox = $('#hour'), minBox = $('#min'), secBox = $('#sec');
+      var backtime  = function(time) {
+        kid_countDown(time, function (d) {
+          dayBox.text(d.day);
+          hourBox.text(d.hour);
+          minBox.text(d.min);
+          secBox.text(d.sec);
         });
+      };
+      for(var i = 0, len = steps.length; i < len; i++){
+        var step = steps[i];
+        var time = new Date(step.time);
+        if ($.now() < time) {
+          $('#J_countdown_text').html(step.tips);
+          backtime (time);
+          break;
+        }
       }
     });
   }
-
-  // 添加售卖状态
-  function addSellState(blinks){
-      $.ajax({
-        url: 'http://stock.vip.com/list/',
-        data: {
-          bids: blinks.join(',')
-        },
-        dataType: 'jsonp'
-      }).done(function(res){
-
-        var prodChance = res.sold_chance;
-        var prodOut = res.sold_out;
-
-        var reProdChance = new RegExp('^(' + prodChance.replace(/,/g, '|') + ')$');
-        var reProdOut = new RegExp('^(' + prodOut.replace(/,/g, '|') + ')$');
-
-        $('.${CONFIG.CSS_PREFIX}plink').each(function(){
-          var $this = $(this);
-          var pid = $this.data('pid');
-
-          $this.append('<span class="${CONFIG.CSS_PREFIX}tips"></span>');
-          if(reProdChance.test(pid)){
-            return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-chance');
-          }
-          if(reProdOut.test(pid)){
-            return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-out');
-          }
-        });
-      });
-    }
-
-  // 添加专场链接
-  function addBrandLinks(blinks) {
-    // 顺序打乱时这样添加
-    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').attr({target: '_blank'});
-    var len = blinks.length;
-    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').each(function (i) {
-      $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});
-    });
-    //$(blinks).each(function (i, blink) {
-    //  $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
-    //});
+    `;
   }
 
+  function getNavigatorInvokeJs(){
+    if(CONFIG.NAVIGATOR.isHidden) return '';
+    return `
+  addNavigators();
+    `;
+  }
+  function getNavigatorJs(){
+    if(CONFIG.NAVIGATOR.isHidden) return '';
+    return `
   // 导航2
   function addNavigators() {
 
@@ -245,6 +179,18 @@ export default function () {
 
   }
 
+    `;
+  }
+
+  function getCouponInvokeJs(){
+    if(CONFIG.COUPON_BUTTON.isHidden) return '';
+    return `
+  addCoupons(blinks);
+    `;
+  }
+  function getCouponJs(){
+    if(CONFIG.COUPON_BUTTON.isHidden) return '';
+    return `
   // 红包
   function addCoupons(bids) {
     var map = {};
@@ -357,58 +303,97 @@ export default function () {
       });
     }
   }
+    `;
+  }
 
-  function addCountdown(steps){
+  return `
+(function () {
 
-    var timeSpan = function (timestamp) {
-      var t = timestamp - (new Date).getTime(),
-        d = {time: t, day: '00', hour: '00', min: '00', sec: '00'},
-        s = '';
-      if (t > 0) {
-        s = '0' + parseInt(t / 1000 % 60);
-        d.sec = s.substr(s.length - 2); //秒
-        s = '0' + parseInt(t / 1000 / 60 % 60);
-        d.min = s.substr(s.length - 2); //分
-        s = '0' + parseInt(t / 1000 / 60 / 60 % 24);
-        d.hour = s.substr(s.length - 2); //时
-        s = '0' + parseInt(t / 1000 / 60 / 60 / 24 % 30);
-        d.day = s.substr(s.length - 2); //天
-      }
-      return d;
-    };
+  var wh = $.Cookie.get('vip_wh') || 'VIP_NH';
+  var whs = wh.toLocaleUpperCase();
+  var plinksData = ${JSON.stringify(CONFIG.PRODUCTS_DATA)};
+  var blinksData = ${JSON.stringify(CONFIG.BRANDS_DATA)};
+  var plinks = plinksData[whs];
+  var blinks = blinksData[whs];
 
-    var kid_countDown = function (timestamp, callback) {
-      var self = this;
-      var timer = setInterval(function () {
-        var result = timeSpan(timestamp);
-        if (result <= 0 || callback(result) === false) {
-          clearInterval(timer);
-        }
-      }, 1000);
-      callback(timeSpan(timestamp));
-    };
+  addProductLinks(plinks);
+  addSellState(blinks);
+  addBrandLinks(blinks);
+${getCouponInvokeJs()}
+${getNavigatorInvokeJs()}
+${getCountdownInvokeJs()}
 
-    $(function () {
-      var dayBox = $('#day'), hourBox = $('#hour'), minBox = $('#min'), secBox = $('#sec');
-      var backtime  = function(time) {
-        kid_countDown(time, function (d) {
-          dayBox.text(d.day);
-          hourBox.text(d.hour);
-          minBox.text(d.min);
-          secBox.text(d.sec);
+  // 添加商品链接
+  function addProductLinks(plinks, exceptPlinks) {
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
+      $(this).attr({
+        target: '_blank',
+        href: 'http://www.vip.com/detail-' + plinks[i] + '.html'
+      }).data('pid', (plinks[i] || '').replace(/^.*-/, ''));
+    });
+
+    if(!exceptPlinks) return;
+    var re = new RegExp('(' + exceptPlinks.join('|') + ')$');
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}plink').each(function (i) {
+      if (re.test(plinks[i])) {
+        $(this).addClass('${CONFIG.CSS_PREFIX}js-sold-onload').attr({
+          target: '_self',
+          href: 'javascript:;'
         });
-      };
-      for(var i = 0, len = steps.length; i < len; i++){
-        var step = steps[i];
-        var time = new Date(step.time);
-        if ($.now() < time) {
-          $('#J_countdown_text').html(step.tips);
-          backtime (time);
-          break;
-        }
       }
     });
   }
+
+  // 添加售卖状态
+  function addSellState(blinks){
+    $.ajax({
+      url: 'http://stock.vip.com/list/',
+      data: {
+        bids: blinks.join(',')
+      },
+      dataType: 'jsonp'
+    }).done(function(res){
+
+      var prodChance = res.sold_chance;
+      var prodOut = res.sold_out;
+
+      var reProdChance = new RegExp('^(' + prodChance.replace(/,/g, '|') + ')$');
+      var reProdOut = new RegExp('^(' + prodOut.replace(/,/g, '|') + ')$');
+
+      $('.${CONFIG.CSS_PREFIX}plink').each(function(){
+        var $this = $(this);
+        var pid = $this.data('pid');
+
+        $this.append('<span class="${CONFIG.CSS_PREFIX}tips"></span>');
+        if(reProdChance.test(pid)){
+          return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-chance');
+        }
+        if(reProdOut.test(pid)){
+          return $this.addClass('${CONFIG.CSS_PREFIX}js-sold-out');
+        }
+      });
+    });
+  }
+
+  // 添加专场链接
+  function addBrandLinks(blinks) {
+    // 顺序打乱时这样添加
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').attr({target: '_blank'});
+    var len = blinks.length;
+    $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink').each(function (i) {
+      $(this).attr({href: 'http://list.vip.com/' + blinks[i % len] + '.html'});
+    });
+    //$(blinks).each(function (i, blink) {
+    //  $('.${CONFIG.CSS_PREFIX}mods .${CONFIG.CSS_PREFIX}blink' + (i + 1)).attr({href: 'http://list.vip.com/' + blink + '.html'});
+    //});
+  }
+
+${getNavigatorJs()}
+
+${getCouponJs()}
+
+${getCountdownJs()}
+
 })();
   `;
 };

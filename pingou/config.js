@@ -30,6 +30,8 @@ const CONFIG = {
   COUNTDOWN: {},
   COUPON_BUTTON: {},
   FOOTER_BUTTON: {},
+  NAVIGATOR: {},
+  NAVIGATOR_COUPON_BUTTON: {},
 
   PRODUCTS_DATA: {"VIP_NH":[],"VIP_SH":[],"VIP_CD":[],"VIP_BJ":[],"VIP_HZ":[]},
   BRANDS_DATA: {"VIP_NH":[],"VIP_SH":[],"VIP_CD":[],"VIP_BJ":[],"VIP_HZ":[]},

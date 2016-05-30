@@ -57,7 +57,7 @@ export default function () {
   }
 
   function getNavigatorHtml(){
-    if(!CONFIG.IS_NAVIGATOR) return '';
+    if(CONFIG.NAVIGATOR.isHidden) return '';
     return `
                     <!--导航-begin-->
                     <div class="${CONFIG.CSS_PREFIX}bd">

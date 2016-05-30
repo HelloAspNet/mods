@@ -158,8 +158,8 @@ class App extends Component {
       COUNTDOWN: Temps.countdown.state,
       COUPON_BUTTON: Temps.couponBtn.state,
       FOOTER_BUTTON: Temps.footerBtn.state,
-      navigator: Temps.navigator.state,
-      navCouponBtn: Temps.navCouponBtn.state
+      NAVIGATOR: Temps.navigator.state,
+      NAVIGATOR_COUPON_BUTTON: Temps.navCouponBtn.state
     });
 
     const styles = stylesTpl();
@@ -194,11 +194,11 @@ class App extends Component {
         </div>
         <div className="kmod-exts">
           <div className="kmod-bd" ref="extListWrapper">
-            <Area text="倒计时" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isHidden: CONFIG.countdown.isHidden, isSupportBackground: true}}></Area>
-            <Area text="红包按钮" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isHidden: CONFIG.couponBtn.isHidden, isSupportBackground: true}}></Area>
-            <Area text="底部按钮" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isHidden: CONFIG.footerBtn.isHidden, isSupportBackground: true}}></Area>
-            <Area text="导航" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isHidden: CONFIG.navigator.isHidden, isSupportBackground: true, isFixed: true}}></Area>
-            <Area text="导航红包" onInit={obj => Temps.navCouponBtn = obj} {...{top: 120, left: 1060, width: 80, height: 40, isHidden: CONFIG.navigator.isHidden, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="倒计时" onInit={obj => Temps.countdown = obj} {...{top: 20, left: 300, width: 120, height: 40, isHidden: CONFIG.COUNTDOWN.isHidden, isSupportBackground: true}}></Area>
+            <Area text="红包按钮" onInit={obj => Temps.couponBtn = obj} {...{top: 120, left: 300, width: 120, height: 40, isHidden: CONFIG.COUPON_BUTTON.isHidden, isSupportBackground: true}}></Area>
+            <Area text="底部按钮" onInit={obj => Temps.footerBtn = obj} {...{top: 220, left: 300, width: 120, height: 40, isHidden: CONFIG.FOOTER_BUTTON.isHidden, isSupportBackground: true}}></Area>
+            <Area text="导航" onInit={obj => Temps.navigator = obj} {...{top: 80, left: 1040, width: 120, height: 360, isHidden: CONFIG.NAVIGATOR.isHidden, isSupportBackground: true, isFixed: true}}></Area>
+            <Area text="导航红包" onInit={obj => Temps.navCouponBtn = obj} {...{top: 120, left: 1060, width: 80, height: 40, isHidden: CONFIG.NAVIGATOR_COUPON_BUTTON.isHidden, isSupportBackground: true, isFixed: true}}></Area>
           </div>
         </div>
       </div>

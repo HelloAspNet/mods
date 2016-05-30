@@ -33,16 +33,21 @@ class Tools extends File {
   }
 
   changeIsCountdown(){
-    CONFIG.IS_COUNTDOWN = !CONFIG.IS_COUNTDOWN;
     CONFIG.COUNTDOWN.isHidden = !CONFIG.COUNTDOWN.isHidden;
     this.setState(this.state);
   }
   changeIsNavigator(){
-    CONFIG.IS_NAVIGATOR = !CONFIG.IS_NAVIGATOR;
+    CONFIG.NAVIGATOR.isHidden = !CONFIG.NAVIGATOR.isHidden;
+    if(CONFIG.NAVIGATOR.isHidden) CONFIG.NAVIGATOR_COUPON_BUTTON.isHidden = true;
     this.setState(this.state);
   }
   changeIsCoupon(){
-    CONFIG.IS_COUPON = !CONFIG.IS_COUPON;
+    CONFIG.COUPON_BUTTON.isHidden = !CONFIG.COUPON_BUTTON.isHidden;
+    if(CONFIG.COUPON_BUTTON.isHidden) CONFIG.NAVIGATOR_COUPON_BUTTON.isHidden = true;
+    this.setState(this.state);
+  }
+  changeIsFooterButton(){
+    CONFIG.FOOTER_BUTTON.isHidden = !CONFIG.FOOTER_BUTTON.isHidden;
     this.setState(this.state);
   }
 
@@ -72,9 +77,10 @@ class Tools extends File {
 
 
         <fieldset className="group" style={{display: 'none1'}}>
-          <label><input type="checkbox" checked={CONFIG.IS_COUNTDOWN} onChange={this.changeIsCountdown.bind(this)}/>countdown</label>
-          <label><input type="checkbox" checked={CONFIG.IS_NAVIGATOR} onChange={this.changeIsNavigator.bind(this)}/>navigator</label>
-          <label><input type="checkbox" checked={CONFIG.IS_COUPON} onChange={this.changeIsCoupon.bind(this)}/>coupon</label>
+          <label><input type="checkbox" checked={!CONFIG.COUNTDOWN.isHidden} onChange={this.changeIsCountdown.bind(this)}/>倒计时</label>
+          <label><input type="checkbox" checked={!CONFIG.NAVIGATOR.isHidden} onChange={this.changeIsNavigator.bind(this)}/>导航</label>
+          <label><input type="checkbox" checked={!CONFIG.COUPON_BUTTON.isHidden} onChange={this.changeIsCoupon.bind(this)}/>红包按钮</label>
+          <label><input type="checkbox" checked={!CONFIG.FOOTER_BUTTON.isHidden} onChange={this.changeIsFooterButton.bind(this)}/>底部按钮</label>
         </fieldset>
 
 

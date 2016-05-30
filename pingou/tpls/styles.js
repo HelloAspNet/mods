@@ -76,13 +76,13 @@ export default function () {
   }
 
   function getNavigatorCss(){
-    if(!CONFIG.IS_NAVIGATOR) return '';
+    if(CONFIG.NAVIGATOR.isHidden) return '';
     return `
 /* 导航-begin */
 .${CONFIG.CSS_PREFIX}nav-wrap{height:0}
 .${CONFIG.CSS_PREFIX}nav{position:relative;top:0;width:100%;margin:0 auto;z-index:${NAV_Z_INDEX}}
 .${CONFIG.CSS_PREFIX}nav.${CONFIG.CSS_PREFIX}js-fixed{position:fixed}
-.${CONFIG.CSS_PREFIX}nav1{width:${CONFIG.navigator.width}px;height:${CONFIG.navigator.height}px;margin-left:1040px;padding-top:${CONFIG.navigator.top}px;background:url(${IMAGE_URL}${CONFIG.navigator.alt || 'nav.png'}) center ${CONFIG.navigator.top}px no-repeat}
+.${CONFIG.CSS_PREFIX}nav1{width:${CONFIG.NAVIGATOR.width}px;height:${CONFIG.NAVIGATOR.height}px;margin-left:1040px;padding-top:${CONFIG.NAVIGATOR.top}px;background:url(${IMAGE_URL}${CONFIG.NAVIGATOR.alt || 'nav.png'}) center ${CONFIG.NAVIGATOR.top}px no-repeat}
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-hd{height:168px}
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-bd,
 .${CONFIG.CSS_PREFIX}nav1 .${CONFIG.CSS_PREFIX}nav-ft{margin:0 11px 0 0}
@@ -101,17 +101,17 @@ export default function () {
 .${CONFIG.CSS_PREFIX}coupon{position:relative}
 .${CONFIG.CSS_PREFIX}nav-coupon{position:relative}
 .${CONFIG.CSS_PREFIX}coupon-btn{position:absolute;width:${CONFIG.COUPON_BUTTON.width}px;display:block;height:${Math.floor(CONFIG.COUPON_BUTTON.height / 3)}px;top:${CONFIG.COUPON_BUTTON.top}px;left:${CONFIG.COUPON_BUTTON.left}px;cursor:default;background:url(${IMAGE_URL}${CONFIG.COUPON_BUTTON.alt || 'coupon-btn.png'}) no-repeat}
-.${CONFIG.CSS_PREFIX}nav-coupon-btn{position:absolute;top:${CONFIG.navCouponBtn.top}px;left:23px;width:${CONFIG.navCouponBtn.width}px;height:${Math.floor(CONFIG.navCouponBtn.height / 3)}px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
+.${CONFIG.CSS_PREFIX}nav-coupon-btn{position:absolute;top:${CONFIG.NAVIGATOR_COUPON_BUTTON.top}px;left:23px;width:${CONFIG.NAVIGATOR_COUPON_BUTTON.width}px;height:${Math.floor(CONFIG.NAVIGATOR_COUPON_BUTTON.height / 3)}px;background:url(${IMAGE_URL}nav-coupon-btn.png) 0 0 no-repeat;cursor:default}
 
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:.9;filter:alpha(opacity=90)}
 .${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}coupon-btn{background-position:0 ${-Math.floor(CONFIG.COUPON_BUTTON.height / 3)}px;cursor:pointer}
-.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height / 3)}px;cursor:pointer}
+.${CONFIG.CSS_PREFIX}js-coupon-get .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.NAVIGATOR_COUPON_BUTTON.height / 3)}px;cursor:pointer}
 
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn:hover,
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn:hover{opacity:1;filter:alpha(opacity=100)}
 .${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}coupon-btn{background-position: 0 ${-Math.floor(CONFIG.COUPON_BUTTON.height * 2 / 3)}px}
-.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.navCouponBtn.height * 2 / 3)}px}
+.${CONFIG.CSS_PREFIX}js-coupon-success .${CONFIG.CSS_PREFIX}nav-coupon-btn{background-position:0 ${-Math.floor(CONFIG.NAVIGATOR_COUPON_BUTTON.height * 2 / 3)}px}
 /* 红包-end */
     `;
   }
