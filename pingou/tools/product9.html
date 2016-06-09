@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>品购页档期ID数据生成</title>
+<style>
+body { font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif; color: #333; }
+.wrap { width: 90%; margin: 0 auto; }
+.title { text-align: center; font-weight: normal; }
+.box { margin-bottom: 30px; }
+.box-head { font-size: 14px; line-height: 30px; padding-left: 10px; background-color: #fafafa; border: 1px solid #e5e5e5; border-bottom: none; border-radius: 3px 3px 0 0; }
+.settings { float: right; }
+.settings label { cursor: pointer; margin-right: 10px; }
+.settings input { vertical-align: middle; }
+.table { font-size: 12px; width: 100%; border-collapse: collapse; table-layout: fixed; }
+.table td { line-height: 18px; color: #999; text-align: center; border: 1px solid #e5e5e5; border-bottom: none; width: 88px; }
+.table td:last-child { width: auto; }
+textarea { font-family: "Courier New", Arial, Helvetica, sans-serif; font-size: 14px; border: solid 1px #e5e5e5; border-radius: 0 0 3px 3px; display: block; width: 100%; margin: 0; padding: 5px; box-sizing: border-box; }
+textarea:focus { outline: none; }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+    <h1 class="title">品购页档期ID数据生成</h1>
+    <div class="box">
+        <div class="box-head">输入</div>
+        <table class="table">
+            <tr>
+                <td>广州档期</td> 
+                <td>上海档期</td> 
+                <td>成都档期</td> 
+                <td>北京档期</td> 
+                <td>华中档期</td> 
+                <td></td>
+            </tr>
+        </table>
+        <div class="box-body"><textarea id="input" class="input" autofocus spellcheck="false" rows="10"></textarea></div>
+    </div>
+    <div class="box">
+        <div class="box-head">
+			<div class="settings"><label><input type="checkbox" id="compaction" checked="checked"> 代码压缩</label></div>
+			输出
+		</div>
+        <div class="box-body"><textarea id="output" class="output" spellcheck="false" rows="30"></textarea></div>
+    </div>
+</div>
+<script>
+var input = document.querySelector('#input'),
+    output = document.querySelector('#output'),
+    compaction = document.querySelector('#compaction'),
+    warehouses = ['VIP_NH', 'VIP_SH', 'VIP_CD', 'VIP_BJ', 'VIP_HZ'];
+function convert() {
+    var rows = input.value.trim().split('\n'),
+        results = {'VIP_NH': [], 'VIP_SH': [], 'VIP_CD': [], 'VIP_BJ': [], 'VIP_HZ': []};
+		console.log(rows)
+    rows.forEach(function (row) {
+        var cols = row.match(/\d{9}/g);
+        if(cols == null){
+            return;
+        }
+        cols.forEach(function (col, i) {
+            //col = col.replace(/\s+/, '-');
+            if (i >= warehouses.length) {
+                return;
+            }
+            var wh = warehouses[i];
+            results[wh].push(col);
+        });
+    }); 
+	
+    if (compaction.checked) {
+        output.value = JSON.stringify(results);
+    } else {
+        output.value = JSON.stringify(results, null, '\t');
+    }
+}
+input.addEventListener('input', convert, false);
+compaction.addEventListener('change', convert, false);
+input.addEventListener('keydown', function (event) {
+    if (event.keyCode !== 9) {
+        return;
+    }
+    event.preventDefault();
+    var tab = '\t',
+        tabLength = tab.length,
+        currentStart = this.selectionStart,
+        currentEnd = this.selectionEnd;
+    this.value = this.value.slice(0, currentStart) + tab + this.value.slice(currentStart);
+    this.selectionStart = currentStart + tabLength;
+    this.selectionEnd = currentEnd + tabLength;
+});
+</script>
+</body>
+</html>
